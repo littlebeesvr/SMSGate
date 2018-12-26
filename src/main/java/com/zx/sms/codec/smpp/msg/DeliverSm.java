@@ -27,6 +27,8 @@ import com.zx.sms.LongSMSMessage;
 import com.zx.sms.codec.cmpp.wap.LongMessageFrame;
 import com.zx.sms.codec.smpp.SmppConstants;
 
+import io.netty.channel.ChannelHandlerContext;
+
 public class DeliverSm extends BaseSm<DeliverSmResp> implements LongSMSMessage<DeliverSm> {
 
     /**
@@ -77,5 +79,12 @@ public class DeliverSm extends BaseSm<DeliverSmResp> implements LongSMSMessage<D
 			fragments = new ArrayList<DeliverSm>();
 		
 		fragments.add(fragment);
+	}
+	private transient ChannelHandlerContext ctx;
+	public ChannelHandlerContext getContext() {
+		return ctx;
+	}
+	public void setContext(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
 	}
 }

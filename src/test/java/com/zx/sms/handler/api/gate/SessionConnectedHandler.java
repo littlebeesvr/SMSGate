@@ -94,7 +94,7 @@ public class SessionConnectedHandler extends AbstractBusinessHandler {
 						CmppSubmitRequestMessage msg = new CmppSubmitRequestMessage();
 						msg.setDestterminalId(String.valueOf(System.currentTimeMillis()/1000));
 						msg.setLinkID("0000");
-						msg.setMsgContent(System.nanoTime()+"|||21==21==ｋ===看=CmppSubmitRequestMessage msg =");
+						msg.setMsgContent(System.nanoTime()+"|||21==21==ｋ===看=CmppStp://www.baidu.com/abc/sfubmitReq21==21==ｋ===看=CmppSubmitRequestMessaguestMessage msg =||");
 						msg.setRegisteredDelivery((short)1);
 						msg.setMsgid(new MsgId());
 						msg.setServiceId("10086");

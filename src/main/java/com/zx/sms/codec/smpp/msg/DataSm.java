@@ -21,6 +21,7 @@ package com.zx.sms.codec.smpp.msg;
  */
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,5 +114,11 @@ public class DataSm extends BaseSm<DataSmResp>  implements LongSMSMessage<DataSm
 		
 		fragments.add(fragment);
 	}
-	
+	private transient ChannelHandlerContext ctx;
+	public ChannelHandlerContext getContext() {
+		return ctx;
+	}
+	public void setContext(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
+	}
 }

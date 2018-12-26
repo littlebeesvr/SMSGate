@@ -29,6 +29,8 @@ import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.CMPPCommonUtil;
 import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 
+import io.netty.channel.ChannelHandlerContext;
+
 /**
  * @author huzorro(huzorro@gmail.com)
  * 
@@ -466,5 +468,11 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 		
 		fragments.add(fragment);
 	}
-
+	private transient ChannelHandlerContext ctx;
+	public ChannelHandlerContext getContext() {
+		return ctx;
+	}
+	public void setContext(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
+	}
 }

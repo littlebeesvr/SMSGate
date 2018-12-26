@@ -24,6 +24,8 @@ import com.zx.sms.common.util.CMPPCommonUtil;
 import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 import com.zx.sms.common.util.MsgId;
 
+import io.netty.channel.ChannelHandlerContext;
+
 /**
  *
  * @author huzorro(huzorro@gmail.com)
@@ -510,5 +512,12 @@ public class CmppSubmitRequestMessage extends DefaultMessage  implements LongSMS
 			fragments = new ArrayList<CmppSubmitRequestMessage>();
 		
 		fragments.add(fragment);
+	}
+	private transient ChannelHandlerContext ctx;
+	public ChannelHandlerContext getContext() {
+		return ctx;
+	}
+	public void setContext(ChannelHandlerContext ctx) {
+		this.ctx = ctx;
 	}
 }
