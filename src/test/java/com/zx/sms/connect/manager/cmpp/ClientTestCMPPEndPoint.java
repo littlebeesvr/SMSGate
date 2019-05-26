@@ -34,7 +34,7 @@ public class ClientTestCMPPEndPoint {
 		client.setId("GSDT01");
 		client.setHost("127.0.0.1");
 		client.setPort(20003);
-		client.setChartset(Charset.forName("utf-8"));
+		client.setCharset(Charset.forName("utf-8"));
 		client.setGroupName("test");
 		client.setUserName("GSDT01");
 		client.setPassword("1234567");
@@ -55,7 +55,7 @@ public class ClientTestCMPPEndPoint {
 		client1.setId("GSDT02");
 		client1.setHost("127.0.0.1");
 		client1.setPort(20003);
-		client1.setChartset(Charset.forName("utf-8"));
+		client1.setCharset(Charset.forName("utf-8"));
 		client1.setGroupName("test");
 		client1.setSpCode("1069039129");
 		client1.setUserName("GSDT02");

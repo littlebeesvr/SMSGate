@@ -23,7 +23,7 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	private String msgSrc = ""; //企业代码，可能跟userName相同
 	//默认为3.0协议
 	private short version = (short)0x30L;
-	private Charset chartset = GlobalConstance.defaultTransportCharset;
+	private Charset charset = GlobalConstance.defaultTransportCharset;
 	
 	/**
 	 * 最大消息序列数
@@ -111,12 +111,12 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 		this.version = version;
 	}
 
-	public Charset getChartset() {
-		return chartset;
+	public Charset getCharset() {
+		return charset;
 	}
 
-	public void setChartset(Charset chartset) {
-		this.chartset = chartset;
+	public void setCharset(Charset charset) {
+		this.charset = charset;
 	}
 	
     public short getMaxMsgQueue() {
@@ -128,7 +128,7 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[groupName=" + groupName + ", userName=" + userName + ", chartset=" + chartset + ", getId()=" + getId() + ", getDesc()="
+		return this.getClass().getSimpleName()+"[groupName=" + groupName + ", userName=" + userName + ", chartset=" + charset + ", getId()=" + getId() + ", getDesc()="
 				+ getDesc() + ", getChannelType()=" + getChannelType() + ", getHost()=" + getHost() + ", getPort()=" + getPort() + ", getMaxChannels()="
 				+ getMaxChannels() + "]";
 	}

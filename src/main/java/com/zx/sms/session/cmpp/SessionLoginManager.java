@@ -42,10 +42,10 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 	}
 
 	private int validClientMsg(CmppConnectRequestMessage message, CMPPServerChildEndpointEntity entity) throws Exception {
-		byte[] userBytes = entity.getUserName().getBytes(entity.getChartset());
-		byte[] passwdBytes = entity.getPassword().getBytes(entity.getChartset());
+		byte[] userBytes = entity.getUserName().getBytes(entity.getCharset());
+		byte[] passwdBytes = entity.getPassword().getBytes(entity.getCharset());
 
-		byte[] timestampBytes = String.format("%010d", message.getTimestamp()).getBytes(entity.getChartset());
+		byte[] timestampBytes = String.format("%010d", message.getTimestamp()).getBytes(entity.getCharset());
 		byte[] authBytes = DigestUtils.md5(Bytes.concat(userBytes, new byte[9], passwdBytes, timestampBytes));
 
 		if (Arrays.equals(authBytes, message.getAuthenticatorSource())) {
@@ -65,9 +65,9 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 		req.setSourceAddr(cliententity.getUserName());
 		String timestamp = DateFormatUtils.format(CachedMillisecondClock.INS.now(), "MMddHHmmss");
 		req.setTimestamp(Long.parseLong(timestamp));
-		byte[] userBytes = cliententity.getUserName().getBytes(cliententity.getChartset());
-		byte[] passwdBytes = cliententity.getPassword().getBytes(cliententity.getChartset());
-		byte[] timestampBytes = timestamp.getBytes(cliententity.getChartset());
+		byte[] userBytes = cliententity.getUserName().getBytes(cliententity.getCharset());
+		byte[] passwdBytes = cliententity.getPassword().getBytes(cliententity.getCharset());
+		byte[] timestampBytes = timestamp.getBytes(cliententity.getCharset());
 		req.setAuthenticatorSource(DigestUtils.md5(Bytes.concat(userBytes, new byte[9], passwdBytes, timestampBytes)));
 		req.setVersion(cliententity.getVersion());
 		ch.writeAndFlush(req);
@@ -145,7 +145,7 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 		resp.setVersion(childentity.getVersion());
 		resp.setStatus(0);
 		resp.setAuthenticatorISMG(DigestUtils.md5(Bytes.concat(Ints.toByteArray((int)resp.getStatus()), message.getAuthenticatorSource(), childentity
-				.getPassword().getBytes(childentity.getChartset()))));
+				.getPassword().getBytes(childentity.getCharset()))));
 		ctx.channel().writeAndFlush(resp);
 	}
 

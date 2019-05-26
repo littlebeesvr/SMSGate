@@ -42,7 +42,7 @@ public class TestCMPPEndPoint {
 
 		CMPPServerChildEndpointEntity child = new CMPPServerChildEndpointEntity();
 		child.setId("child");
-		child.setChartset(Charset.forName("utf-8"));
+		child.setCharset(Charset.forName("utf-8"));
 		child.setGroupName("test");
 		child.setUserName("901783");
 		child.setPassword("ICP001");
@@ -69,7 +69,7 @@ public class TestCMPPEndPoint {
 //		client.setLocalhost("127.0.0.1");
 //		client.setLocalport(65521);
 		client.setPort(7890);
-		client.setChartset(Charset.forName("utf-8"));
+		client.setCharset(Charset.forName("utf-8"));
 		client.setGroupName("test");
 		client.setUserName("901783");
 		client.setPassword("ICP001");
