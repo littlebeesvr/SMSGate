@@ -4,11 +4,6 @@
 package com.zx.sms.codec.sgip12.codec;
 
 import static com.zx.sms.common.util.NettyByteBufUtil.toArray;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -19,6 +14,12 @@ import com.zx.sms.codec.sgip12.packet.SgipBindRequest;
 import com.zx.sms.codec.sgip12.packet.SgipPacketType;
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.CMPPCommonUtil;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author huzorro(huzorro@gmail.com)
@@ -61,12 +62,11 @@ public class SgipBindRequestMessageCodec extends MessageToMessageCodec<Message, 
 	protected void encode(ChannelHandlerContext ctx, SgipBindRequestMessage requestMessage, List<Object> out) throws Exception {
 		ByteBuf bodyBuffer = ctx.alloc().buffer(SgipBindRequest.LOGINNAME.getBodyLength());
 		bodyBuffer.writeByte(requestMessage.getLoginType());
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getLoginName().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipBindRequest.LOGINNAME.getLength(), 0));
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getLoginPassowrd().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipBindRequest.LOGINPASSWD.getLength(), 0));
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getReserve().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipBindRequest.RESERVE.getLength(), 0));
+		bodyBuffer
+				.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getLoginName().getBytes(GlobalConstance.defaultTransportCharset), SgipBindRequest.LOGINNAME.getLength(), 0));
+		bodyBuffer.writeBytes(
+				CMPPCommonUtil.ensureLength(requestMessage.getLoginPassowrd().getBytes(GlobalConstance.defaultTransportCharset), SgipBindRequest.LOGINPASSWD.getLength(), 0));
+		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getReserve().getBytes(GlobalConstance.defaultTransportCharset), SgipBindRequest.RESERVE.getLength(), 0));
 
 		requestMessage.setBodyBuffer(toArray(bodyBuffer, bodyBuffer.readableBytes()));
 		requestMessage.getHeader().setBodyLength(requestMessage.getBodyBuffer().length);

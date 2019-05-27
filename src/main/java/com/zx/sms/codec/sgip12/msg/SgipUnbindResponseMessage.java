@@ -17,7 +17,7 @@ public class SgipUnbindResponseMessage extends DefaultMessage {
 		super(SgipPacketType.UNBINDRESPONSE);
 	}
 	public SgipUnbindResponseMessage(Header header) {
-		super(SgipPacketType.UNBINDRESPONSE,header);
+		super(SgipPacketType.UNBINDRESPONSE, header);
 	}
 
 }

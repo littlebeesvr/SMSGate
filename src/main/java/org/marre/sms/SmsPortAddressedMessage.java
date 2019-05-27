@@ -44,40 +44,36 @@ import java.io.Serializable;
  * @author Markus
  * @version $Id$
  */
-public abstract class SmsPortAddressedMessage extends SmsConcatMessage implements Serializable
-{
-    /**
+public abstract class SmsPortAddressedMessage extends SmsConcatMessage implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2836960661981730324L;
 	protected SmsPort destPort_;
-    protected SmsPort origPort_;
-    
-    /**
-     * Creates a new SmsPortAddressedMessage with the given dest and orig port.
-     * 
-     * @param destPort
-     * @param origPort
-     */
-    protected SmsPortAddressedMessage(SmsPort destPort, SmsPort origPort)
-    {
-        setPorts(destPort, origPort);
-    }
-    
-    /**
-     * Sets the dest and orig ports.
-     * 
-     * @param destPort
-     * @param origPort
-     */
-    public void setPorts(SmsPort destPort, SmsPort origPort)
-    {
-        destPort_ = destPort;
-        origPort_ = origPort;
-    }
-    
-    
-    public int getDestPort_() {
+	protected SmsPort origPort_;
+
+	/**
+	 * Creates a new SmsPortAddressedMessage with the given dest and orig port.
+	 * 
+	 * @param destPort
+	 * @param origPort
+	 */
+	protected SmsPortAddressedMessage(SmsPort destPort, SmsPort origPort) {
+		setPorts(destPort, origPort);
+	}
+
+	/**
+	 * Sets the dest and orig ports.
+	 * 
+	 * @param destPort
+	 * @param origPort
+	 */
+	public void setPorts(SmsPort destPort, SmsPort origPort) {
+		destPort_ = destPort;
+		origPort_ = origPort;
+	}
+
+	public int getDestPort_() {
 		return destPort_.getPort();
 	}
 
@@ -85,8 +81,7 @@ public abstract class SmsPortAddressedMessage extends SmsConcatMessage implement
 		return origPort_.getPort();
 	}
 
-	public SmsUdhElement[] getUdhElements()
-    {
-        return new SmsUdhElement[] { SmsUdhUtil.get16BitApplicationPortUdh(destPort_, origPort_) };
-    }
+	public SmsUdhElement[] getUdhElements() {
+		return new SmsUdhElement[]{SmsUdhUtil.get16BitApplicationPortUdh(destPort_, origPort_)};
+	}
 }

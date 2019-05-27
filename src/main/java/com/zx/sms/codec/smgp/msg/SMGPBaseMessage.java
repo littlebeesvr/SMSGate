@@ -9,7 +9,7 @@ import com.zx.sms.codec.smgp.util.ByteUtil;
 import com.zx.sms.common.util.CachedMillisecondClock;
 import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 
-public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
+public abstract class SMGPBaseMessage implements BaseMessage, Cloneable {
 
 	/**
 	 * 
@@ -22,15 +22,15 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 
 	protected int commandId = 0;
 
-	protected long sequenceNumber = DefaultSequenceNumberUtil.getSequenceNo(); 
-	
+	protected long sequenceNumber = DefaultSequenceNumberUtil.getSequenceNo();
+
 	protected List<TLV> optionalParameters = new ArrayList<TLV>();
-	
+
 	private BaseMessage request;
-	
+
 	private long timestamp = CachedMillisecondClock.INS.now();
-	//消息的生命周期，单位秒, 0表示永不过期
-	private long lifeTime=0;
+	// 消息的生命周期，单位秒, 0表示永不过期
+	private long lifeTime = 0;
 
 	public boolean fromBytes(byte[] bytes) throws Exception {
 		if (bytes == null) {
@@ -39,42 +39,42 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 		if (bytes.length < SZ_HEADER) {
 			return false;
 		}
-        int offset=0;
+		int offset = 0;
 		commandLength = ByteUtil.byte2int(bytes, offset);
-		offset+=4;
-		commandId = ByteUtil.byte2int(bytes,offset);
-		offset+=4;
-		sequenceNumber =ByteUtil.byte2int(bytes, offset);
-		offset+=4;
-		
+		offset += 4;
+		commandId = ByteUtil.byte2int(bytes, offset);
+		offset += 4;
+		sequenceNumber = ByteUtil.byte2int(bytes, offset);
+		offset += 4;
+
 		byte[] bodyBytes = new byte[commandLength - SZ_HEADER];
 		System.arraycopy(bytes, offset, bodyBytes, 0, bodyBytes.length);
-		int bodyLength=setBody(bodyBytes);
-		
+		int bodyLength = setBody(bodyBytes);
+
 		if (bodyLength < bodyBytes.length) {
 			byte[] optBytes = new byte[bodyBytes.length - bodyLength];
 			System.arraycopy(bodyBytes, bodyLength, optBytes, 0, optBytes.length);
 			setOptionalBody(optBytes);
 		}
-		
+
 		return true;
 	}
 
 	public byte[] toBytes() throws Exception {
 		byte[] bodyBytes = getBody();
 		byte[] optBytes = getOptionalBody();
-		
-		commandLength = SZ_HEADER + bodyBytes.length+optBytes.length;
-		int offset=0;
+
+		commandLength = SZ_HEADER + bodyBytes.length + optBytes.length;
+		int offset = 0;
 		byte[] bytes = new byte[commandLength];
 
 		ByteUtil.int2byte(commandLength, bytes, offset);
-		offset+=4;
+		offset += 4;
 		ByteUtil.int2byte(commandId, bytes, offset);
-		offset+=4;
-		ByteUtil.int2byte((int)sequenceNumber, bytes, offset);
-		offset+=4;
-		
+		offset += 4;
+		ByteUtil.int2byte((int) sequenceNumber, bytes, offset);
+		offset += 4;
+
 		System.arraycopy(bodyBytes, 0, bytes, offset, bodyBytes.length);
 		offset += bodyBytes.length;
 
@@ -85,9 +85,8 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 
 	abstract protected int setBody(byte[] bodyBytes) throws Exception;
 
-	abstract protected byte[] getBody() throws Exception ;
+	abstract protected byte[] getBody() throws Exception;
 
-	
 	private void setOptionalBody(byte[] buffer) throws Exception {
 		short tag;
 		short length;
@@ -100,7 +99,8 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 			tag = ByteUtil.byte2short(buffer, offset);
 			offset += 2;
 			tlv = findOptional(tag);
-			if(tlv==null)break; //ignore error
+			if (tlv == null)
+				break; // ignore error
 			length = ByteUtil.byte2short(buffer, offset);
 			offset += 2;
 			byte[] valueBytes = new byte[length];
@@ -117,8 +117,8 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 		int len = 0;
 		for (int i = 0; i < size; i++) {
 			tlv = (TLV) optionalParameters.get(i);
-			if(tlv.hasValue())
-			  len += 4 + tlv.getLength();
+			if (tlv.hasValue())
+				len += 4 + tlv.getLength();
 
 		}
 		byte[] bytes = new byte[len];
@@ -154,23 +154,28 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 		}
 		return null;
 	}
-	
-	protected String plus86(String mobile){
-		if(mobile==null||mobile.trim().length()==0)return "";
-		if(mobile.startsWith("86"))return mobile;
-		if(mobile.startsWith("+86"))return mobile.substring(1);
-		return "86"+mobile;
+
+	protected String plus86(String mobile) {
+		if (mobile == null || mobile.trim().length() == 0)
+			return "";
+		if (mobile.startsWith("86"))
+			return mobile;
+		if (mobile.startsWith("+86"))
+			return mobile.substring(1);
+		return "86" + mobile;
 	}
-	
-	protected String minus86(String mobile){
-		if(mobile==null||mobile.trim().length()==0)return "";
-		if(mobile.startsWith("86"))return mobile.substring(2);
-		if(mobile.startsWith("+86"))return mobile.substring(3);
+
+	protected String minus86(String mobile) {
+		if (mobile == null || mobile.trim().length() == 0)
+			return "";
+		if (mobile.startsWith("86"))
+			return mobile.substring(2);
+		if (mobile.startsWith("+86"))
+			return mobile.substring(3);
 		return mobile;
-		
+
 	}
-	
-	
+
 	public int getCommandId() {
 		return commandId;
 	}
@@ -191,17 +196,16 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 		this.sequenceNumber = sequenceNumber;
 	}
 
-
-	public String sequenceString(){
-		StringBuffer buffer=new StringBuffer();
-		int offset=0;
-		byte[] seqBytes=new byte[8];
-		System.arraycopy(ByteUtil.int2byte((int)sequenceNumber), offset, seqBytes, 4, 4);
+	public String sequenceString() {
+		StringBuffer buffer = new StringBuffer();
+		int offset = 0;
+		byte[] seqBytes = new byte[8];
+		System.arraycopy(ByteUtil.int2byte((int) sequenceNumber), offset, seqBytes, 4, 4);
 		buffer.append(ByteUtil.byte2long(seqBytes));
 		return buffer.toString();
-		
+
 	}
-	
+
 	public long getTimestamp() {
 		return timestamp;
 	}
@@ -230,7 +234,7 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 
 	@Override
 	public boolean isTerminated() {
-		return lifeTime !=0 && (( timestamp + lifeTime*1000 ) - CachedMillisecondClock.INS.now() < 0L);
+		return lifeTime != 0 && ((timestamp + lifeTime * 1000) - CachedMillisecondClock.INS.now() < 0L);
 	}
 
 	@Override
@@ -247,23 +251,22 @@ public abstract class SMGPBaseMessage implements BaseMessage ,Cloneable{
 	public long getSequenceNo() {
 		return sequenceNumber;
 	}
-	
+
 	public void setSequenceNo(long seq) {
-		 sequenceNumber=seq;
+		sequenceNumber = seq;
 	}
 
 	protected SMGPBaseMessage clone() throws CloneNotSupportedException {
-		SMGPBaseMessage msg =  (SMGPBaseMessage) super.clone();
+		SMGPBaseMessage msg = (SMGPBaseMessage) super.clone();
 		msg.setSequenceNumber(sequenceNumber);
 		msg.setCommandId(commandId);
 		return msg;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPBaseMessage:[sequenceNumber=").append(sequenceString()).append(",").append(
-			"commandId=").append(commandId).append("]");
+		buffer.append("SMGPBaseMessage:[sequenceNumber=").append(sequenceString()).append(",").append("commandId=").append(commandId).append("]");
 
 		return buffer.toString();
 	}

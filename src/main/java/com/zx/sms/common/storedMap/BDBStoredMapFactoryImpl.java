@@ -26,7 +26,7 @@ import com.sleepycat.je.EnvironmentConfig;
 import com.zx.sms.config.PropertiesUtils;
 import com.zx.sms.connect.manager.EventLoopGroupFactory;
 
-public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, VersionObject > {
+public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, VersionObject> {
 	INS;
 	private static final Logger logger = LoggerFactory.getLogger(BDBStoredMapFactoryImpl.class);
 	private final ConcurrentHashMap<String, QueueEnvironment> envMap = new ConcurrentHashMap<String, QueueEnvironment>();
@@ -35,16 +35,14 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 	private final ConcurrentHashMap<String, StoredSortedMap<Long, Serializable>> sortedstoredMap = new ConcurrentHashMap<String, StoredSortedMap<Long, Serializable>>();
 	private final ConcurrentHashMap<String, BlockingQueue<Serializable>> queueMap = new ConcurrentHashMap<String, BlockingQueue<Serializable>>();
 
-
 	/**
-	 * VersionObject
-	 * 在保存消息对象信息时，同时保存时间戳。这样就可以区分哪些是历史信息。
+	 * VersionObject 在保存消息对象信息时，同时保存时间戳。这样就可以区分哪些是历史信息。
 	 */
 	@Override
 	public synchronized ConcurrentMap<Serializable, VersionObject> buildMap(String storedpath, String name) {
 		QueueEnvironment env = buildBDB(storedpath);
-		FstSerialBinding<Serializable> messageKeyBinding =  new FstSerialBinding<Serializable>();
-		FstSerialBinding<VersionObject> messageValueBinding =  new FstSerialBinding<VersionObject>();
+		FstSerialBinding<Serializable> messageKeyBinding = new FstSerialBinding<Serializable>();
+		FstSerialBinding<VersionObject> messageValueBinding = new FstSerialBinding<VersionObject>();
 		Database db = env.buildDatabase(name);
 
 		String keyName = new StringBuilder().append(storedpath).append(name).toString();
@@ -52,17 +50,17 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 		if (map == null) {
 			StoredMap<Serializable, VersionObject> tmpMap = new StoredMap<Serializable, VersionObject>(db, messageKeyBinding, messageValueBinding, true);
 			StoredMap<Serializable, VersionObject> old = storedMaps.putIfAbsent(keyName, tmpMap);
-			return old ==null ? tmpMap:old;
+			return old == null ? tmpMap : old;
 		}
 		return map;
 	}
-	
+
 	private StoredSortedMap<Long, Serializable> buildStoredSortedMap(String storedpath, String name) {
 		QueueEnvironment env = buildBDB(storedpath);
-//		SerialBinding<Long> messageKeyBinding = new SerialBinding<Long>(env.getStoredClassCatalog(), Long.class);
-//		SerialBinding<Message> messageValueBinding = new SerialBinding<Message>(env.getStoredClassCatalog(), Message.class);
-		FstSerialBinding<Long> messageKeyBinding =  new FstSerialBinding<Long>();
-		FstSerialBinding<Serializable> messageValueBinding =  new FstSerialBinding<Serializable>();
+		// SerialBinding<Long> messageKeyBinding = new SerialBinding<Long>(env.getStoredClassCatalog(), Long.class);
+		// SerialBinding<Message> messageValueBinding = new SerialBinding<Message>(env.getStoredClassCatalog(), Message.class);
+		FstSerialBinding<Long> messageKeyBinding = new FstSerialBinding<Long>();
+		FstSerialBinding<Serializable> messageValueBinding = new FstSerialBinding<Serializable>();
 		Database db = env.buildDatabase(name);
 		String keyName = new StringBuilder().append(storedpath).append(name).toString();
 
@@ -79,13 +77,13 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 
 	private QueueEnvironment buildBDB(String basename) {
 		String pathName;
-		basename = basename==null?"":basename;
-		if(PropertiesUtils.globalBDBBaseHome.endsWith("/")){
-			 pathName = PropertiesUtils.globalBDBBaseHome + basename;
-		}else{
-			 pathName = PropertiesUtils.globalBDBBaseHome +"/"+ basename;
+		basename = basename == null ? "" : basename;
+		if (PropertiesUtils.globalBDBBaseHome.endsWith("/")) {
+			pathName = PropertiesUtils.globalBDBBaseHome + basename;
+		} else {
+			pathName = PropertiesUtils.globalBDBBaseHome + "/" + basename;
 		}
-		
+
 		File file = new File(pathName);
 		if (!file.exists()) {
 			boolean succ = file.mkdirs();
@@ -101,11 +99,11 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 			logger.error("file  {} is not a Directory ", pathName);
 			return null;
 		}
-		
+
 		QueueEnvironment env = envMap.get(pathName);
 
 		if (env == null) {
-			logger.info("init BDBPath : {}" ,pathName);
+			logger.info("init BDBPath : {}", pathName);
 			env = new QueueEnvironment().buildEnvironment(pathName).buildStoredClassCatalog();
 			QueueEnvironment oldenv = envMap.putIfAbsent(pathName, env);
 			return oldenv == null ? env : oldenv;
@@ -124,7 +122,7 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 
 			File home = new File(pathHome);
 			// 获取BDB的配置文件
-		
+
 			EnvironmentConfig environmentConfig = new EnvironmentConfig(PropertiesUtils.getJeProperties());
 			environmentConfig.setAllowCreate(true);
 			environmentConfig.setTransactional(true);
@@ -152,7 +150,7 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 			if (queueDB == null) {
 				queueDB = environment.openDatabase(null, queueName, dbConfig);
 				Database olddb = dbMap.putIfAbsent(queueName, queueDB);
-				return olddb == null?queueDB : olddb;
+				return olddb == null ? queueDB : olddb;
 			}
 			return queueDB;
 		}

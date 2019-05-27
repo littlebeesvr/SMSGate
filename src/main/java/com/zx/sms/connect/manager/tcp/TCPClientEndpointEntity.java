@@ -1,7 +1,6 @@
 package com.zx.sms.connect.manager.tcp;
 
 import com.zx.sms.connect.manager.ClientEndpoint;
-import com.zx.sms.connect.manager.EndpointConnector;
 import com.zx.sms.connect.manager.EndpointEntity;
 
 public class TCPClientEndpointEntity extends EndpointEntity implements ClientEndpoint {

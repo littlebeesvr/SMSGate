@@ -1,22 +1,21 @@
 package com.zx.sms.codec.cmpp20;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.ReferenceCountUtil;
+import static com.zx.sms.common.util.NettyByteBufUtil.toArray;
 
 import java.util.List;
 
 import com.zx.sms.codec.cmpp.msg.CmppConnectResponseMessage;
 import com.zx.sms.codec.cmpp.msg.Message;
-import com.zx.sms.codec.cmpp.packet.CmppConnectResponse;
 import com.zx.sms.codec.cmpp.packet.PacketType;
 import com.zx.sms.codec.cmpp20.packet.Cmpp20ConnectResponse;
 import com.zx.sms.codec.cmpp20.packet.Cmpp20PacketType;
 import com.zx.sms.common.NotSupportedException;
 
-import static com.zx.sms.common.util.NettyByteBufUtil.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 /**
  *
  * @author huzorro(huzorro@gmail.com)
@@ -26,8 +25,8 @@ public class Cmpp20ConnectResponseMessageCodec extends MessageToMessageCodec<Mes
 	private PacketType packetType;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public Cmpp20ConnectResponseMessageCodec() {
 		this(Cmpp20PacketType.CMPPCONNECTRESPONSE);
 	}
@@ -46,22 +45,21 @@ public class Cmpp20ConnectResponseMessageCodec extends MessageToMessageCodec<Mes
 		}
 		CmppConnectResponseMessage responseMessage = new CmppConnectResponseMessage(msg.getHeader());
 		byte[] body = msg.getBodyBuffer();
-		if(body.length == 18){
+		if (body.length == 18) {
 			ByteBuf bodyBuffer = Unpooled.wrappedBuffer(msg.getBodyBuffer());
 
 			responseMessage.setStatus(bodyBuffer.readUnsignedByte());
-			responseMessage.setAuthenticatorISMG(toArray(bodyBuffer,Cmpp20ConnectResponse.AUTHENTICATORISMG.getLength()));
+			responseMessage.setAuthenticatorISMG(toArray(bodyBuffer, Cmpp20ConnectResponse.AUTHENTICATORISMG.getLength()));
 			responseMessage.setVersion(bodyBuffer.readUnsignedByte());
-			
+
 			ReferenceCountUtil.release(bodyBuffer);
 			out.add(responseMessage);
-		}else{
-			if(body.length == 21)
+		} else {
+			if (body.length == 21)
 				throw new NotSupportedException("error cmpp version . shoud use cmpp3.0 ");
 			else
 				throw new NotSupportedException("error cmpp CmppConnectResponseMessage data .");
 		}
-
 
 	}
 
@@ -74,7 +72,7 @@ public class Cmpp20ConnectResponseMessageCodec extends MessageToMessageCodec<Mes
 		bodyBuffer.writeBytes(msg.getAuthenticatorISMG());
 		bodyBuffer.writeByte(msg.getVersion());
 
-		msg.setBodyBuffer(toArray(bodyBuffer,bodyBuffer.readableBytes()));
+		msg.setBodyBuffer(toArray(bodyBuffer, bodyBuffer.readableBytes()));
 		msg.getHeader().setBodyLength(msg.getBodyBuffer().length);
 		ReferenceCountUtil.release(bodyBuffer);
 		out.add(msg);

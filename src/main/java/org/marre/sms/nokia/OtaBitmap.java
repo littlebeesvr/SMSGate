@@ -45,156 +45,140 @@ import java.io.Serializable;
  * 
  * @author Markus Eriksson
  */
-public class OtaBitmap implements Serializable
-{
-    /**
+public class OtaBitmap implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2466133864013197366L;
 	private int width_;
-    private int height_;
+	private int height_;
 
-    private byte[] otaImgData_;
+	private byte[] otaImgData_;
 
-    /**
-     * Initialise with a raw Ota Bitmap
-     * 
-     * @param otaBitmapData
-     */
-    public OtaBitmap(byte[] otaBitmapData)
-    {
-        if (otaBitmapData != null)
-        {
-            //Read info field read until no more fields left bit 7 is 0
-            int infoField = otaBitmapData[0]; //assume just 1 for now
-            width_ = otaBitmapData[1];
-            height_ = otaBitmapData[2];
-            int depth = otaBitmapData[3];
+	/**
+	 * Initialise with a raw Ota Bitmap
+	 * 
+	 * @param otaBitmapData
+	 */
+	public OtaBitmap(byte[] otaBitmapData) {
+		if (otaBitmapData != null) {
+			// Read info field read until no more fields left bit 7 is 0
+			int infoField = otaBitmapData[0]; // assume just 1 for now
+			width_ = otaBitmapData[1];
+			height_ = otaBitmapData[2];
+			int depth = otaBitmapData[3];
 
-            int length = otaBitmapData.length - 4;
-            otaImgData_ = new byte[length];
+			int length = otaBitmapData.length - 4;
+			otaImgData_ = new byte[length];
 
-            System.arraycopy(otaBitmapData, 4, otaImgData_, 0, length);
-        }
-    }
+			System.arraycopy(otaBitmapData, 4, otaImgData_, 0, length);
+		}
+	}
 
-    /**
-     * Creates an OtaBitmap object from an BufferedImage.
-     * <p>
-     * Every pixel that is not white will be converted to black.
-     * 
-     * @param img
-     *            Image to convert.
-     */
-    public OtaBitmap(BufferedImage img)
-    {
-        int bitOffset = 0;
-        int data = 0;
-        int nByte = 0;
-        int nTotalBytes = 0;
-        Raster raster = img.getData();
+	/**
+	 * Creates an OtaBitmap object from an BufferedImage.
+	 * <p>
+	 * Every pixel that is not white will be converted to black.
+	 * 
+	 * @param img
+	 *            Image to convert.
+	 */
+	public OtaBitmap(BufferedImage img) {
+		int bitOffset = 0;
+		int data = 0;
+		int nByte = 0;
+		int nTotalBytes = 0;
+		Raster raster = img.getData();
 
-        width_ = img.getWidth();
-        height_ = img.getHeight();
+		width_ = img.getWidth();
+		height_ = img.getHeight();
 
-        nTotalBytes = (width_ * height_) / 8;
-        if (((width_ * height_) % 8) > 0)
-        {
-            nTotalBytes++;
-        }
+		nTotalBytes = (width_ * height_) / 8;
+		if (((width_ * height_) % 8) > 0) {
+			nTotalBytes++;
+		}
 
-        otaImgData_ = new byte[nTotalBytes];
+		otaImgData_ = new byte[nTotalBytes];
 
-        for (int y = 0; y < height_; y++)
-        {
-            for (int x = 0; x < width_; x++)
-            {
-                int color = img.getRGB(x, y);
+		for (int y = 0; y < height_; y++) {
+			for (int x = 0; x < width_; x++) {
+				int color = img.getRGB(x, y);
 
-                if (color != 0)
-                {
-                    data |= ((1 << (7 - bitOffset)) & 0xff);
-                }
+				if (color != 0) {
+					data |= ((1 << (7 - bitOffset)) & 0xff);
+				}
 
-                bitOffset++;
+				bitOffset++;
 
-                if (bitOffset >= 8)
-                {
-                    otaImgData_[nByte] = (byte) (data & 0xff);
+				if (bitOffset >= 8) {
+					otaImgData_[nByte] = (byte) (data & 0xff);
 
-                    bitOffset = 0;
-                    data = 0x00;
-                    nByte++;
-                }
-            }
-        }
+					bitOffset = 0;
+					data = 0x00;
+					nByte++;
+				}
+			}
+		}
 
-        if (bitOffset > 0)
-        {
-            otaImgData_[nByte] = (byte) (data & 0xff);
-        }
-    }
+		if (bitOffset > 0) {
+			otaImgData_[nByte] = (byte) (data & 0xff);
+		}
+	}
 
-    /**
-     * Returns the created image data (not including image header)
-     * 
-     * @return Image data
-     */
-    public byte[] getImageData()
-    {
-        return otaImgData_;
-    }
+	/**
+	 * Returns the created image data (not including image header)
+	 * 
+	 * @return Image data
+	 */
+	public byte[] getImageData() {
+		return otaImgData_;
+	}
 
-    /**
-     * Returns the encoded OtaBitmap
-     * 
-     * @return An encoded OtaBitmap
-     */
-    public byte[] getBytes()
-    {
-        byte[] otaBitmap = new byte[otaImgData_.length + 4];
+	/**
+	 * Returns the encoded OtaBitmap
+	 * 
+	 * @return An encoded OtaBitmap
+	 */
+	public byte[] getBytes() {
+		byte[] otaBitmap = new byte[otaImgData_.length + 4];
 
-        otaBitmap[0] = 0; // Not sure what this is
-        otaBitmap[1] = (byte) (width_ & 0xff);
-        otaBitmap[2] = (byte) (height_ & 0xff);
-        otaBitmap[3] = 1; // Number of colors
+		otaBitmap[0] = 0; // Not sure what this is
+		otaBitmap[1] = (byte) (width_ & 0xff);
+		otaBitmap[2] = (byte) (height_ & 0xff);
+		otaBitmap[3] = 1; // Number of colors
 
-        // Add image data
-        System.arraycopy(otaImgData_, 0, otaBitmap, 4, otaImgData_.length);
+		// Add image data
+		System.arraycopy(otaImgData_, 0, otaBitmap, 4, otaImgData_.length);
 
-        return otaBitmap;
-    }
+		return otaBitmap;
+	}
 
-    /**
-     * @return
-     */
-    public int getHeight()
-    {
-        return height_;
-    }
+	/**
+	 * @return
+	 */
+	public int getHeight() {
+		return height_;
+	}
 
-    /**
-     * @return
-     */
-    public int getWidth()
-    {
-        return width_;
-    }
+	/**
+	 * @return
+	 */
+	public int getWidth() {
+		return width_;
+	}
 
-    /**
-     * @param i
-     */
-    public void setHeight(int i)
-    {
-        height_ = i;
-    }
+	/**
+	 * @param i
+	 */
+	public void setHeight(int i) {
+		height_ = i;
+	}
 
-    /**
-     * @param i
-     */
-    public void setWidth(int i)
-    {
-        width_ = i;
-    }
+	/**
+	 * @param i
+	 */
+	public void setWidth(int i) {
+		width_ = i;
+	}
 
 }

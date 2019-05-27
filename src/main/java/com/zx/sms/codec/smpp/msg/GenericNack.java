@@ -1,5 +1,9 @@
 package com.zx.sms.codec.smpp.msg;
 
+import com.zx.sms.codec.smpp.RecoverablePduException;
+import com.zx.sms.codec.smpp.SmppConstants;
+import com.zx.sms.codec.smpp.UnrecoverablePduException;
+
 /*
  * #%L
  * ch-smpp
@@ -22,39 +26,35 @@ package com.zx.sms.codec.smpp.msg;
 
 import io.netty.buffer.ByteBuf;
 
-import com.zx.sms.codec.smpp.RecoverablePduException;
-import com.zx.sms.codec.smpp.SmppConstants;
-import com.zx.sms.codec.smpp.UnrecoverablePduException;
-
 public class GenericNack extends PduResponse {
-    
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 423864924963205127L;
 
 	public GenericNack() {
-        super(SmppConstants.CMD_ID_GENERIC_NACK, "generic_nack");
-    }
+		super(SmppConstants.CMD_ID_GENERIC_NACK, "generic_nack");
+	}
 
-    @Override
-    public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        // no body
-    }
+	@Override
+	public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		// no body
+	}
 
-    @Override
-    public int calculateByteSizeOfBody() {
-        return 0;   // no body
-    }
+	@Override
+	public int calculateByteSizeOfBody() {
+		return 0; // no body
+	}
 
-    @Override
-    public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        /// no body
-    }
+	@Override
+	public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		/// no body
+	}
 
-    @Override
-    public void appendBodyToString(StringBuilder buffer) {
-        // no body
-    }
-    
+	@Override
+	public void appendBodyToString(StringBuilder buffer) {
+		// no body
+	}
+
 }

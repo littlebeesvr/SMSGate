@@ -18,7 +18,7 @@ public abstract class AbstractJmxCommand {
 	private static final String CONNECTOR_ADDRESS = "com.sun.management.jmxremote.localConnectorAddress";
 
 	private static String JAVA_HOME = System.getProperty("java.home");
-	
+
 	private static String JVM_SUPPLIER = System.getProperty("java.vm.specification.vendor");
 
 	private static final String CLASS_VIRTUAL_MACHINE = "com.sun.tools.attach.VirtualMachine";
@@ -26,19 +26,19 @@ public abstract class AbstractJmxCommand {
 	private static final String CLASS_VIRTUAL_MACHINE_DESCRIPTOR = "com.sun.tools.attach.VirtualMachineDescriptor";
 
 	private static final String CLASS_JMX_REMOTE = "com.sun.management.jmxremote";
-		
-	private static  URLClassLoader classLoader;
-	
+
+	private static URLClassLoader classLoader;
+
 	static {
-		
+
 		try {
-			classLoader = new URLClassLoader(new URL[] { getToolsJar().toURI().toURL() });
+			classLoader = new URLClassLoader(new URL[]{getToolsJar().toURI().toURL()});
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static String findJMXUrlByProcessId(int pid) {
 
 		if (!isSunJVM() || null == classLoader) {
@@ -46,7 +46,7 @@ public abstract class AbstractJmxCommand {
 		}
 
 		String connectorAddress = "";
-		
+
 		Object targetVm = null;
 		Method attachToVM = null;
 		Method detach = null;
@@ -61,7 +61,6 @@ public abstract class AbstractJmxCommand {
 			detach = virtualMachine.getMethod("detach", (Class[]) null);
 			Method getAgentProperties = virtualMachine.getMethod("getAgentProperties", (Class[]) null);
 			Method getVMId = virtualMachineDescriptor.getMethod("id", (Class[]) null);
-			
 
 			List allVMs = (List) getVMList.invoke(null, (Object[]) null);
 
@@ -70,10 +69,10 @@ public abstract class AbstractJmxCommand {
 				if (id.equals(Integer.toString(pid))) {
 
 					try {
-                        targetVm = attachToVM.invoke(null, id);
-                    } catch (Exception e) {
-                    	e.printStackTrace();
-                    }
+						targetVm = attachToVM.invoke(null, id);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					Properties agentProperties = (Properties) getAgentProperties.invoke(targetVm, (Object[]) null);
 					connectorAddress = agentProperties.getProperty(CONNECTOR_ADDRESS);
@@ -81,10 +80,10 @@ public abstract class AbstractJmxCommand {
 				}
 			}
 
-			if (connectorAddress == null ||"".equals(connectorAddress)) {
+			if (connectorAddress == null || "".equals(connectorAddress)) {
 				// 尝试让agent加载management-agent.jar
 				Method loadAgent = virtualMachine.getMethod("loadAgent", String.class, String.class);
-				
+
 				for (Object vmInstance : allVMs) {
 					String id = (String) getVMId.invoke(vmInstance, (Object[]) null);
 					if (id.equals(Integer.toString(pid))) {
@@ -109,7 +108,7 @@ public abstract class AbstractJmxCommand {
 
 		} catch (Exception ignore) {
 			System.err.println(ignore);
-		}finally {
+		} finally {
 			if (null != targetVm && null != detach) {
 				try {
 					detach.invoke(targetVm, (Object[]) null);
@@ -154,17 +153,17 @@ public abstract class AbstractJmxCommand {
 	public void main0(String[] args) throws IOException {
 		int pid = Integer.valueOf(args[0]);
 		String connstr = findJMXUrlByProcessId(pid);
-		System.out.println("Connect to JMXUrl :"+ connstr+"\n");
+		System.out.println("Connect to JMXUrl :" + connstr + "\n");
 		if (connstr != null && (!"".equals(connstr))) {
 			JMXServiceURL url = new JMXServiceURL(connstr);
 			JMXConnector connector = JMXConnectorFactory.connect(url);
 			try {
 				MBeanServerConnection mbeanConn = connector.getMBeanServerConnection();
-				if(args.length > 1){
+				if (args.length > 1) {
 					String[] param = new String[args.length - 1];
 					System.arraycopy(args, 1, param, 0, args.length - 1);
 					invoke(mbeanConn, param);
-				}else{
+				} else {
 					invoke(mbeanConn, new String[]{""});
 				}
 			} finally {

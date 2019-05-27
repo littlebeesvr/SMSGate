@@ -1,5 +1,12 @@
 package com.zx.sms.codec.smpp;
 
+import java.io.Serializable;
+
+import org.apache.commons.codec.binary.Hex;
+
+import com.zx.sms.common.util.ByteBufUtil;
+import com.zx.sms.common.util.PduUtil;
+
 /*
  * #%L
  * ch-smpp
@@ -22,84 +29,77 @@ package com.zx.sms.codec.smpp;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.Serializable;
-
-import org.apache.commons.codec.binary.Hex;
-
-import com.zx.sms.common.util.ByteBufUtil;
-import com.zx.sms.common.util.PduUtil;
-
 /**
  * Simple representation of an Address in SMPP.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
-public class Address implements Serializable{
+public class Address implements Serializable {
 
-    private byte ton;
-    private byte npi;
-    private String address;
+	private byte ton;
+	private byte npi;
+	private String address;
 
-    public Address() {
-        this((byte)0, (byte)0, (String)null);
-    }
+	public Address() {
+		this((byte) 0, (byte) 0, (String) null);
+	}
 
-    public Address(byte ton, byte npi, String address) {
-        this.ton = ton;
-        this.npi = npi;
-        this.address = address;
-    }
+	public Address(byte ton, byte npi, String address) {
+		this.ton = ton;
+		this.npi = npi;
+		this.address = address;
+	}
 
-    public byte getTon() {
-        return this.ton;
-    }
+	public byte getTon() {
+		return this.ton;
+	}
 
-    public void setTon(byte value) {
-        this.ton = value;
-    }
+	public void setTon(byte value) {
+		this.ton = value;
+	}
 
-    public byte getNpi() {
-        return this.npi;
-    }
+	public byte getNpi() {
+		return this.npi;
+	}
 
-    public void setNpi(byte value) {
-        this.npi = value;
-    }
+	public void setNpi(byte value) {
+		this.npi = value;
+	}
 
-    public String getAddress() {
-        return this.address;
-    }
+	public String getAddress() {
+		return this.address;
+	}
 
-    public void setAddress(String value) {
-        this.address = value;
-    }
+	public void setAddress(String value) {
+		this.address = value;
+	}
 
-    public int calculateByteSize() {
-        return 2 + PduUtil.calculateByteSizeOfNullTerminatedString(this.address);
-    }
+	public int calculateByteSize() {
+		return 2 + PduUtil.calculateByteSizeOfNullTerminatedString(this.address);
+	}
 
-    public void read(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        this.ton = buffer.readByte();
-        this.npi = buffer.readByte();
-        this.address = ByteBufUtil.readNullTerminatedString(buffer);
-    }
+	public void read(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		this.ton = buffer.readByte();
+		this.npi = buffer.readByte();
+		this.address = ByteBufUtil.readNullTerminatedString(buffer);
+	}
 
-    public void write(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        buffer.writeByte(this.ton);
-        buffer.writeByte(this.npi);
-        ByteBufUtil.writeNullTerminatedString(buffer, this.address);
-    }
+	public void write(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		buffer.writeByte(this.ton);
+		buffer.writeByte(this.npi);
+		ByteBufUtil.writeNullTerminatedString(buffer, this.address);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder buffer = new StringBuilder(40);
-        buffer.append("0x");
-        buffer.append(Hex.encodeHexString(new byte[]{this.ton}));
-        buffer.append(" 0x");
-        buffer.append(Hex.encodeHexString(new byte[]{this.npi}));
-        buffer.append(" [");
-        buffer.append(this.address);
-        buffer.append("]");
-        return buffer.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder(40);
+		buffer.append("0x");
+		buffer.append(Hex.encodeHexString(new byte[]{this.ton}));
+		buffer.append(" 0x");
+		buffer.append(Hex.encodeHexString(new byte[]{this.npi}));
+		buffer.append(" [");
+		buffer.append(this.address);
+		buffer.append("]");
+		return buffer.toString();
+	}
 }

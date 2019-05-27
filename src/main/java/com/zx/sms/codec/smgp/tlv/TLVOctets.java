@@ -1,6 +1,5 @@
 package com.zx.sms.codec.smgp.tlv;
 
-
 public class TLVOctets extends TLV {
 	private byte[] value = null;
 

@@ -42,20 +42,21 @@ import java.io.IOException;
  * @author Markus
  * @version $Id$
  */
-public interface XmlDocument
-{
-    /**
-     * Returns the content-type of this xml document.
-     * 
-     * @return Content-type. Ex: "text/xml".
-     */
-    String getContentType();
-    
-    /**
-     * Writes this object to the given XmlWriter.
-     * 
-     * @param xmlWriter XmlWriter to write to.
-     * @throws IOException Thrown if failed to write to xmlwriter.
-     */
-    void writeXmlTo(XmlWriter xmlWriter) throws IOException;
+public interface XmlDocument {
+	/**
+	 * Returns the content-type of this xml document.
+	 * 
+	 * @return Content-type. Ex: "text/xml".
+	 */
+	String getContentType();
+
+	/**
+	 * Writes this object to the given XmlWriter.
+	 * 
+	 * @param xmlWriter
+	 *            XmlWriter to write to.
+	 * @throws IOException
+	 *             Thrown if failed to write to xmlwriter.
+	 */
+	void writeXmlTo(XmlWriter xmlWriter) throws IOException;
 }

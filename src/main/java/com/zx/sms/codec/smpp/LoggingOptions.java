@@ -26,37 +26,37 @@ package com.zx.sms.codec.smpp;
  */
 public class LoggingOptions {
 
-    public static final int LOG_PDU = 0x00000001;
-    public static final int LOG_BYTES = 0x00000002;
-    public static final int DEFAULT_LOG_OPTION = LOG_PDU;
+	public static final int LOG_PDU = 0x00000001;
+	public static final int LOG_BYTES = 0x00000002;
+	public static final int DEFAULT_LOG_OPTION = LOG_PDU;
 
-    private int option;
+	private int option;
 
-    public LoggingOptions() {
-        this.option = DEFAULT_LOG_OPTION;
-    }
+	public LoggingOptions() {
+		this.option = DEFAULT_LOG_OPTION;
+	}
 
-    public void setLogPdu(boolean value) {
-        if (value) {
-            this.option |= LOG_PDU;
-        } else {
-            this.option &= ~LOG_PDU;
-        }
-    }
+	public void setLogPdu(boolean value) {
+		if (value) {
+			this.option |= LOG_PDU;
+		} else {
+			this.option &= ~LOG_PDU;
+		}
+	}
 
-    public boolean isLogPduEnabled() {
-        return ((this.option & LOG_PDU) > 0);
-    }
+	public boolean isLogPduEnabled() {
+		return ((this.option & LOG_PDU) > 0);
+	}
 
-    public void setLogBytes(boolean value) {
-        if (value) {
-            this.option |= LOG_BYTES;
-        } else {
-            this.option &= ~LOG_BYTES;
-        }
-    }
+	public void setLogBytes(boolean value) {
+		if (value) {
+			this.option |= LOG_BYTES;
+		} else {
+			this.option &= ~LOG_BYTES;
+		}
+	}
 
-    public boolean isLogBytesEnabled() {
-        return ((this.option & LOG_BYTES) > 0);
-    }
+	public boolean isLogBytesEnabled() {
+		return ((this.option & LOG_BYTES) > 0);
+	}
 }

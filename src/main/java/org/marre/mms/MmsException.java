@@ -34,17 +34,14 @@
  * ***** END LICENSE BLOCK ***** */
 package org.marre.mms;
 
-public class MmsException extends Exception
-{
-    private static final long serialVersionUID = 2300330997254942171L;
+public class MmsException extends Exception {
+	private static final long serialVersionUID = 2300330997254942171L;
 
-    public MmsException(String reason, Throwable cause)
-    {
-        super(reason, cause);
-    }
-    
-    public MmsException(String reason)
-    {
-        super(reason);
-    }
+	public MmsException(String reason, Throwable cause) {
+		super(reason, cause);
+	}
+
+	public MmsException(String reason) {
+		super(reason);
+	}
 }

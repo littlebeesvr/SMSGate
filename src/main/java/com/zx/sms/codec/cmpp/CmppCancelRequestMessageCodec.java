@@ -4,11 +4,6 @@
 package com.zx.sms.codec.cmpp;
 
 import static com.zx.sms.common.util.NettyByteBufUtil.toArray;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -18,6 +13,12 @@ import com.zx.sms.codec.cmpp.packet.CmppCancelRequest;
 import com.zx.sms.codec.cmpp.packet.CmppPacketType;
 import com.zx.sms.codec.cmpp.packet.PacketType;
 import com.zx.sms.common.util.DefaultMsgIdUtil;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 /**
  * @author huzorro(huzorro@gmail.com)
  *
@@ -45,7 +46,7 @@ public class CmppCancelRequestMessageCodec extends MessageToMessageCodec<Message
 		CmppCancelRequestMessage requestMessage = new CmppCancelRequestMessage(msg.getHeader());
 
 		ByteBuf bodyBuffer = Unpooled.wrappedBuffer(msg.getBodyBuffer());
-		requestMessage.setMsgId(DefaultMsgIdUtil.bytes2MsgId(toArray(bodyBuffer,CmppCancelRequest.MSGID.getLength())));
+		requestMessage.setMsgId(DefaultMsgIdUtil.bytes2MsgId(toArray(bodyBuffer, CmppCancelRequest.MSGID.getLength())));
 		ReferenceCountUtil.release(bodyBuffer);
 		out.add(requestMessage);
 	}

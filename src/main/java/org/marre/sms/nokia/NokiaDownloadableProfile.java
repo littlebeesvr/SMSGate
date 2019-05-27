@@ -32,70 +32,58 @@ import com.zx.sms.common.util.StandardCharsets;
  * @author Markus Eriksson
  * @version $Id$
  */
-public class NokiaDownloadableProfile extends NokiaMultipartMessage
-{
-    /**
+public class NokiaDownloadableProfile extends NokiaMultipartMessage {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6796572895718593625L;
 	private String profileName_;
-    private byte[] screenSaver_;
-    private byte[] ringingTone_;
+	private byte[] screenSaver_;
+	private byte[] ringingTone_;
 
-    public NokiaDownloadableProfile()
-    {
-    }
+	public NokiaDownloadableProfile() {
+	}
 
-    public NokiaDownloadableProfile(String profileName)
-    {
-        setProfileName(profileName);
-    }
+	public NokiaDownloadableProfile(String profileName) {
+		setProfileName(profileName);
+	}
 
-    public void setScreenSaver(byte[] bitmapData)
-    {
-        screenSaver_ = bitmapData;
-    }
+	public void setScreenSaver(byte[] bitmapData) {
+		screenSaver_ = bitmapData;
+	}
 
-    public void setScreenSaver(OtaBitmap otaBitmap)
-    {
-        screenSaver_ = otaBitmap.getBytes();
-    }
+	public void setScreenSaver(OtaBitmap otaBitmap) {
+		screenSaver_ = otaBitmap.getBytes();
+	}
 
-    public void setProfileName(String profileName)
-    {
-        profileName_ = profileName;
-    }
+	public void setProfileName(String profileName) {
+		profileName_ = profileName;
+	}
 
-    public void setRingingTone(byte[] ringingToneData)
-    {
-        ringingTone_ = ringingToneData;
-    }
+	public void setRingingTone(byte[] ringingToneData) {
+		ringingTone_ = ringingToneData;
+	}
 
-    private void addProfileName(String profileName)
-    {
-    }
+	private void addProfileName(String profileName) {
+	}
 
-    public SmsUserData getUserData()
-    {
-        // Reset message
-        clear();
+	public SmsUserData getUserData() {
+		// Reset message
+		clear();
 
-        // Create message
-        if (profileName_ != null)
-        {
-            addMultipart(NokiaItemType.PROFILE_NAME, profileName_.getBytes(StandardCharsets.UTF_16BE));
-        }
+		// Create message
+		if (profileName_ != null) {
+			addMultipart(NokiaItemType.PROFILE_NAME, profileName_.getBytes(StandardCharsets.UTF_16BE));
+		}
 
-        if (screenSaver_ != null)
-        {
-            addMultipart(NokiaItemType.SCREEN_SAVER, screenSaver_);
-        }
+		if (screenSaver_ != null) {
+			addMultipart(NokiaItemType.SCREEN_SAVER, screenSaver_);
+		}
 
-        if (ringingTone_ != null)
-        {
-            addMultipart(NokiaItemType.RINGTONE, ringingTone_);
-        }
+		if (ringingTone_ != null) {
+			addMultipart(NokiaItemType.RINGTONE, ringingTone_);
+		}
 
-        return super.getUserData();
-    }
+		return super.getUserData();
+	}
 }

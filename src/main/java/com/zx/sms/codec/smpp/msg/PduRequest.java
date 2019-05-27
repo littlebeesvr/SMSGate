@@ -2,7 +2,6 @@ package com.zx.sms.codec.smpp.msg;
 
 import com.zx.sms.BaseMessage;
 
-
 /*
  * #%L
  * ch-smpp
@@ -25,25 +24,25 @@ import com.zx.sms.BaseMessage;
 
 public abstract class PduRequest<R extends PduResponse> extends Pdu {
 
-    public PduRequest(int commandId, String name) {
-        super(commandId, name, true);
-    }
+	public PduRequest(int commandId, String name) {
+		super(commandId, name, true);
+	}
 
-    abstract public R createResponse();
+	abstract public R createResponse();
 
-    abstract public Class<R> getResponseClass();
+	abstract public Class<R> getResponseClass();
 
-    public GenericNack createGenericNack(int commandStatus) {
-        GenericNack nack = new GenericNack();
-        nack.setCommandStatus(commandStatus);
-        nack.setSequenceNumber(this.getSequenceNumber());
-        return nack;
-    }
-    
+	public GenericNack createGenericNack(int commandStatus) {
+		GenericNack nack = new GenericNack();
+		nack.setCommandStatus(commandStatus);
+		nack.setSequenceNumber(this.getSequenceNumber());
+		return nack;
+	}
+
 	public PduRequest clone() throws CloneNotSupportedException {
 		return (PduRequest) super.clone();
 	}
-	
+
 	@Override
 	public void setRequest(BaseMessage message) {
 	}

@@ -4,11 +4,6 @@
 package com.zx.sms.codec.cmpp;
 
 import static com.zx.sms.common.util.NettyByteBufUtil.toArray;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -18,6 +13,12 @@ import com.zx.sms.codec.cmpp.packet.CmppDeliverResponse;
 import com.zx.sms.codec.cmpp.packet.CmppPacketType;
 import com.zx.sms.codec.cmpp.packet.PacketType;
 import com.zx.sms.common.util.DefaultMsgIdUtil;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 /**
  * @author huzorro(huzorro@gmail.com)
  *
@@ -48,7 +49,7 @@ public class CmppDeliverResponseMessageCodec extends MessageToMessageCodec<Messa
 
 		ByteBuf bodyBuffer = Unpooled.wrappedBuffer(msg.getBodyBuffer());
 
-		responseMessage.setMsgId(DefaultMsgIdUtil.bytes2MsgId(toArray(bodyBuffer,CmppDeliverResponse.MSGID.getLength())));
+		responseMessage.setMsgId(DefaultMsgIdUtil.bytes2MsgId(toArray(bodyBuffer, CmppDeliverResponse.MSGID.getLength())));
 		responseMessage.setResult(bodyBuffer.readUnsignedInt());
 		ReferenceCountUtil.release(bodyBuffer);
 		out.add(responseMessage);
@@ -61,7 +62,7 @@ public class CmppDeliverResponseMessageCodec extends MessageToMessageCodec<Messa
 		bodyBuffer.writeBytes(DefaultMsgIdUtil.msgId2Bytes(msg.getMsgId()));
 		bodyBuffer.writeInt((int) msg.getResult());
 
-		msg.setBodyBuffer(toArray(bodyBuffer,bodyBuffer.readableBytes()));
+		msg.setBodyBuffer(toArray(bodyBuffer, bodyBuffer.readableBytes()));
 		msg.getHeader().setBodyLength(msg.getBodyBuffer().length);
 		ReferenceCountUtil.release(bodyBuffer);
 		out.add(msg);

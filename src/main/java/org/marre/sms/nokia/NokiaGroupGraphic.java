@@ -32,62 +32,56 @@ import org.marre.sms.SmsUserData;
 /**
  * Nokia Group Graphic (CLI) message
  * <p>
- * <b>Note!</b> I haven't been able to verify that this class works since
- * I don't have access to a phone that can handle Group Graphic.
+ * <b>Note!</b> I haven't been able to verify that this class works since I don't have access to a phone that can handle Group Graphic.
+ * 
  * @author Markus Eriksson
  * @version $Id$
  */
-public class NokiaGroupGraphic extends SmsPortAddressedMessage
-{
-    /**
+public class NokiaGroupGraphic extends SmsPortAddressedMessage {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7879633793031802695L;
 	protected final byte[] bitmapData_;
-    
-    /**
-     * Creates a group graphic SMS message
-     *
-     * @param otaBitmap An OtaBitmap object representing the
-     * image to send
-     */
-    public NokiaGroupGraphic(OtaBitmap otaBitmap)
-    {
-        this(otaBitmap.getBytes());
-    }
 
-    /**
-     * Creates a group graphic SMS message
-     * <p>
-     * The given byte array must be in the Nokia OTA image format.
-     *
-     * @param bitmapData The ota image as a byte-array
-     */
-    public NokiaGroupGraphic(byte[] bitmapData)
-    {
-        super(SmsPort.NOKIA_CLI_LOGO, SmsPort.ZERO);
-        
-        bitmapData_ = bitmapData;
-    }
+	/**
+	 * Creates a group graphic SMS message
+	 *
+	 * @param otaBitmap
+	 *            An OtaBitmap object representing the image to send
+	 */
+	public NokiaGroupGraphic(OtaBitmap otaBitmap) {
+		this(otaBitmap.getBytes());
+	}
 
-    public SmsUserData getUserData()
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(140);
+	/**
+	 * Creates a group graphic SMS message
+	 * <p>
+	 * The given byte array must be in the Nokia OTA image format.
+	 *
+	 * @param bitmapData
+	 *            The ota image as a byte-array
+	 */
+	public NokiaGroupGraphic(byte[] bitmapData) {
+		super(SmsPort.NOKIA_CLI_LOGO, SmsPort.ZERO);
 
-        try
-        {
-            // Type?
-            baos.write(0x30);
-            // bitmap
-            baos.write(bitmapData_);
+		bitmapData_ = bitmapData;
+	}
 
-            baos.close();
-        }
-        catch (IOException ex)
-        {
-            // Should not happen!
-        }
-        
-        return new SmsUserData(baos.toByteArray());
-    }
+	public SmsUserData getUserData() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(140);
+
+		try {
+			// Type?
+			baos.write(0x30);
+			// bitmap
+			baos.write(bitmapData_);
+
+			baos.close();
+		} catch (IOException ex) {
+			// Should not happen!
+		}
+
+		return new SmsUserData(baos.toByteArray());
+	}
 }

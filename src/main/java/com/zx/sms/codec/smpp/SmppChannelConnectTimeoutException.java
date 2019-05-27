@@ -21,19 +21,18 @@ package com.zx.sms.codec.smpp;
  */
 
 /**
- * Thrown for exceptions occuring while attempting to connect to a remote
- * system and cannot complete within a period of time.
+ * Thrown for exceptions occuring while attempting to connect to a remote system and cannot complete within a period of time.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppChannelConnectTimeoutException extends SmppChannelConnectException {
-    static final long serialVersionUID = 1L;
-    
-    public SmppChannelConnectTimeoutException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public SmppChannelConnectTimeoutException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public SmppChannelConnectTimeoutException(String msg) {
+		super(msg);
+	}
+
+	public SmppChannelConnectTimeoutException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

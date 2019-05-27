@@ -23,9 +23,8 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 public class SgipClientEndpointConnector extends AbstractClientEndpointConnector {
 
-
 	private static final Logger logger = LoggerFactory.getLogger(SgipClientEndpointConnector.class);
-	
+
 	public SgipClientEndpointConnector(EndpointEntity endpoint) {
 		super(endpoint);
 	}
@@ -36,10 +35,10 @@ public class SgipClientEndpointConnector extends AbstractClientEndpointConnector
 
 	@Override
 	protected void doBindHandler(ChannelPipeline pipe, EndpointEntity entity) {
-		pipe.addLast("reWriteNodeIdHandler", new ReWriteNodeIdHandler((SgipEndpointEntity)entity));
-		//处理长短信
+		pipe.addLast("reWriteNodeIdHandler", new ReWriteNodeIdHandler((SgipEndpointEntity) entity));
+		// 处理长短信
 		pipe.addLast("SgipDeliverLongMessageHandler", new SgipDeliverLongMessageHandler(entity));
-		pipe.addLast("SgipSubmitLongMessageHandler",  new SgipSubmitLongMessageHandler(entity));
+		pipe.addLast("SgipSubmitLongMessageHandler", new SgipSubmitLongMessageHandler(entity));
 		pipe.addLast("SgipUnbindResponseMessageHandler", new SgipUnbindResponseMessageHandler());
 		pipe.addLast("SgipUnbindRequestMessageHandler", new SgipUnbindRequestMessageHandler());
 	}

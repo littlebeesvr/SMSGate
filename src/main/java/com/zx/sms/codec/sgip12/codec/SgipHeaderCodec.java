@@ -1,9 +1,4 @@
 package com.zx.sms.codec.sgip12.codec;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -18,6 +13,10 @@ import com.zx.sms.codec.sgip12.packet.SgipHead;
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 import com.zx.sms.common.util.SequenceNumber;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
 
 /**
  *
@@ -38,7 +37,7 @@ public class SgipHeaderCodec extends MessageToMessageCodec<ByteBuf, Message> {
 		byte[] seqbytes = new byte[SgipHead.SEQUENCENUMBER.getLength()];
 		bytebuf.readBytes(seqbytes);
 		SequenceNumber seq = DefaultSequenceNumberUtil.bytes2SequenceN(seqbytes);
-		
+
 		message.setTimestamp(seq.getTimestamp());
 		header.setSequenceId(seq.getSequenceId());
 		header.setNodeId(seq.getNodeIds());
@@ -54,7 +53,7 @@ public class SgipHeaderCodec extends MessageToMessageCodec<ByteBuf, Message> {
 		} else {
 			message.setBodyBuffer(GlobalConstance.emptyBytes);
 		}
-		
+
 		message.setHeader(header);
 		list.add(message);
 	}

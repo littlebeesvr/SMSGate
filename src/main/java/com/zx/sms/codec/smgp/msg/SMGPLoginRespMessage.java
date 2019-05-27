@@ -17,18 +17,18 @@ public class SMGPLoginRespMessage extends SMGPBaseMessage {
 
 	private int status; // 4
 
-	private byte[] serverAuth=new byte[16]; // 16
+	private byte[] serverAuth = new byte[16]; // 16
 
 	private byte version; // 1
 
 	@Override
 	protected int setBody(byte[] bodyBytes) throws Exception {
 		int offset = 0;
-		
+
 		status = ByteUtil.byte2int(bodyBytes, offset);
 		offset += 4;
 
-		serverAuth=new byte[16];
+		serverAuth = new byte[16];
 		System.arraycopy(bodyBytes, offset, serverAuth, 0, 16);
 		offset += 16;
 
@@ -81,8 +81,7 @@ public class SMGPLoginRespMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPLoginRespMessage:[sequenceNumber=").append(
-				sequenceString()).append(",");
+		buffer.append("SMGPLoginRespMessage:[sequenceNumber=").append(sequenceString()).append(",");
 		buffer.append("status=").append(status).append(",");
 		buffer.append("serverAuth=").append(Hex.encodeHex(serverAuth)).append(",");
 		buffer.append("version=").append(version).append("]");

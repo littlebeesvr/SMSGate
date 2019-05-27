@@ -21,26 +21,26 @@ package com.zx.sms.codec.smpp.msg;
  */
 
 public class PartialPdu extends EmptyBody<GenericNack> {
-    
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -257762394313889568L;
 
 	public PartialPdu(int commandId) {
-        super(commandId, "partial_pdu");
-    }
+		super(commandId, "partial_pdu");
+	}
 
-    @Override
-    public GenericNack createResponse() {
-        GenericNack resp = new GenericNack();
-        resp.setSequenceNumber(this.getSequenceNumber());
-        return resp;
-    }
+	@Override
+	public GenericNack createResponse() {
+		GenericNack resp = new GenericNack();
+		resp.setSequenceNumber(this.getSequenceNumber());
+		return resp;
+	}
 
-    @Override
-    public Class<GenericNack> getResponseClass() {
-        return GenericNack.class;
-    }
-    
+	@Override
+	public Class<GenericNack> getResponseClass() {
+		return GenericNack.class;
+	}
+
 }

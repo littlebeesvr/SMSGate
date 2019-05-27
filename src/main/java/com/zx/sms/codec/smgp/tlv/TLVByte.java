@@ -1,6 +1,5 @@
 package com.zx.sms.codec.smgp.tlv;
 
-
 public class TLVByte extends TLV {
 	private byte value = 0;
 
@@ -34,7 +33,7 @@ public class TLVByte extends TLV {
 	@Override
 	public byte[] getValueData() throws Exception {
 
-		return new byte[] { getValue() };
+		return new byte[]{getValue()};
 	}
 
 	@Override

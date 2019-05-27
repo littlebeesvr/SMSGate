@@ -24,37 +24,33 @@ import com.zx.sms.codec.smpp.msg.BaseBindResp;
 import com.zx.sms.common.util.HexUtil;
 
 /**
- * Thrown only when a "bind" attempt fails and a BaseBindResp was returned.
- * This exception can only be created from the BaseBindResp instance which is
- * used to create the error message as well.
- * <BR>
- * If no BindResp was received and we timed out while waiting, then an
- * SmppTimeoutException or SmppConnectionException would have occurred, not this
- * specific error.  The underlying status code and mapped message can be figured
- * out as well.
+ * Thrown only when a "bind" attempt fails and a BaseBindResp was returned. This exception can only be created from the BaseBindResp instance which is used to create the error
+ * message as well. <BR>
+ * If no BindResp was received and we timed out while waiting, then an SmppTimeoutException or SmppConnectionException would have occurred, not this specific error. The underlying
+ * status code and mapped message can be figured out as well.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppBindException extends UnrecoverablePduException {
-    static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 
-    private final BaseBindResp bindResponse;
-    
-    public SmppBindException(BaseBindResp bindResponse) {
-        super(buildErrorMessage(bindResponse));
-        this.bindResponse = bindResponse;
-    }
+	private final BaseBindResp bindResponse;
 
-    public BaseBindResp getBindResponse() {
-        return this.bindResponse;
-    }
+	public SmppBindException(BaseBindResp bindResponse) {
+		super(buildErrorMessage(bindResponse));
+		this.bindResponse = bindResponse;
+	}
 
-    static public String buildErrorMessage(BaseBindResp bindResponse) {
-        if (bindResponse == null) {
-            return "Bind request failed (response was null)";
-        } else {
-            return "Unable to bind [error: 0x" + HexUtil.toHexString(bindResponse.getCommandStatus()) + " \"" + bindResponse.getResultMessage() + "\"]";
-        }
-    }
+	public BaseBindResp getBindResponse() {
+		return this.bindResponse;
+	}
+
+	static public String buildErrorMessage(BaseBindResp bindResponse) {
+		if (bindResponse == null) {
+			return "Bind request failed (response was null)";
+		} else {
+			return "Unable to bind [error: 0x" + HexUtil.toHexString(bindResponse.getCommandStatus()) + " \"" + bindResponse.getResultMessage() + "\"]";
+		}
+	}
 
 }

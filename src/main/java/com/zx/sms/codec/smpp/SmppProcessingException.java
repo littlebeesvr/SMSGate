@@ -28,20 +28,20 @@ import com.zx.sms.common.util.HexUtil;
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppProcessingException extends Exception {
-    static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 
-    private int errorCode;
+	private int errorCode;
 
-    public SmppProcessingException(int errorCode) {
-        this(errorCode, null);
-    }
+	public SmppProcessingException(int errorCode) {
+		this(errorCode, null);
+	}
 
-    public SmppProcessingException(int errorCode, String msg) {
-        super("SMPP processing error [0x" + HexUtil.toHexString(errorCode) + "]" + (msg == null ? "" : " message [" + msg + "]"));
-        this.errorCode = errorCode;
-    }
+	public SmppProcessingException(int errorCode, String msg) {
+		super("SMPP processing error [0x" + HexUtil.toHexString(errorCode) + "]" + (msg == null ? "" : " message [" + msg + "]"));
+		this.errorCode = errorCode;
+	}
 
-    public int getErrorCode() {
-        return this.errorCode;
-    }
+	public int getErrorCode() {
+		return this.errorCode;
+	}
 }

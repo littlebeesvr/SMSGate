@@ -81,13 +81,13 @@ public class SMGPReportData {
 			offset += " text:".length();
 
 			tmp = new byte[20];
-			System.arraycopy(bytes, offset, tmp, 0, bytes.length-offset);
+			System.arraycopy(bytes, offset, tmp, 0, bytes.length - offset);
 			txt = new String(ByteUtil.rtrimBytes(tmp));
 			offset += 20;
 
 			return true;
 		} catch (Exception ex) {
-			logger.warn("parse data err length:{} ; 0x{}",bytes.length,Hex.encodeHexString(bytes));
+			logger.warn("parse data err length:{} ; 0x{}", bytes.length, Hex.encodeHexString(bytes));
 			return true;
 		}
 	}
@@ -217,9 +217,9 @@ public class SMGPReportData {
 
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("{msgId=").append(msgIdString()).append(",").append("sub=").append(sub).append(",").append("dlvrd=").append(dlvrd).append(",")
-				.append("subTime=").append(subTime).append(",").append("doneTime=").append(doneTime).append(",").append("stat=").append(stat).append(",")
-				.append("err=").append(err).append(",").append("text=").append(txt).append("}");
+		buffer.append("{msgId=").append(msgIdString()).append(",").append("sub=").append(sub).append(",").append("dlvrd=").append(dlvrd).append(",").append("subTime=")
+				.append(subTime).append(",").append("doneTime=").append(doneTime).append(",").append("stat=").append(stat).append(",").append("err=").append(err).append(",")
+				.append("text=").append(txt).append("}");
 		return buffer.toString();
 	}
 }

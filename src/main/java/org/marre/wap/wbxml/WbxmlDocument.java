@@ -44,8 +44,7 @@ import org.marre.xml.XmlWriter;
  * @author Markus
  * @version $Id$
  */
-public interface WbxmlDocument extends XmlDocument
-{
-    String getWbxmlContentType();
-    XmlWriter getWbxmlWriter(OutputStream os);
+public interface WbxmlDocument extends XmlDocument {
+	String getWbxmlContentType();
+	XmlWriter getWbxmlWriter(OutputStream os);
 }

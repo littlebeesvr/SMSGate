@@ -35,7 +35,8 @@ public class TLVString extends TLV {
 
 	@Override
 	public byte[] getValueData() throws Exception {
-		if(value==null)return null;
+		if (value == null)
+			return null;
 		byte[] valueBytes = value.getBytes();
 		byte[] buffer = new byte[valueBytes.length + 1];
 		System.arraycopy(valueBytes, 0, buffer, 0, valueBytes.length);
@@ -45,8 +46,8 @@ public class TLVString extends TLV {
 
 	public void setValue(String value) {
 		this.value = value;
-		if(value!=null)
-		   markValueSet();
+		if (value != null)
+			markValueSet();
 	}
 
 	public String getValue() {

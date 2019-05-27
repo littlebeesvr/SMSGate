@@ -1,15 +1,13 @@
 package com.zx.sms.codec.smpp.msg;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.zx.sms.codec.smpp.SmppInvalidArgumentException;
 
+import io.netty.buffer.ByteBuf;
+
 public class DeliverSmReceipt extends DeliverSm {
-	
+
 	/**
 	 * 
 	 */
@@ -22,7 +20,7 @@ public class DeliverSmReceipt extends DeliverSm {
 	private String stat;
 	private String err;
 	private String text;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -86,16 +84,16 @@ public class DeliverSmReceipt extends DeliverSm {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
 	public boolean isReport() {
 		return true;
 	}
-	
-    public byte getEsmClass() {
-        return 0x04;
-    }
 
-	//不能修改shortMessage字段
+	public byte getEsmClass() {
+		return 0x04;
+	}
+
+	// 不能修改shortMessage字段
 	public byte[] getShortMessage() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("id:").append(id);
@@ -109,16 +107,16 @@ public class DeliverSmReceipt extends DeliverSm {
 		try {
 			return sb.toString().getBytes("ISO-8859-1");
 		} catch (UnsupportedEncodingException e) {
-			
+
 		}
 		return null;
-    }
-	
-    public void setShortMessage(byte[] value) throws SmppInvalidArgumentException {
-    	
-    	try {
-    		String txt = new String(value,"ISO-8859-1");
-        	String[] c = txt.split(" ");
+	}
+
+	public void setShortMessage(byte[] value) throws SmppInvalidArgumentException {
+
+		try {
+			String txt = new String(value, "ISO-8859-1");
+			String[] c = txt.split(" ");
 			this.id = c[0].split(":")[1];
 			this.sub = c[1].split(":")[1];
 			this.dlvrd = c[2].split(":")[1];
@@ -129,19 +127,19 @@ public class DeliverSmReceipt extends DeliverSm {
 			this.text = c[9].split(":")[1];
 		} catch (Exception e) {
 		}
-    	super.setShortMessage(value);
-    }
-    
-	private byte[] byteBufreadarray(ByteBuf buf){
-		byte[] dst = new byte[ buf.readableBytes()];
+		super.setShortMessage(value);
+	}
+
+	private byte[] byteBufreadarray(ByteBuf buf) {
+		byte[] dst = new byte[buf.readableBytes()];
 		buf.readBytes(dst);
 		return dst;
 	}
 
 	@Override
 	public String toString() {
-		return "DeliverSmReceipt [id=" + id + ", sub=" + sub + ", dlvrd=" + dlvrd + ", submit_date=" + submit_date + ", done_date=" + done_date + ", stat="
-				+ stat + ", err=" + err + ", text=" + text + "]";
+		return "DeliverSmReceipt [id=" + id + ", sub=" + sub + ", dlvrd=" + dlvrd + ", submit_date=" + submit_date + ", done_date=" + done_date + ", stat=" + stat + ", err=" + err
+				+ ", text=" + text + "]";
 	}
-	
+
 }

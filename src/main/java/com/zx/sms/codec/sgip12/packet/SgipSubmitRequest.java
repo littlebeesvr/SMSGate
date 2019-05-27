@@ -33,16 +33,16 @@ public enum SgipSubmitRequest implements PacketStructure {
 	MESSAGELENGTH(SgipDataType.UNSIGNEDINT, true, 4),
 	MESSAGECONTENT(SgipDataType.OCTERSTRING, false, 0),
 	RESERVE(SgipDataType.OCTERSTRING, true, 8);
-	
+
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipSubmitRequest(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipSubmitRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -66,9 +66,9 @@ public enum SgipSubmitRequest implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipSubmitRequest r : SgipSubmitRequest.values()) {
+		for (SgipSubmitRequest r : SgipSubmitRequest.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;
-	}	
+	}
 }

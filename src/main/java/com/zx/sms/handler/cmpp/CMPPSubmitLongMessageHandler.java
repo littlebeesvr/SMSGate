@@ -19,8 +19,8 @@ public class CMPPSubmitLongMessageHandler extends AbstractLongMessageHandler<Cmp
 	}
 
 	@Override
-	protected BaseMessage response( CmppSubmitRequestMessage msg) {
-		//短信片断未接收完全，直接给网关回复resp，等待其它片断
+	protected BaseMessage response(CmppSubmitRequestMessage msg) {
+		// 短信片断未接收完全，直接给网关回复resp，等待其它片断
 		CmppSubmitResponseMessage responseMessage = new CmppSubmitResponseMessage(msg.getHeader());
 		responseMessage.setResult(0);
 		return responseMessage;
@@ -33,7 +33,7 @@ public class CMPPSubmitLongMessageHandler extends AbstractLongMessageHandler<Cmp
 
 	@Override
 	protected String generateFrameKey(CmppSubmitRequestMessage msg) {
-		return StringUtils.join(msg.getDestterminalId(), "|")+msg.getSrcId();
+		return StringUtils.join(msg.getDestterminalId(), "|") + msg.getSrcId();
 	}
 
 	@Override

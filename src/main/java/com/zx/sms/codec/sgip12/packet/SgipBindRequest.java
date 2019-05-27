@@ -15,16 +15,16 @@ public enum SgipBindRequest implements PacketStructure {
 	LOGINNAME(SgipDataType.OCTERSTRING, true, 16),
 	LOGINPASSWD(SgipDataType.OCTERSTRING, true, 16),
 	RESERVE(SgipDataType.OCTERSTRING, true, 8);
-	
+
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipBindRequest(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipBindRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -48,7 +48,7 @@ public enum SgipBindRequest implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipBindRequest r : SgipBindRequest.values()) {
+		for (SgipBindRequest r : SgipBindRequest.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;

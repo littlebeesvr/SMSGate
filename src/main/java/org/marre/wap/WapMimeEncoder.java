@@ -50,135 +50,120 @@ import org.marre.mime.encoder.MimeEncoder;
  * @author Markus Eriksson
  * @version $Id$
  */
-public class WapMimeEncoder implements MimeEncoder
-{
-    private final WspEncodingVersion wspEncodingVersion_;
+public class WapMimeEncoder implements MimeEncoder {
+	private final WspEncodingVersion wspEncodingVersion_;
 
-    public WapMimeEncoder()
-    {
-        this(WspEncodingVersion.VERSION_1_3);
-    }
-    
-    public WapMimeEncoder(WspEncodingVersion wspEncodingVersion)
-    {
-        wspEncodingVersion_ = wspEncodingVersion;
-    }
+	public WapMimeEncoder() {
+		this(WspEncodingVersion.VERSION_1_3);
+	}
 
-    /**
-     * Writes an WSP encoded content type header to the given stream.
-     * <p>
-     * NOTE! It only writes an WSP encoded content-type to the stream. It does
-     * not add the content type header id.
-     * 
-     * @param os
-     *            The stream to write to
-     * @param msg
-     *            The message to get the content-type from
-     * @throws IOException
-     *             Thrown if we fail to write the content-type to the stream
-     */
-    public void writeContentType(OutputStream os, MimeBodyPart msg) throws IOException
-    {
-        if (msg instanceof MimeMultipart)
-        {
-            String ct = msg.getContentType().getValue();
+	public WapMimeEncoder(WspEncodingVersion wspEncodingVersion) {
+		wspEncodingVersion_ = wspEncodingVersion;
+	}
 
-            // Convert multipart headers...
-            // TODO: Clone content type... We shouldn't change the msg...
-            String newCt = WspUtil.convertMultipartContentType(ct);
-            msg.getContentType().setValue(newCt);
-        }
+	/**
+	 * Writes an WSP encoded content type header to the given stream.
+	 * <p>
+	 * NOTE! It only writes an WSP encoded content-type to the stream. It does not add the content type header id.
+	 * 
+	 * @param os
+	 *            The stream to write to
+	 * @param msg
+	 *            The message to get the content-type from
+	 * @throws IOException
+	 *             Thrown if we fail to write the content-type to the stream
+	 */
+	public void writeContentType(OutputStream os, MimeBodyPart msg) throws IOException {
+		if (msg instanceof MimeMultipart) {
+			String ct = msg.getContentType().getValue();
 
-        WspUtil.writeContentType(wspEncodingVersion_, os, msg.getContentType());
-    }
+			// Convert multipart headers...
+			// TODO: Clone content type... We shouldn't change the msg...
+			String newCt = WspUtil.convertMultipartContentType(ct);
+			msg.getContentType().setValue(newCt);
+		}
 
-    /**
-     * Writes the headers of the message to the given stream.
-     * 
-     * @param os
-     *            The stream to write to
-     * @param msg
-     *            The message to get the headers from
-     * @throws IOException
-     *             Thrown if we fail to write the headers to the stream
-     */
-    public void writeHeaders(OutputStream os, MimeBodyPart msg) throws IOException
-    {
-        for (MimeHeader header : msg.getHeaders()) {
-            WspHeaderEncoder.writeHeader(wspEncodingVersion_, os, header);
-        }
-    }
+		WspUtil.writeContentType(wspEncodingVersion_, os, msg.getContentType());
+	}
 
-    /**
-     * Writes the body of the message to the given stream.
-     * 
-     * @param os
-     *            The stream to write to
-     * @param msg
-     *            The message to get the data from
-     * @throws IOException
-     *             Thrown if we fail to write the body to the stream
-     */
-    public void writeBody(OutputStream os, MimeBodyPart msg) throws IOException
-    {
-        if (msg instanceof MimeMultipart)
-        {
-            String ct = msg.getContentType().getValue();
+	/**
+	 * Writes the headers of the message to the given stream.
+	 * 
+	 * @param os
+	 *            The stream to write to
+	 * @param msg
+	 *            The message to get the headers from
+	 * @throws IOException
+	 *             Thrown if we fail to write the headers to the stream
+	 */
+	public void writeHeaders(OutputStream os, MimeBodyPart msg) throws IOException {
+		for (MimeHeader header : msg.getHeaders()) {
+			WspHeaderEncoder.writeHeader(wspEncodingVersion_, os, header);
+		}
+	}
 
-            // Convert multipart headers...
-            // TODO: Clone content type... We shouldn't change the msg...
-            String newCt = WspUtil.convertMultipartContentType(ct);
-            msg.getContentType().setValue(newCt);
+	/**
+	 * Writes the body of the message to the given stream.
+	 * 
+	 * @param os
+	 *            The stream to write to
+	 * @param msg
+	 *            The message to get the data from
+	 * @throws IOException
+	 *             Thrown if we fail to write the body to the stream
+	 */
+	public void writeBody(OutputStream os, MimeBodyPart msg) throws IOException {
+		if (msg instanceof MimeMultipart) {
+			String ct = msg.getContentType().getValue();
 
-            if (newCt.startsWith("application/vnd.wap.multipart."))
-            {
-                // WSP encoded multipart
-                writeMultipart(os, (MimeMultipart) msg);
-            }
-            else
-            {
-                // Not WSP encoded
-                // TODO: Write textual "multipart/"
-            }
-        }
-        else
-        {
-            os.write(msg.getBody());
-        }
-    }
+			// Convert multipart headers...
+			// TODO: Clone content type... We shouldn't change the msg...
+			String newCt = WspUtil.convertMultipartContentType(ct);
+			msg.getContentType().setValue(newCt);
 
-    // Section 8.5.2 in WAP-230-WSP-20010705
-    private void writeMultipart(OutputStream os, MimeMultipart multipart) throws IOException
-    {
-        Collection<MimeBodyPart> bodyParts = multipart.getBodyParts();
+			if (newCt.startsWith("application/vnd.wap.multipart.")) {
+				// WSP encoded multipart
+				writeMultipart(os, (MimeMultipart) msg);
+			} else {
+				// Not WSP encoded
+				// TODO: Write textual "multipart/"
+			}
+		} else {
+			os.write(msg.getBody());
+		}
+	}
 
-        // nEntries
-        WspUtil.writeUintvar(os, bodyParts.size());
+	// Section 8.5.2 in WAP-230-WSP-20010705
+	private void writeMultipart(OutputStream os, MimeMultipart multipart) throws IOException {
+		Collection<MimeBodyPart> bodyParts = multipart.getBodyParts();
 
-        for (MimeBodyPart part : bodyParts) {
-            ByteArrayOutputStream headers = new ByteArrayOutputStream();
-            ByteArrayOutputStream content = new ByteArrayOutputStream();
+		// nEntries
+		WspUtil.writeUintvar(os, bodyParts.size());
 
-            // Generate content-type + headers
-            writeContentType(headers, part);
-            writeHeaders(headers, part);
-            // Done with the headers...
-            headers.close();
+		for (MimeBodyPart part : bodyParts) {
+			ByteArrayOutputStream headers = new ByteArrayOutputStream();
+			ByteArrayOutputStream content = new ByteArrayOutputStream();
 
-            // Generate content...
-            writeBody(content, part);
-            content.close();
+			// Generate content-type + headers
+			writeContentType(headers, part);
+			writeHeaders(headers, part);
+			// Done with the headers...
+			headers.close();
 
-            // Write data to the os
+			// Generate content...
+			writeBody(content, part);
+			content.close();
 
-            // Length of the content type and headers combined
-            WspUtil.writeUintvar(os, headers.size());
-            // Length of the data (content)
-            WspUtil.writeUintvar(os, content.size());
-            // Content type + headers
-            os.write(headers.toByteArray());
-            // Data
-            os.write(content.toByteArray());
-        }
-    }
+			// Write data to the os
+
+			// Length of the content type and headers combined
+			WspUtil.writeUintvar(os, headers.size());
+			// Length of the data (content)
+			WspUtil.writeUintvar(os, content.size());
+			// Content type + headers
+			os.write(headers.toByteArray());
+			// Data
+			os.write(content.toByteArray());
+		}
+	}
 }

@@ -23,45 +23,43 @@ package com.zx.sms.codec.smpp;
 import com.zx.sms.codec.smpp.msg.Pdu;
 
 /**
- * Thrown when a recoverable PDU decoding error occurs.  A recoverable PDU
- * error includes the partially decoded PDU in order to generate a negative
- * acknowledgement response (if needed).
+ * Thrown when a recoverable PDU decoding error occurs. A recoverable PDU error includes the partially decoded PDU in order to generate a negative acknowledgement response (if
+ * needed).
  *
- * A good example is that the PDU header was read, but the body of the PDU
- * failed to parse correctly.
+ * A good example is that the PDU header was read, but the body of the PDU failed to parse correctly.
  *
  * The recommended action for "recoverable" errors is to return a NACK.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class RecoverablePduException extends Exception {
-    static final long serialVersionUID = 1L;
-    
-    private Pdu partialPdu;
+	static final long serialVersionUID = 1L;
 
-    public RecoverablePduException(String msg) {
-        super(msg);
-    }
+	private Pdu partialPdu;
 
-    public RecoverablePduException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public RecoverablePduException(String msg) {
+		super(msg);
+	}
 
-    public RecoverablePduException(Pdu partialPdu, String msg) {
-        super(msg);
-        this.partialPdu = partialPdu;
-    }
+	public RecoverablePduException(String msg, Throwable t) {
+		super(msg, t);
+	}
 
-    public RecoverablePduException(Pdu partialPdu, String msg, Throwable t) {
-        super(msg, t);
-        this.partialPdu = partialPdu;
-    }
+	public RecoverablePduException(Pdu partialPdu, String msg) {
+		super(msg);
+		this.partialPdu = partialPdu;
+	}
 
-    public void setPartialPdu(Pdu pdu) {
-        this.partialPdu = pdu;
-    }
+	public RecoverablePduException(Pdu partialPdu, String msg, Throwable t) {
+		super(msg, t);
+		this.partialPdu = partialPdu;
+	}
 
-    public Pdu getPartialPdu() {
-        return this.partialPdu;
-    }
+	public void setPartialPdu(Pdu pdu) {
+		this.partialPdu = pdu;
+	}
+
+	public Pdu getPartialPdu() {
+		return this.partialPdu;
+	}
 }

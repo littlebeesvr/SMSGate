@@ -54,97 +54,85 @@ import org.slf4j.LoggerFactory;
  * @author Markus
  * @version $Id$
  */
-public class GsmOperator
-{
-    private static final Logger log_ = LoggerFactory.getLogger(GsmOperator.class);
-    private static List<GsmOperator> operators_;
-    
-    private final String name_;
-    private final String country_;
-    private final int mcc_;
-    private final int mnc_;
+public class GsmOperator {
+	private static final Logger log_ = LoggerFactory.getLogger(GsmOperator.class);
+	private static List<GsmOperator> operators_;
 
-    private GsmOperator(String name, String country, int mcc, int mnc)
-    {
-        name_ = name;
-        country_ = country;
-        mcc_ = mcc;
-        mnc_ = mnc;
-    }
+	private final String name_;
+	private final String country_;
+	private final int mcc_;
+	private final int mnc_;
 
-    /**
-     * @return Returns the country.
-     */
-    public String getCountry()
-    {
-        return country_;
-    }
+	private GsmOperator(String name, String country, int mcc, int mnc) {
+		name_ = name;
+		country_ = country;
+		mcc_ = mcc;
+		mnc_ = mnc;
+	}
 
-    /**
-     * @return Returns the mcc.
-     */
-    public int getMcc()
-    {
-        return mcc_;
-    }
+	/**
+	 * @return Returns the country.
+	 */
+	public String getCountry() {
+		return country_;
+	}
 
-    /**
-     * @return Returns the mnc.
-     */
-    public int getMnc()
-    {
-        return mnc_;
-    }
+	/**
+	 * @return Returns the mcc.
+	 */
+	public int getMcc() {
+		return mcc_;
+	}
 
-    /**
-     * @return Returns the name.
-     */
-    public String getName()
-    {
-        return name_;
-    }
+	/**
+	 * @return Returns the mnc.
+	 */
+	public int getMnc() {
+		return mnc_;
+	}
 
-    /**
-     * @return a list of all GsmOperator that are known to smsj.
-     */
-    public static List<GsmOperator> getOperators() {
-        return Collections.unmodifiableList(operators_);
-    }
-    
-    private static void loadOperatorsFromResource(String resourceName)
-    {
-        InputStream in = GsmOperator.class.getResourceAsStream(resourceName);
-        
-        if (in != null)
-        {
-            try
-            {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-                List<GsmOperator> operators = new LinkedList<GsmOperator>();
-                
-                for (String row=reader.readLine(); row != null; row=reader.readLine()) {
-                    StringTokenizer st = new StringTokenizer(row, "|");
+	/**
+	 * @return Returns the name.
+	 */
+	public String getName() {
+		return name_;
+	}
 
-                    String country = st.nextToken();
-                    String name = st.nextToken();
-                    int mcc = Integer.parseInt(st.nextToken());
-                    int mnc = Integer.parseInt(st.nextToken());
-                    
-                    operators.add(new GsmOperator(name, country, mcc, mnc));
-                }
-                
-                // Store result as an unmodifiable list
-                operators_ = Collections.unmodifiableList(operators);
-            }
-            catch (IOException ex)
-            {
-                log_.error("Failed to load mcc and mnc properties", ex);
-            }
-        }
-    }
-    
-    static 
-    {
-        loadOperatorsFromResource("resources/gsmoperators.txt");
-    }
+	/**
+	 * @return a list of all GsmOperator that are known to smsj.
+	 */
+	public static List<GsmOperator> getOperators() {
+		return Collections.unmodifiableList(operators_);
+	}
+
+	private static void loadOperatorsFromResource(String resourceName) {
+		InputStream in = GsmOperator.class.getResourceAsStream(resourceName);
+
+		if (in != null) {
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+				List<GsmOperator> operators = new LinkedList<GsmOperator>();
+
+				for (String row = reader.readLine(); row != null; row = reader.readLine()) {
+					StringTokenizer st = new StringTokenizer(row, "|");
+
+					String country = st.nextToken();
+					String name = st.nextToken();
+					int mcc = Integer.parseInt(st.nextToken());
+					int mnc = Integer.parseInt(st.nextToken());
+
+					operators.add(new GsmOperator(name, country, mcc, mnc));
+				}
+
+				// Store result as an unmodifiable list
+				operators_ = Collections.unmodifiableList(operators);
+			} catch (IOException ex) {
+				log_.error("Failed to load mcc and mnc properties", ex);
+			}
+		}
+	}
+
+	static {
+		loadOperatorsFromResource("resources/gsmoperators.txt");
+	}
 }

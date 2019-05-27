@@ -5,31 +5,30 @@ import java.nio.charset.Charset;
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.connect.manager.EndpointEntity;
 /**
- *@author Lihuanghe(18852780@qq.com)
+ * @author Lihuanghe(18852780@qq.com)
  */
 public abstract class CMPPEndpointEntity extends EndpointEntity {
 
 	private static final long serialVersionUID = -6571699260501337643L;
-	
+
 	private long liftTime;
-	private String groupName="";
-	
+	private String groupName = "";
+
 	private String userName;
 	private String password;
-	
-	
-	private String spCode = ""; 
-	private String serviceId = ""; //服务代码
-	private String msgSrc = ""; //企业代码，可能跟userName相同
-	//默认为3.0协议
-	private short version = (short)0x30L;
+
+	private String spCode = "";
+	private String serviceId = ""; // 服务代码
+	private String msgSrc = ""; // 企业代码，可能跟userName相同
+	// 默认为3.0协议
+	private short version = (short) 0x30L;
 	private Charset charset = GlobalConstance.defaultTransportCharset;
-	
+
 	/**
 	 * 最大消息序列数
 	 */
 	private short maxMsgQueue;
-	
+
 	public long getLiftTime() {
 		return liftTime;
 	}
@@ -45,7 +44,7 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-	
+
 	/**
 	 * 业务代码 ：填写进submit的service_id里
 	 */
@@ -56,7 +55,7 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
-	
+
 	/**
 	 * 企业代码 ：填写进submit的msg_src里
 	 */
@@ -69,26 +68,26 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	}
 
 	/**
-	 *服务代码：如10696101 
+	 * 服务代码：如10696101
 	 */
 	public String getSpCode() {
 		return spCode;
 	}
 
 	/**
-	 *服务代码：如10696101 
+	 * 服务代码：如10696101
 	 */
 	public void setSpCode(String spCode) {
 		this.spCode = spCode;
 	}
 	/**
-	 *企业代码：如902104
+	 * 企业代码：如902104
 	 */
 	public String getUserName() {
 		return userName;
 	}
 	/**
-	 *企业代码：如902104
+	 * 企业代码：如902104
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -101,7 +100,6 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 	public short getVersion() {
 		return version;
@@ -118,8 +116,8 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 	public void setCharset(Charset charset) {
 		this.charset = charset;
 	}
-	
-    public short getMaxMsgQueue() {
+
+	public short getMaxMsgQueue() {
 		return maxMsgQueue;
 	}
 	public void setMaxMsgQueue(short maxMsgQueue) {
@@ -128,10 +126,8 @@ public abstract class CMPPEndpointEntity extends EndpointEntity {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()+"[groupName=" + groupName + ", userName=" + userName + ", chartset=" + charset + ", getId()=" + getId() + ", getDesc()="
-				+ getDesc() + ", getChannelType()=" + getChannelType() + ", getHost()=" + getHost() + ", getPort()=" + getPort() + ", getMaxChannels()="
-				+ getMaxChannels() + "]";
+		return this.getClass().getSimpleName() + "[groupName=" + groupName + ", userName=" + userName + ", chartset=" + charset + ", getId()=" + getId() + ", getDesc()="
+				+ getDesc() + ", getChannelType()=" + getChannelType() + ", getHost()=" + getHost() + ", getPort()=" + getPort() + ", getMaxChannels()=" + getMaxChannels() + "]";
 	}
 
-	
 }

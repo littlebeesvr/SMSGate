@@ -50,99 +50,85 @@ import org.marre.wap.mms.MmsHeaderEncoder;
  * 
  * @version $Id$
  */
-public class SmsMmsNotificationMessage extends SmsWapPushMessage implements Serializable
-{
-    /**
+public class SmsMmsNotificationMessage extends SmsWapPushMessage implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3659719878719271285L;
 	private static final int DEFAULT_TRANSACTION_ID_LENGTH = 5;
-    private static final long DEFAULT_EXPIRY = 3 * 24 * 60 * 60; // 3 days
+	private static final long DEFAULT_EXPIRY = 3 * 24 * 60 * 60; // 3 days
 
-    protected String transactionId_="";
-    protected String from_="";
-    protected String subject_="";
-    protected int messageClassId_ = MmsConstants.X_MMS_MESSAGE_CLASS_ID_PERSONAL;
-    protected final long size_ ;
-    protected long expiry_=172800;
-    protected final String contentLocation_;
+	protected String transactionId_ = "";
+	protected String from_ = "";
+	protected String subject_ = "";
+	protected int messageClassId_ = MmsConstants.X_MMS_MESSAGE_CLASS_ID_PERSONAL;
+	protected final long size_;
+	protected long expiry_ = 172800;
+	protected final String contentLocation_;
 
-    public SmsMmsNotificationMessage(String contentLocation, long size)
-    {
-        super();
+	public SmsMmsNotificationMessage(String contentLocation, long size) {
+		super();
 
-        contentLocation_ = contentLocation;
-        transactionId_ = StringUtil.randString(DEFAULT_TRANSACTION_ID_LENGTH);
-        expiry_ = DEFAULT_EXPIRY;
-        size_ = size;
-    }
-    
-    protected void writeNotificationTo(OutputStream os) throws IOException
-    {
-        // X-Mms-Message-Type (m-notification-ind)
-        MmsHeaderEncoder.writeHeaderXMmsMessageType(os, MmsConstants.X_MMS_MESSAGE_TYPE_ID_M_NOTIFICATION_IND);
-        MmsHeaderEncoder.writeHeaderXMmsTransactionId(os, transactionId_);
-        MmsHeaderEncoder.writeHeaderXMmsMmsVersion(os, MmsConstants.X_MMS_MMS_VERSION_1_2);
-        MmsHeaderEncoder.writeHeaderContentLocation(os, contentLocation_);
-        MmsHeaderEncoder.writeHeaderXMmsExpiryRelative(os, expiry_);
-        if ((subject_ != null) && (subject_.length() > 0))
-        {
-            MmsHeaderEncoder.writeHeaderSubject(os, subject_);
-        }
+		contentLocation_ = contentLocation;
+		transactionId_ = StringUtil.randString(DEFAULT_TRANSACTION_ID_LENGTH);
+		expiry_ = DEFAULT_EXPIRY;
+		size_ = size;
+	}
 
-        if ((from_ != null) && (from_.length() > 0))
-        {
-            MmsHeaderEncoder.writeHeaderFrom(os, from_);
-        }
-        MmsHeaderEncoder.writeHeaderXMmsMessageClass(os, messageClassId_);
-        MmsHeaderEncoder.writeHeaderXMmsMessageSize(os, size_);
-       // MmsHeaderEncoder.writeHeaderXMmsExpiryAbsolute(os, expiry_ + System.currentTimeMillis()/1000);
-    }
+	protected void writeNotificationTo(OutputStream os) throws IOException {
+		// X-Mms-Message-Type (m-notification-ind)
+		MmsHeaderEncoder.writeHeaderXMmsMessageType(os, MmsConstants.X_MMS_MESSAGE_TYPE_ID_M_NOTIFICATION_IND);
+		MmsHeaderEncoder.writeHeaderXMmsTransactionId(os, transactionId_);
+		MmsHeaderEncoder.writeHeaderXMmsMmsVersion(os, MmsConstants.X_MMS_MMS_VERSION_1_2);
+		MmsHeaderEncoder.writeHeaderContentLocation(os, contentLocation_);
+		MmsHeaderEncoder.writeHeaderXMmsExpiryRelative(os, expiry_);
+		if ((subject_ != null) && (subject_.length() > 0)) {
+			MmsHeaderEncoder.writeHeaderSubject(os, subject_);
+		}
 
-    public void setMessageClass(int messageClassId)
-    {
-        messageClassId_ = messageClassId;
-    }
+		if ((from_ != null) && (from_.length() > 0)) {
+			MmsHeaderEncoder.writeHeaderFrom(os, from_);
+		}
+		MmsHeaderEncoder.writeHeaderXMmsMessageClass(os, messageClassId_);
+		MmsHeaderEncoder.writeHeaderXMmsMessageSize(os, size_);
+		// MmsHeaderEncoder.writeHeaderXMmsExpiryAbsolute(os, expiry_ + System.currentTimeMillis()/1000);
+	}
 
-    public void setSubject(String subject)
-    {
-        subject_ = subject;
-    }
+	public void setMessageClass(int messageClassId) {
+		messageClassId_ = messageClassId;
+	}
 
-    public void setExpiry(int i)
-    {
-        expiry_ = i;
-    }
+	public void setSubject(String subject) {
+		subject_ = subject;
+	}
 
-    public void setFrom(String string)
-    {
-        from_ = string;
-    }
+	public void setExpiry(int i) {
+		expiry_ = i;
+	}
 
-    public void setTransactionId(String transactionId)
-    {
-        transactionId_ = transactionId;
-    }
-    
-    public SmsUserData getUserData()
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
-        
-        try
-        {
-            writeNotificationTo(baos);
-            baos.close();
-        }
-        catch (IOException ex)
-        {
-            throw new RuntimeException(ex.getMessage());
-        }        
-        
-        pushMsg_ = new MimeBodyPart(baos.toByteArray(), "application/vnd.wap.mms-message");        
-        setXWapApplicationId("x-wap-application:mms.ua");
+	public void setFrom(String string) {
+		from_ = string;
+	}
 
-        return super.getUserData();
-    }
+	public void setTransactionId(String transactionId) {
+		transactionId_ = transactionId;
+	}
+
+	public SmsUserData getUserData() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
+
+		try {
+			writeNotificationTo(baos);
+			baos.close();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+
+		pushMsg_ = new MimeBodyPart(baos.toByteArray(), "application/vnd.wap.mms-message");
+		setXWapApplicationId("x-wap-application:mms.ua");
+
+		return super.getUserData();
+	}
 
 	public String getTransactionId_() {
 		return transactionId_;

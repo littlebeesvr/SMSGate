@@ -38,75 +38,66 @@ import org.marre.sms.SmsUserData;
  * @author Markus Eriksson
  * @version $Id$
  */
-abstract class NokiaMultipartMessage extends SmsPortAddressedMessage
-{
-    /**
+abstract class NokiaMultipartMessage extends SmsPortAddressedMessage {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8558015655242719292L;
 	private final LinkedList<NokiaPart> parts_ = new LinkedList<NokiaPart>();
 
-    /**
-     * Creates a Nokia Multipart Message
-     */
-    protected NokiaMultipartMessage()
-    {
-        super(SmsPort.NOKIA_MULTIPART_MESSAGE, SmsPort.ZERO);
-    }
+	/**
+	 * Creates a Nokia Multipart Message
+	 */
+	protected NokiaMultipartMessage() {
+		super(SmsPort.NOKIA_MULTIPART_MESSAGE, SmsPort.ZERO);
+	}
 
-    /**
-     * Adds a part to this multipart message
-     * 
-     * @param theItemType
-     *            Type
-     * @param data
-     *            Content
-     */
-    protected void addMultipart(NokiaItemType theItemType, byte[] data)
-    {
-        parts_.add(new NokiaPart(theItemType, data));
-    }
+	/**
+	 * Adds a part to this multipart message
+	 * 
+	 * @param theItemType
+	 *            Type
+	 * @param data
+	 *            Content
+	 */
+	protected void addMultipart(NokiaItemType theItemType, byte[] data) {
+		parts_.add(new NokiaPart(theItemType, data));
+	}
 
-    /**
-     * Removes all parts from the message
-     */
-    protected void clear()
-    {
-        parts_.clear();
-    }
+	/**
+	 * Removes all parts from the message
+	 */
+	protected void clear() {
+		parts_.clear();
+	}
 
-    public SmsUserData getUserData()
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(140);
+	public SmsUserData getUserData() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(140);
 
-        // Payload
+		// Payload
 
-        try
-        {
-            // Header or something...
-            baos.write(0x30);
+		try {
+			// Header or something...
+			baos.write(0x30);
 
-            // Loop through all multiparts and add them
-            for (NokiaPart part : parts_)
-            {
-                byte[] data = part.getData();
+			// Loop through all multiparts and add them
+			for (NokiaPart part : parts_) {
+				byte[] data = part.getData();
 
-                // Type - 1 octet
-                baos.write(part.getItemType().getTypeId());
-                // Length - 2 octets
-                baos.write((byte) ((data.length >> 8) & 0xff));
-                baos.write((byte) (data.length & 0xff));
-                // Data - n octets
-                baos.write(data);
-            }
+				// Type - 1 octet
+				baos.write(part.getItemType().getTypeId());
+				// Length - 2 octets
+				baos.write((byte) ((data.length >> 8) & 0xff));
+				baos.write((byte) (data.length & 0xff));
+				// Data - n octets
+				baos.write(data);
+			}
 
-            baos.close();
-        }
-        catch (IOException ex)
-        {
-            throw new RuntimeException(ex);
-        }
+			baos.close();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
 
-        return new SmsUserData(baos.toByteArray());
-    }
+		return new SmsUserData(baos.toByteArray());
+	}
 }

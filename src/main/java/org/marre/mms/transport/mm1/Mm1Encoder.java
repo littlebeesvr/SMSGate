@@ -38,14 +38,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.marre.mime.MimeBodyPart;
-import org.marre.mime.MimeMultipart;
 import org.marre.mime.encoder.MimeEncoder;
 import org.marre.mms.MmsException;
 import org.marre.mms.MmsHeaders;
-import org.marre.wap.WapConstants;
 import org.marre.wap.WapMimeEncoder;
 import org.marre.wap.WspEncodingVersion;
-import org.marre.wap.WspUtil;
 import org.marre.wap.mms.MmsHeaderEncoder;
 
 /**
@@ -54,64 +51,52 @@ import org.marre.wap.mms.MmsHeaderEncoder;
  * @author Markus Eriksson
  * @version $Id$
  */
-public final class Mm1Encoder
-{
-    private static final WspEncodingVersion wspEncodingVersion_ = WspEncodingVersion.VERSION_1_3;
+public final class Mm1Encoder {
+	private static final WspEncodingVersion wspEncodingVersion_ = WspEncodingVersion.VERSION_1_3;
 
-    private Mm1Encoder()
-    {
-        // Empty
-    }
+	private Mm1Encoder() {
+		// Empty
+	}
 
-    public static void writeMessageToStream(OutputStream out, MimeBodyPart message, MmsHeaders headers)
-            throws MmsException
-    {
-        try
-        {
-            // Add headers
-            writeHeadersToStream(out, headers);
+	public static void writeMessageToStream(OutputStream out, MimeBodyPart message, MmsHeaders headers) throws MmsException {
+		try {
+			// Add headers
+			writeHeadersToStream(out, headers);
 
-            // Add content-type
-            MmsHeaderEncoder.writeHeaderContentType(wspEncodingVersion_, out, message.getContentType());
+			// Add content-type
+			MmsHeaderEncoder.writeHeaderContentType(wspEncodingVersion_, out, message.getContentType());
 
-            // Add content
-            MimeEncoder wapMimeEncoder = new WapMimeEncoder();
-            wapMimeEncoder.writeBody(out, message);
-        }
-        catch (IOException ex)
-        {
-            throw new MmsException("Failed to write message to stream", ex);
-        }
-    }
+			// Add content
+			MimeEncoder wapMimeEncoder = new WapMimeEncoder();
+			wapMimeEncoder.writeBody(out, message);
+		} catch (IOException ex) {
+			throw new MmsException("Failed to write message to stream", ex);
+		}
+	}
 
-    private static void writeHeadersToStream(OutputStream out, MmsHeaders headers) throws IOException
-    {
-        MmsHeaderEncoder.writeHeaderXMmsMessageType(out, headers.getMessageType());
-        MmsHeaderEncoder.writeHeaderXMmsTransactionId(out, headers.getTransactionId());
-        MmsHeaderEncoder.writeHeaderXMmsMmsVersion(out, headers.getVersion());
+	private static void writeHeadersToStream(OutputStream out, MmsHeaders headers) throws IOException {
+		MmsHeaderEncoder.writeHeaderXMmsMessageType(out, headers.getMessageType());
+		MmsHeaderEncoder.writeHeaderXMmsTransactionId(out, headers.getTransactionId());
+		MmsHeaderEncoder.writeHeaderXMmsMmsVersion(out, headers.getVersion());
 
-        if(headers.getMessageId()!=null)
-        {
-        	MmsHeaderEncoder.writeHeaderMessageId(out, headers.getMessageId());
-        }
-        
-        MmsHeaderEncoder.writeHeaderDate(out, headers.getDate());
-        
-        if (headers.getFrom() != null)
-        {
-            MmsHeaderEncoder.writeHeaderFrom(out, headers.getFrom());
-        }
-        
-        if (headers.getTo() != null)
-        {
-            MmsHeaderEncoder.writeHeaderTo(out, headers.getTo());
-        }
-        
-        if (headers.getSubject() != null)
-        {
-            MmsHeaderEncoder.writeHeaderSubject(out, headers.getSubject());
-        }
-        
-        // TODO: Add the rest of the headers
-    }
+		if (headers.getMessageId() != null) {
+			MmsHeaderEncoder.writeHeaderMessageId(out, headers.getMessageId());
+		}
+
+		MmsHeaderEncoder.writeHeaderDate(out, headers.getDate());
+
+		if (headers.getFrom() != null) {
+			MmsHeaderEncoder.writeHeaderFrom(out, headers.getFrom());
+		}
+
+		if (headers.getTo() != null) {
+			MmsHeaderEncoder.writeHeaderTo(out, headers.getTo());
+		}
+
+		if (headers.getSubject() != null) {
+			MmsHeaderEncoder.writeHeaderSubject(out, headers.getSubject());
+		}
+
+		// TODO: Add the rest of the headers
+	}
 }

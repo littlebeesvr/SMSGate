@@ -18,13 +18,13 @@ public class TCPServerEndpointEntity extends EndpointEntity implements ServerEnd
 	@Override
 	public void addchild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removechild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

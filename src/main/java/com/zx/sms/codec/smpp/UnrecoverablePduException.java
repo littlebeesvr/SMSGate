@@ -21,28 +21,23 @@ package com.zx.sms.codec.smpp;
  */
 
 /**
- * Thrown when an unrecoverable PDU decoding error occurs. A good example is
- * a PDU length that is so large its signed negative (31st bit is 1).  This is
- * an impossible error and likely means something is drastically wrong with
- * the sequence of bytes.
+ * Thrown when an unrecoverable PDU decoding error occurs. A good example is a PDU length that is so large its signed negative (31st bit is 1). This is an impossible error and
+ * likely means something is drastically wrong with the sequence of bytes.
  *
- * Another example is an invalid sequence number in an invalid range.  If
- * an invalid sequenceNumber is used, the recommended action is to close the
- * session.
+ * Another example is an invalid sequence number in an invalid range. If an invalid sequenceNumber is used, the recommended action is to close the session.
  * 
- * The recommended action for an unrecoverable error is to close the SMPP 
- * connection.
+ * The recommended action for an unrecoverable error is to close the SMPP connection.
  *
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class UnrecoverablePduException extends Exception {
-    static final long serialVersionUID = 1L;
-    
-    public UnrecoverablePduException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public UnrecoverablePduException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public UnrecoverablePduException(String msg) {
+		super(msg);
+	}
+
+	public UnrecoverablePduException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

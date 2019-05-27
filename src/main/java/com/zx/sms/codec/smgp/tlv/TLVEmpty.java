@@ -1,6 +1,5 @@
 package com.zx.sms.codec.smgp.tlv;
 
-
 public class TLVEmpty extends TLV {
 	private boolean present = false;
 

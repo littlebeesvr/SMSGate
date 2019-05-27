@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 import com.zx.sms.codec.smgp.util.ByteUtil;
 
-
-
-public abstract class TLV implements Serializable{
+public abstract class TLV implements Serializable {
 	/** The tag of the instance of TLV as defined in SMPP v3.4 */
 	private short tag = 0;
 

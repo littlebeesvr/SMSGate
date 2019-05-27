@@ -1,6 +1,5 @@
 package com.zx.sms.codec.smgp.msg;
 
-
 public class SMGPUnknownMessage extends SMGPBaseMessage {
 
 	/**
@@ -15,9 +14,7 @@ public class SMGPUnknownMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPUnknowMessage:[sequenceNumber=")
-			  .append(sequenceString())
-			  .append(" ;commandId=").append(commandId).append("]");
+		buffer.append("SMGPUnknowMessage:[sequenceNumber=").append(sequenceString()).append(" ;commandId=").append(commandId).append("]");
 		return buffer.toString();
 	}
 

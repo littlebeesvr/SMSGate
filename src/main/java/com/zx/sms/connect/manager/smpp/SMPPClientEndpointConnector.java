@@ -23,9 +23,8 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 public class SMPPClientEndpointConnector extends AbstractClientEndpointConnector {
 
-
 	private static final Logger logger = LoggerFactory.getLogger(SMPPClientEndpointConnector.class);
-	
+
 	public SMPPClientEndpointConnector(EndpointEntity endpoint) {
 		super(endpoint);
 	}
@@ -36,9 +35,9 @@ public class SMPPClientEndpointConnector extends AbstractClientEndpointConnector
 
 	@Override
 	protected void doBindHandler(ChannelPipeline pipe, EndpointEntity entity) {
-		pipe.addLast( "SMPPLongMessageHandler", new SMPPLongMessageHandler(entity));
-		pipe.addLast("EnquireLinkMessageHandler",new EnquireLinkMessageHandler());
-		pipe.addLast("EnquireLinkRespMessageHandler",new EnquireLinkRespMessageHandler());
+		pipe.addLast("SMPPLongMessageHandler", new SMPPLongMessageHandler(entity));
+		pipe.addLast("EnquireLinkMessageHandler", new EnquireLinkMessageHandler());
+		pipe.addLast("EnquireLinkRespMessageHandler", new EnquireLinkRespMessageHandler());
 		pipe.addLast("UnbindRespMessageHandler", new UnbindRespMessageHandler());
 		pipe.addLast("UnbindMessageHandler", new UnbindMessageHandler());
 	}

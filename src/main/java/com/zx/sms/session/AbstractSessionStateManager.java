@@ -70,20 +70,20 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 
 	private final long version = System.currentTimeMillis();
 
-	private final static ScheduledThreadPoolExecutor msgResend = new ScheduledThreadPoolExecutor(Integer.valueOf(PropertiesUtils.getproperties(
-			"GlobalMsgResendThreadCount", "4")), new ThreadFactory() {
+	private final static ScheduledThreadPoolExecutor msgResend = new ScheduledThreadPoolExecutor(Integer.valueOf(PropertiesUtils.getproperties("GlobalMsgResendThreadCount", "4")),
+			new ThreadFactory() {
 
-		private final AtomicInteger threadNumber = new AtomicInteger(1);
+				private final AtomicInteger threadNumber = new AtomicInteger(1);
 
-		public Thread newThread(Runnable r) {
-			Thread t = new Thread(r, "msgResend-" + threadNumber.getAndIncrement());
+				public Thread newThread(Runnable r) {
+					Thread t = new Thread(r, "msgResend-" + threadNumber.getAndIncrement());
 
-			t.setDaemon(true);
-			if (t.getPriority() != Thread.NORM_PRIORITY)
-				t.setPriority(Thread.NORM_PRIORITY);
-			return t;
-		}
-	}, new ThreadPoolExecutor.DiscardPolicy());
+					t.setDaemon(true);
+					if (t.getPriority() != Thread.NORM_PRIORITY)
+						t.setPriority(Thread.NORM_PRIORITY);
+					return t;
+				}
+			}, new ThreadPoolExecutor.DiscardPolicy());
 
 	/**
 	 * 重发队列
@@ -93,7 +93,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	 * 发送未收到resp的消息，需要使用可持久化的Map.
 	 */
 	private final ConcurrentMap<K, VersionObject<T>> storeMap;
-	
+
 	private ChannelHandlerContext ctx;
 
 	/**
@@ -102,7 +102,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	private boolean preSend;
 
 	private boolean preSendover = false;
-	
+
 	public int getWaittingResp() {
 		return storeMap.size();
 	}
@@ -114,17 +114,17 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	public long getWriteCount() {
 		return msgWriteCount;
 	}
-	
-	public void handlerAdded(ChannelHandlerContext ctx) throws Exception{
+
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		this.ctx = ctx;
 	}
-	
-    private void setUserDefinedWritability(ChannelHandlerContext ctx, boolean writable) {
-        ChannelOutboundBuffer cob = ctx.channel().unsafe().outboundBuffer();
-        if (cob != null) {
-            cob.setUserDefinedWritability(31, writable);
-        }
-    }
+
+	private void setUserDefinedWritability(ChannelHandlerContext ctx, boolean writable) {
+		ChannelOutboundBuffer cob = ctx.channel().unsafe().outboundBuffer();
+		if (cob != null) {
+			cob.setUserDefinedWritability(31, writable);
+		}
+	}
 
 	public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
 
@@ -135,19 +135,20 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 				// 取消重试队列里的任务
 				Map.Entry<K, Entry> entry = null;
 				EndpointConnector conn = EndpointManager.INS.getEndpointConnector(entity);
-				for (Iterator<Map.Entry<K, Entry>> itor = msgRetryMap.entrySet().iterator();itor.hasNext(); entry = itor.next()) {
-					if(entry == null) continue;
+				for (Iterator<Map.Entry<K, Entry>> itor = msgRetryMap.entrySet().iterator(); itor.hasNext(); entry = itor.next()) {
+					if (entry == null)
+						continue;
 					T requestmsg = entry.getValue().request;
-					
+
 					// 所有连接都已关闭
-					if (conn != null){
+					if (conn != null) {
 						Channel ch = conn.fetch();
 
 						if (ch != null && ch.isActive()) {
 							if (entity.isReSendFailMsg()) {
 								// 连接断连，但是未收到Resp的消息，通过其它连接再发送一次
 								ch.writeAndFlush(requestmsg);
-								logger.warn("current channel {} is closed.send requestMsg {} from other channel {} which is active.", ctx.channel(),requestmsg, ch);
+								logger.warn("current channel {} is closed.send requestMsg {} from other channel {} which is active.", ctx.channel(), requestmsg, ch);
 							} else {
 								errlogger.error("Channel closed . Msg {} may not send Success. ", requestmsg);
 							}
@@ -173,9 +174,9 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 							VersionObject<T> vobj = storeentry.getValue();
 							long v = vobj.getVersion();
 							T msg = vobj.getObj();
-							
-							//只发送在本次连接建立之前的未成功的消息
-							//v保存了消息创建时的时间
+
+							// 只发送在本次连接建立之前的未成功的消息
+							// v保存了消息创建时的时间
 							if (version > v && msg != null) {
 								// 如果配置了失败重发
 								logger.debug("Send last failed msg . {}", msg);
@@ -194,8 +195,8 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	protected abstract K getSequenceId(T msg);
 
 	protected abstract boolean needSendAgainByResponse(T req, T res);
-	
-	protected abstract boolean closeWhenRetryFailed(T req) ;
+
+	protected abstract boolean closeWhenRetryFailed(T req);
 
 	@Override
 	public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -203,41 +204,41 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 		msgReadCount++;
 		if (msg instanceof BaseMessage) {
 			// 如果是resp，取消 消息重发
-			if (((T)msg).isResponse()) {
+			if (((T) msg).isResponse()) {
 				// 删除发送成功的消息
-				final T response =  (T) msg;
+				final T response = (T) msg;
 				K key = getSequenceId(response);
 				VersionObject<T> vobj = storeMap.remove(key);
 				if (vobj != null) {
 					T request = vobj.getObj();
 					long sendtime = vobj.getVersion();
-					
+
 					// 把response关联上request供使用。
 					response.setRequest(request);
-					
-					//响应延迟过大
+
+					// 响应延迟过大
 					long delay = delaycheck(sendtime);
-					if(delay > (entity.getRetryWaitTimeSec() * 1000/4)){
-						errlogger.warn("delaycheck . delay :{} , SequenceId :{}", delay,getSequenceId(response));
-						//接收response回复时延太高，有可能对端已经开始积压了，暂停发送1秒钟。
-						setchannelunwritable(ctx,1000);
+					if (delay > (entity.getRetryWaitTimeSec() * 1000 / 4)) {
+						errlogger.warn("delaycheck . delay :{} , SequenceId :{}", delay, getSequenceId(response));
+						// 接收response回复时延太高，有可能对端已经开始积压了，暂停发送1秒钟。
+						setchannelunwritable(ctx, 1000);
 					}
-					
+
 					Entry entry = msgRetryMap.get(key);
-					
+
 					// 根据Response 判断是否需要重发,比如CMPP协议，如果收到result==8，表示超速，需要重新发送
 					if (needSendAgainByResponse(request, response)) {
-						//取消息重发任务,再次发送时重新注册任务
+						// 取消息重发任务,再次发送时重新注册任务
 						cancelRetry(entry, ctx.channel());
-						
-						//网关异常时会发送大量超速错误(result=8),造成大量重发，浪费资源。这里先停止发送，过40毫秒再回恢复
-						setchannelunwritable(ctx,40);
-						//400ms后重发
+
+						// 网关异常时会发送大量超速错误(result=8),造成大量重发，浪费资源。这里先停止发送，过40毫秒再回恢复
+						setchannelunwritable(ctx, 40);
+						// 400ms后重发
 						reWriteLater(ctx, entry.request, ctx.newPromise(), 400);
-						
-					}else{
+
+					} else {
 						cancelRetry(entry, ctx.channel());
-						//给同步发送的promise响应resonse
+						// 给同步发送的promise响应resonse
 						responseFutureDone(entry, response);
 						msgRetryMap.remove(key);
 					}
@@ -249,24 +250,24 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 		ctx.fireChannelRead(msg);
 	}
 
-	//查检发送req与收到res的时间差
-	private long delaycheck(long sendtime){
-		return CachedMillisecondClock.INS.now() - sendtime ;
+	// 查检发送req与收到res的时间差
+	private long delaycheck(long sendtime) {
+		return CachedMillisecondClock.INS.now() - sendtime;
 	}
-	
-	private void setchannelunwritable(final ChannelHandlerContext ctx,long millitime){
-		if(ctx.channel().isWritable()){
+
+	private void setchannelunwritable(final ChannelHandlerContext ctx, long millitime) {
+		if (ctx.channel().isWritable()) {
 			setUserDefinedWritability(ctx, false);
-			
+
 			ctx.executor().schedule(new Runnable() {
 				@Override
 				public void run() {
-						setUserDefinedWritability(ctx, true);
+					setUserDefinedWritability(ctx, true);
 				}
 			}, millitime, TimeUnit.MILLISECONDS);
 		}
 	}
-	
+
 	@Override
 	public void write(ChannelHandlerContext ctx, Object message, ChannelPromise promise) throws Exception {
 
@@ -307,7 +308,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	 **/
 	private boolean writeWithWindow(final ChannelHandlerContext ctx, final T message, final ChannelPromise promise) {
 		try {
-			safewrite(ctx, message, promise,false);
+			safewrite(ctx, message, promise, false);
 		} catch (Exception e) {
 			promise.tryFailure(e);
 			logger.error("writeWithWindow: ", e.getCause() != null ? e.getCause() : e);
@@ -324,9 +325,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 		if (entry != null) {
 
 			/*
-			 * TODO bugfix:不知道什么原因，会导致 下面的future任务没有cancel掉。
-			 * 这里增加一个引用，当会试任务超过次数限制后，cancel掉自己。
-			 * 些任务不能被中断interupted.如果storeMap.remove()被中断会破坏BDB的内部状态，使用BDB无法继续工作
+			 * TODO bugfix:不知道什么原因，会导致 下面的future任务没有cancel掉。 这里增加一个引用，当会试任务超过次数限制后，cancel掉自己。 些任务不能被中断interupted.如果storeMap.remove()被中断会破坏BDB的内部状态，使用BDB无法继续工作
 			 */
 			final AtomicReference<Future> ref = new AtomicReference<Future>();
 
@@ -335,12 +334,13 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 				@Override
 				public void run() {
 					try {
-						
-						if(!ctx.channel().isActive()) return;
-						
+
+						if (!ctx.channel().isActive())
+							return;
+
 						int times = entry.cnt.get();
-						
-						logger.warn("entity : {} , retry Send Msg : {}", entity.getId(),message);
+
+						logger.warn("entity : {} , retry Send Msg : {}", entity.getId(), message);
 						if (times >= entity.getMaxRetryCnt()) {
 
 							// 会有future泄漏的情况发生，这里cancel掉自己，来规避泄漏
@@ -348,16 +348,16 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 							if (future != null)
 								future.cancel(false);
 
-							cancelRetry(entry,ctx.channel());
-							responseFutureDone(entry,new SendFailException("retry send msg over "+times+" times"));
+							cancelRetry(entry, ctx.channel());
+							responseFutureDone(entry, new SendFailException("retry send msg over " + times + " times"));
 							msgRetryMap.remove(seq);
 							// 删除消息
 							storeMap.remove(seq);
 							// 重试发送都失败的消息要记录
-							errlogger.error("entity : {} , RetryFailed: {}", entity.getId(),message);
+							errlogger.error("entity : {} , RetryFailed: {}", entity.getId(), message);
 
-							if(closeWhenRetryFailed(message)) {
-								logger.error("entity : {} , retry send {} times Message {} ,the connection may die.close it", entity.getId(),times,message);
+							if (closeWhenRetryFailed(message)) {
+								logger.error("entity : {} , retry send {} times Message {} ,the connection may die.close it", entity.getId(), times, message);
 								ctx.close();
 							}
 
@@ -379,7 +379,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 			ref.set(future);
 
 			entry.future = future;
-			
+
 			// 这里增加一次判断，是否已收到resp消息,已到resp后，msgRetryMap里的entry会被 remove掉。
 			if (msgRetryMap.get(seq) == null) {
 				future.cancel(false);
@@ -392,24 +392,24 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 
 	}
 
-	private Entry responseFutureDone(Entry entry,T response){
-		if(entry!=null &&entry.resfuture!=null){
+	private Entry responseFutureDone(Entry entry, T response) {
+		if (entry != null && entry.resfuture != null) {
 			entry.resfuture.setSuccess(response);
 			return entry;
 		}
 		return null;
 	}
-	
-	private Entry responseFutureDone(Entry entry,Throwable cause){
-		if(entry!=null &&entry.resfuture!=null){
+
+	private Entry responseFutureDone(Entry entry, Throwable cause) {
+		if (entry != null && entry.resfuture != null) {
 			entry.resfuture.tryFailure(cause);
 			return entry;
 		}
 		return null;
 	}
-	
+
 	private Entry cancelRetry(Entry entry, Channel channel) {
-//		Entry entry = msgRetryMap.remove(getSequenceId(requestMsg));
+		// Entry entry = msgRetryMap.remove(getSequenceId(requestMsg));
 		if (entry != null && entry.future != null) {
 			entry.future.cancel(false);
 			// 删除任务
@@ -420,7 +420,7 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 		} else {
 			logger.debug("cancelRetry task failed.");
 		}
-		
+
 		return entry;
 	}
 
@@ -440,8 +440,8 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 				long v = vobj.getVersion();
 				T msg = vobj.getObj();
 
-				//只发送在本次连接建立之前的未成功的消息
-				//v保存了消息创建时的时间
+				// 只发送在本次连接建立之前的未成功的消息
+				// v保存了消息创建时的时间
 				if (version > v && msg != null) {
 					logger.debug("Send last failed msg . {}", msg);
 					writeWithWindow(ctx, msg, ctx.newPromise());
@@ -454,35 +454,35 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 	/**
 	 * 发送msg,首先做消息持久化
 	 */
-	private Promise<T> safewrite(final ChannelHandlerContext ctx, final T message, final ChannelPromise promise,boolean syn) {
+	private Promise<T> safewrite(final ChannelHandlerContext ctx, final T message, final ChannelPromise promise, boolean syn) {
 		if (ctx.channel().isActive()) {
-			
+
 			// 发送消息超过生命周期
 			if (message.isTerminated()) {
 				errlogger.error("Msg Life over .{}", message);
 				promise.tryFailure(new SmsLifeTerminateException("Msg Life over"));
-				
+
 				DefaultPromise failed = new DefaultPromise<T>(ctx.executor());
 				failed.tryFailure(new SmsLifeTerminateException("Msg Life over"));
 				return failed;
 			}
-			
+
 			final K seq = getSequenceId(message);
 			// 记录已发送的请求,在发送msg前生记录到map里。防止生成retryTask前就收到resp的情况发生
 			boolean has = msgRetryMap.containsKey(seq);
 			Entry tmpentry = new Entry(message);
 			if (has) {
 				Entry old = msgRetryMap.get(seq);
-				
-				//2018-08-27 当网关返回超速错时，也会存在想同的seq
-				//消息相同表示此消息是因为超速错导致的重发,什么都不做。
-				//否则可能是相同的seq，但不同的短信				
-				if(!message.equals(old.request)){
+
+				// 2018-08-27 当网关返回超速错时，也会存在想同的seq
+				// 消息相同表示此消息是因为超速错导致的重发,什么都不做。
+				// 否则可能是相同的seq，但不同的短信
+				if (!message.equals(old.request)) {
 					// bugfix: 集群环境下可能产生相同的seq. 如果已经存在一个相同的seq.
 					// 此消息延迟250ms再发
 					logger.error("has repeat Sequense {}", seq);
-					if(syn){
-						//同步调用时，立即返回失败。
+					if (syn) {
+						// 同步调用时，立即返回失败。
 						StringBuilder sb = new StringBuilder();
 						sb.append("seqId:").append(seq);
 						sb.append(".it Has a same sequenceId with another message:").append(old.request).append(". wait it complete.");
@@ -490,18 +490,18 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 						DefaultPromise failed = new DefaultPromise<T>(ctx.executor());
 						failed.tryFailure(cause);
 						return failed;
-					}else{
-						//异步调用时等250ms后再试发一次
+					} else {
+						// 异步调用时等250ms后再试发一次
 						reWriteLater(ctx, message, promise, 250);
 						return null;
 					}
 				}
-			} else{
-				//收到响应时将此对象设置为完成状态
+			} else {
+				// 收到响应时将此对象设置为完成状态
 				tmpentry.resfuture = new DefaultPromise<T>(ctx.executor());
 				msgRetryMap.put(seq, tmpentry);
 			}
-			
+
 			msgWriteCount++;
 			// 持久化到队列
 			storeMap.put(seq, new VersionObject<T>(message));
@@ -514,9 +514,9 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 					if (future.isSuccess()) {
 						// 注册重试任务
 						scheduleRetryMsg(ctx, message);
-					}else {
-						//发送失败,必须清除msgRetryMap里的对象，否则上层业务
-						//可能提交相同seq的消息，造成死循环
+					} else {
+						// 发送失败,必须清除msgRetryMap里的对象，否则上层业务
+						// 可能提交相同seq的消息，造成死循环
 						logger.error("remove fail message Sequense {}", seq);
 						msgRetryMap.remove(seq);
 						storeMap.remove(seq);
@@ -525,14 +525,14 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 
 			});
 			ctx.writeAndFlush(message, promise);
-			
+
 			return tmpentry.resfuture;
 		} else {
 			// 如果连接已关闭，通知上层应用
 			StringBuilder sb = new StringBuilder();
 			sb.append("Connection ").append(ctx.channel()).append(" has closed");
 			IOException cause = new IOException(sb.toString());
-			
+
 			if (promise != null && (!promise.isDone())) {
 				promise.tryFailure(cause);
 			}
@@ -561,15 +561,15 @@ public abstract class AbstractSessionStateManager<K, T extends BaseMessage> exte
 		volatile Future future;
 		AtomicInteger cnt = new AtomicInteger(1);
 		T request;
-		
-		DefaultPromise<T> resfuture ;
+
+		DefaultPromise<T> resfuture;
 		Entry(T request) {
 			this.request = request;
 		}
 	}
-	
-	public Promise<T> writeMessagesync(T message){
-		return safewrite(ctx,message,ctx.newPromise(),true);
+
+	public Promise<T> writeMessagesync(T message) {
+		return safewrite(ctx, message, ctx.newPromise(), true);
 	}
 
 	public EndpointEntity getEntity() {

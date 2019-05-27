@@ -12,11 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.sleepycat.bind.EntryBinding;
-import com.sleepycat.bind.serial.SerialBinding;
-import com.sleepycat.bind.serial.StoredClassCatalog;
 import com.sleepycat.collections.StoredSortedMap;
-import com.sleepycat.je.Database;
 
 /**
  * {@linkplain BlockingQueue blocking queue} <br>
@@ -47,7 +43,7 @@ public class BdbQueueMap<E> extends AbstractQueue<E> implements BlockingQueue<E>
 		lock = new ReentrantLock();
 		notEmpty = lock.newCondition();
 
-		this.queueMap = queueMap; 
+		this.queueMap = queueMap;
 	}
 
 	@Override
@@ -128,7 +124,7 @@ public class BdbQueueMap<E> extends AbstractQueue<E> implements BlockingQueue<E>
 	 * @see #insert(Object, Object)
 	 * @param k
 	 * @param e
-	 * @return 
+	 * @return
 	 * @throws InterruptedException
 	 */
 	public E put(Long k, E e) {
@@ -178,10 +174,6 @@ public class BdbQueueMap<E> extends AbstractQueue<E> implements BlockingQueue<E>
 	public E poll(long timeout, TimeUnit unit) throws InterruptedException {
 		return poll();
 	}
-
-
-
-
 
 	/**
 	 * 删除指定队列中的元素 <br>
@@ -272,6 +264,5 @@ public class BdbQueueMap<E> extends AbstractQueue<E> implements BlockingQueue<E>
 			lock.unlock();
 		}
 	}
-
 
 }

@@ -36,104 +36,98 @@ package org.marre.mime;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
-public class MimeHeader
-{
-    protected final String headerName_;
-    protected String headerValue_;
+public class MimeHeader {
+	protected final String headerName_;
+	protected String headerValue_;
 
-    protected final List<MimeHeaderParameter> params_ = new LinkedList<MimeHeaderParameter>();
+	protected final List<MimeHeaderParameter> params_ = new LinkedList<MimeHeaderParameter>();
 
-    public MimeHeader(String name, String value)
-    {
-        headerName_ = name;
-        headerValue_ = value;
-    }
+	public MimeHeader(String name, String value) {
+		headerName_ = name;
+		headerValue_ = value;
+	}
 
-    public void setValue(String theValue)
-    {
-        headerValue_ = theValue;
-    }
+	public void setValue(String theValue) {
+		headerValue_ = theValue;
+	}
 
-    public String getName()
-    {
-        return headerName_;
-    }
+	public String getName() {
+		return headerName_;
+	}
 
-    public String getValue()
-    {
-        return headerValue_;
-    }
+	public String getValue() {
+		return headerValue_;
+	}
 
-    public void setParam(String theName, String theValue)
-    {
-        // Remove parameter if it already exists...
-        removeParameter(theName);
+	public void setParam(String theName, String theValue) {
+		// Remove parameter if it already exists...
+		removeParameter(theName);
 
-        // Add new...
-        params_.add(new MimeHeaderParameter(theName, theValue));
-    }
+		// Add new...
+		params_.add(new MimeHeaderParameter(theName, theValue));
+	}
 
-    public MimeHeaderParameter getParameter(String theName)
-    {
-        for (MimeHeaderParameter param : params_) {
-            if (param.getName().equalsIgnoreCase(theName)) {
-                return param;
-            }
-        }
+	public MimeHeaderParameter getParameter(String theName) {
+		for (MimeHeaderParameter param : params_) {
+			if (param.getName().equalsIgnoreCase(theName)) {
+				return param;
+			}
+		}
 
-        // Not found
-        return null;
-    }
+		// Not found
+		return null;
+	}
 
-    public void removeParameter(String theName)
-    {
-        MimeHeaderParameter param = getParameter(theName);
-        if (param != null)
-        {
-            params_.remove(param);
-        }
-    }
+	public void removeParameter(String theName) {
+		MimeHeaderParameter param = getParameter(theName);
+		if (param != null) {
+			params_.remove(param);
+		}
+	}
 
-    public Collection<MimeHeaderParameter> getParameters()
-    {
-        return Collections.unmodifiableCollection(params_);
-    }
+	public Collection<MimeHeaderParameter> getParameters() {
+		return Collections.unmodifiableCollection(params_);
+	}
 
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
 
-        sb.append(headerName_).append("=").append(headerValue_);
+		sb.append(headerName_).append("=").append(headerValue_);
 
-        for (MimeHeaderParameter param : params_) {
-            sb.append("; ").append(param.getName()).append("=").append(param.getValue());
-        }
+		for (MimeHeaderParameter param : params_) {
+			sb.append("; ").append(param.getName()).append("=").append(param.getValue());
+		}
 
-        return sb.toString();
-    }
+		return sb.toString();
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MimeHeader)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof MimeHeader))
+			return false;
 
-        MimeHeader that = (MimeHeader) o;
+		MimeHeader that = (MimeHeader) o;
 
-        if (!headerName_.equals(that.headerName_)) return false;
-        if (!headerValue_.equals(that.headerValue_)) return false;
-        if (!params_.equals(that.params_)) return false;
+		if (!headerName_.equals(that.headerName_))
+			return false;
+		if (!headerValue_.equals(that.headerValue_))
+			return false;
+		if (!params_.equals(that.params_))
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = headerName_.hashCode();
-        result = 31 * result + headerValue_.hashCode();
-        result = 31 * result + params_.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = headerName_.hashCode();
+		result = 31 * result + headerValue_.hashCode();
+		result = 31 * result + params_.hashCode();
+		return result;
+	}
 }

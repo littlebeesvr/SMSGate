@@ -20,22 +20,22 @@ public class SgipDeliverLongMessageHandler extends AbstractLongMessageHandler<Sg
 	private final Logger logger = LoggerFactory.getLogger(SgipDeliverLongMessageHandler.class);
 	@Override
 	protected BaseMessage response(SgipDeliverRequestMessage msg) {
-		
-		//短信片断未接收完全，直接给网关回复resp，等待其它片断
+
+		// 短信片断未接收完全，直接给网关回复resp，等待其它片断
 		SgipDeliverResponseMessage responseMessage = new SgipDeliverResponseMessage(msg.getHeader());
-		responseMessage.setResult((short)0);
+		responseMessage.setResult((short) 0);
 		return responseMessage;
 	}
 
 	@Override
 	protected boolean needHandleLongMessage(SgipDeliverRequestMessage msg) {
-	
+
 		return true;
 	}
 
 	@Override
 	protected String generateFrameKey(SgipDeliverRequestMessage msg) {
-		return msg.getUsernumber()+msg.getSpnumber();
+		return msg.getUsernumber() + msg.getSpnumber();
 	}
 
 	@Override

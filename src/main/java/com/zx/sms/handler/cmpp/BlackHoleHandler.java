@@ -15,15 +15,14 @@ import io.netty.util.ReferenceCountUtil;
 @Sharable
 public class BlackHoleHandler extends ChannelDuplexHandler {
 	private static final Logger logger = LoggerFactory.getLogger(BlackHoleHandler.class);
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    	ReferenceCountUtil.safeRelease(msg);
-    }
-    
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-            throws Exception {
-    	
-    	logger.warn("BlackHoleHandler exceptionCaught on channel {}",ctx.channel(),cause);
-    }
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		ReferenceCountUtil.safeRelease(msg);
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+		logger.warn("BlackHoleHandler exceptionCaught on channel {}", ctx.channel(), cause);
+	}
 }

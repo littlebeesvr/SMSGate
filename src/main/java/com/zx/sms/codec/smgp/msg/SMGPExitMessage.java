@@ -17,8 +17,7 @@ public class SMGPExitMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPExitMessage:[sequenceNumber=")
-				.append(sequenceString()).append("]");
+		buffer.append("SMGPExitMessage:[sequenceNumber=").append(sequenceString()).append("]");
 		return buffer.toString();
 	}
 	@Override

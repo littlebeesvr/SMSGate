@@ -11,14 +11,14 @@ public enum SgipUnbindRequest implements PacketStructure {
 	;
 
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipUnbindRequest(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipUnbindRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -42,7 +42,7 @@ public enum SgipUnbindRequest implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipUnbindRequest r : SgipUnbindRequest.values()) {
+		for (SgipUnbindRequest r : SgipUnbindRequest.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;

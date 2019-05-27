@@ -25,7 +25,7 @@ public enum CachedMillisecondClock {
 					now = System.currentTimeMillis();
 				}
 			}
-		},"CachedMillisecondClockUpdater");
+		}, "CachedMillisecondClockUpdater");
 		t.setDaemon(true);
 		t.start();
 	}

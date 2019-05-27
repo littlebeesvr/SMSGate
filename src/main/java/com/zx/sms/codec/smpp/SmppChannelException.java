@@ -21,21 +21,20 @@ package com.zx.sms.codec.smpp;
  */
 
 /**
- * Thrown for exceptions occurring with the underlying Channel or TCP/IP
- * connection such as read/write errors, closed connections, etc.
+ * Thrown for exceptions occurring with the underlying Channel or TCP/IP connection such as read/write errors, closed connections, etc.
  *
  * Its best to restart a session if this occurs.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppChannelException extends Exception {
-    static final long serialVersionUID = 1L;
-    
-    public SmppChannelException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public SmppChannelException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public SmppChannelException(String msg) {
+		super(msg);
+	}
+
+	public SmppChannelException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

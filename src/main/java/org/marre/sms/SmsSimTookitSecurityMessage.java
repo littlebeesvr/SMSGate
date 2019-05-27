@@ -8,11 +8,11 @@ public class SmsSimTookitSecurityMessage extends SmsConcatMessage implements Ser
 	 * 
 	 */
 	private static final long serialVersionUID = 3788194337517378301L;
-	
-	private byte udhIei ;
-	private byte[] udhIeiData ;
+
+	private byte udhIei;
+	private byte[] udhIeiData;
 	private byte[] ud;
-	public SmsSimTookitSecurityMessage(byte udhIei,byte[] udhIeiData,byte[] ud) {
+	public SmsSimTookitSecurityMessage(byte udhIei, byte[] udhIeiData, byte[] ud) {
 		this.udhIei = udhIei;
 		this.ud = ud;
 		this.udhIeiData = udhIeiData;
@@ -20,12 +20,12 @@ public class SmsSimTookitSecurityMessage extends SmsConcatMessage implements Ser
 
 	@Override
 	public SmsUserData getUserData() {
-		return new SmsUserData(ud,ud.length,new SmsDcs((byte)0xf6));
+		return new SmsUserData(ud, ud.length, new SmsDcs((byte) 0xf6));
 	}
 
 	@Override
 	public SmsUdhElement[] getUdhElements() {
-		return new SmsUdhElement[] {new SmsUdhElement(SmsUdhIei.valueOf(udhIei),udhIeiData)};
+		return new SmsUdhElement[]{new SmsUdhElement(SmsUdhIei.valueOf(udhIei), udhIeiData)};
 	}
 	@Override
 	public String toString() {

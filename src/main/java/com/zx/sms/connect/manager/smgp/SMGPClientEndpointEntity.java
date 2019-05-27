@@ -2,8 +2,7 @@ package com.zx.sms.connect.manager.smgp;
 
 import com.zx.sms.connect.manager.ClientEndpoint;
 
-
-public class SMGPClientEndpointEntity extends SMGPEndpointEntity implements ClientEndpoint{
+public class SMGPClientEndpointEntity extends SMGPEndpointEntity implements ClientEndpoint {
 
 	/**
 	 * 
@@ -12,7 +11,7 @@ public class SMGPClientEndpointEntity extends SMGPEndpointEntity implements Clie
 
 	@Override
 	public SMGPClientEndpointConnector buildConnector() {
-		
+
 		return new SMGPClientEndpointConnector(this);
 	}
 

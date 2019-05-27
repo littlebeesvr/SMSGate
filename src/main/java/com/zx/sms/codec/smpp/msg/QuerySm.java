@@ -1,5 +1,12 @@
 package com.zx.sms.codec.smpp.msg;
 
+import com.zx.sms.codec.smpp.Address;
+import com.zx.sms.codec.smpp.RecoverablePduException;
+import com.zx.sms.codec.smpp.SmppConstants;
+import com.zx.sms.codec.smpp.UnrecoverablePduException;
+import com.zx.sms.common.util.ByteBufUtil;
+import com.zx.sms.common.util.PduUtil;
+
 /*
  * #%L
  * ch-smpp
@@ -21,14 +28,6 @@ package com.zx.sms.codec.smpp.msg;
  */
 
 import io.netty.buffer.ByteBuf;
-import io.netty.util.internal.StringUtil;
-
-import com.zx.sms.codec.smpp.Address;
-import com.zx.sms.codec.smpp.RecoverablePduException;
-import com.zx.sms.codec.smpp.SmppConstants;
-import com.zx.sms.codec.smpp.UnrecoverablePduException;
-import com.zx.sms.common.util.ByteBufUtil;
-import com.zx.sms.common.util.PduUtil;
 
 /**
  * SMPP query_sm implementation.
@@ -37,74 +36,73 @@ import com.zx.sms.common.util.PduUtil;
  */
 public class QuerySm extends PduRequest<QuerySmResp> {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2134101625543975063L;
 	private String messageId;
-    private Address sourceAddress;
+	private Address sourceAddress;
 
-    public QuerySm() {
-        super(SmppConstants.CMD_ID_QUERY_SM, "query_sm");
-    }
+	public QuerySm() {
+		super(SmppConstants.CMD_ID_QUERY_SM, "query_sm");
+	}
 
-    public String getMessageId() {
-        return this.messageId;
-    }
+	public String getMessageId() {
+		return this.messageId;
+	}
 
-    public void setMessageId(String value) {
-        this.messageId = value;
-    }
+	public void setMessageId(String value) {
+		this.messageId = value;
+	}
 
-    public Address getSourceAddress() {
-        return this.sourceAddress;
-    }
+	public Address getSourceAddress() {
+		return this.sourceAddress;
+	}
 
-    public void setSourceAddress(Address value) {
-        this.sourceAddress = value;
-    }
+	public void setSourceAddress(Address value) {
+		this.sourceAddress = value;
+	}
 
+	@Override
+	public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		this.messageId = ByteBufUtil.readNullTerminatedString(buffer);
+		this.sourceAddress = ByteBufUtil.readAddress(buffer);
+	}
 
-    @Override
-    public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        this.messageId = ByteBufUtil.readNullTerminatedString(buffer);
-        this.sourceAddress = ByteBufUtil.readAddress(buffer);
-    }
+	@Override
+	public int calculateByteSizeOfBody() {
+		int bodyLength = 0;
+		bodyLength += PduUtil.calculateByteSizeOfNullTerminatedString(this.messageId);
+		bodyLength += PduUtil.calculateByteSizeOfAddress(this.sourceAddress);
+		return bodyLength;
+	}
 
-    @Override
-    public int calculateByteSizeOfBody() {
-        int bodyLength = 0;
-        bodyLength += PduUtil.calculateByteSizeOfNullTerminatedString(this.messageId);
-        bodyLength += PduUtil.calculateByteSizeOfAddress(this.sourceAddress);
-        return bodyLength;
-    }
+	@Override
+	public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		ByteBufUtil.writeNullTerminatedString(buffer, this.messageId);
+		ByteBufUtil.writeAddress(buffer, this.sourceAddress);
+	}
 
-    @Override
-    public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        ByteBufUtil.writeNullTerminatedString(buffer, this.messageId);
-        ByteBufUtil.writeAddress(buffer, this.sourceAddress);
-    }
+	@Override
+	public void appendBodyToString(StringBuilder buffer) {
+		buffer.append("(messageId [");
+		buffer.append((this.messageId));
+		buffer.append("] sourceAddr [");
+		buffer.append((this.sourceAddress));
+		buffer.append("])");
 
-    @Override
-    public void appendBodyToString(StringBuilder buffer) {
-        buffer.append("(messageId [");
-        buffer.append((this.messageId));
-        buffer.append("] sourceAddr [");
-        buffer.append((this.sourceAddress));
-        buffer.append("])");
+	}
 
-    }
+	@Override
+	public QuerySmResp createResponse() {
+		QuerySmResp resp = new QuerySmResp();
+		resp.setSequenceNumber(this.getSequenceNumber());
+		return resp;
+	}
 
-    @Override
-    public QuerySmResp createResponse() {
-        QuerySmResp resp = new QuerySmResp();
-        resp.setSequenceNumber(this.getSequenceNumber());
-        return resp;
-    }
-
-    @Override
-    public Class<QuerySmResp> getResponseClass() {
-        return QuerySmResp.class;
-    }
+	@Override
+	public Class<QuerySmResp> getResponseClass() {
+		return QuerySmResp.class;
+	}
 
 }

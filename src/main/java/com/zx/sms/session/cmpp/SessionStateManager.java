@@ -32,7 +32,7 @@ public class SessionStateManager extends AbstractSessionStateManager<Long, Messa
 	protected boolean needSendAgainByResponse(Message req, Message res) {
 		if (res instanceof CmppSubmitResponseMessage) {
 			CmppSubmitResponseMessage submitResp = (CmppSubmitResponseMessage) res;
-			
+
 			if ((submitResp.getResult() != 0L) && (submitResp.getResult() != 8L)) {
 				logger.error("Send SubmitMsg ERR . Msg: {} ,Resp:{}", req, submitResp);
 			}
@@ -49,9 +49,9 @@ public class SessionStateManager extends AbstractSessionStateManager<Long, Messa
 		}
 		return false;
 	}
-	
+
 	protected boolean closeWhenRetryFailed(Message req) {
-		if(req instanceof CmppActiveTestRequestMessage) {
+		if (req instanceof CmppActiveTestRequestMessage) {
 			return true;
 		}
 		return getEntity().isCloseWhenRetryFailed();

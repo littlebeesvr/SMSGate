@@ -3,8 +3,7 @@ package com.zx.sms.connect.manager.sgip;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.ServerEndpoint;
 
-
-public class SgipServerChildEndpointEntity extends SgipEndpointEntity implements ServerEndpoint{
+public class SgipServerChildEndpointEntity extends SgipEndpointEntity implements ServerEndpoint {
 
 	@Override
 	public SgipServerChildEndpointConnector buildConnector() {
@@ -14,13 +13,13 @@ public class SgipServerChildEndpointEntity extends SgipEndpointEntity implements
 	@Override
 	public void addchild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removechild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

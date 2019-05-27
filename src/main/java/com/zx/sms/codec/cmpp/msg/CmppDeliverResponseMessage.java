@@ -57,8 +57,7 @@ public class CmppDeliverResponseMessage extends DefaultMessage {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("CmppDeliverResponseMessage [msgId=").append(msgId).append(", result=").append(result).append(", sequenceId=")
-				.append(getHeader().getSequenceId()).append( "]");
+		sb.append("CmppDeliverResponseMessage [msgId=").append(msgId).append(", result=").append(result).append(", sequenceId=").append(getHeader().getSequenceId()).append("]");
 		return sb.toString();
 	}
 

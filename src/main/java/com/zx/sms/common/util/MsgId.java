@@ -21,18 +21,18 @@ public class MsgId implements Serializable {
 	private int seconds;
 	private int gateId;
 	private int sequenceId;
-	
-	static{
+
+	static {
 		String vmName = ManagementFactory.getRuntimeMXBean().getName();
-		if(vmName.contains("@")){
-			try{
+		if (vmName.contains("@")) {
+			try {
 				ProcessID = Integer.valueOf(vmName.split("@")[0]);
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 			}
 		}
 	}
-	
+
 	public MsgId() {
 		this(CachedMillisecondClock.INS.now());
 	}
@@ -41,15 +41,15 @@ public class MsgId implements Serializable {
 	 * @param gateId
 	 */
 	public MsgId(int gateId) {
-		this(CachedMillisecondClock.INS.now(), gateId, (int)DefaultSequenceNumberUtil.getSequenceNo());
+		this(CachedMillisecondClock.INS.now(), gateId, (int) DefaultSequenceNumberUtil.getSequenceNo());
 	}
 	/**
 	 * 
 	 * @param timeMillis
 	 */
 	public MsgId(long timeMillis) {
-		
-		this(timeMillis, ProcessID, (int)DefaultSequenceNumberUtil.getSequenceNo());
+
+		this(timeMillis, ProcessID, (int) DefaultSequenceNumberUtil.getSequenceNo());
 	}
 	/**
 	 * 
@@ -86,7 +86,8 @@ public class MsgId implements Serializable {
 		return month;
 	}
 	/**
-	 * @param month the month to set
+	 * @param month
+	 *            the month to set
 	 */
 	public void setMonth(int month) {
 		this.month = month;
@@ -98,7 +99,8 @@ public class MsgId implements Serializable {
 		return day;
 	}
 	/**
-	 * @param day the day to set
+	 * @param day
+	 *            the day to set
 	 */
 	public void setDay(int day) {
 		this.day = day;
@@ -110,7 +112,8 @@ public class MsgId implements Serializable {
 		return hour;
 	}
 	/**
-	 * @param hour the hour to set
+	 * @param hour
+	 *            the hour to set
 	 */
 	public void setHour(int hour) {
 		this.hour = hour;
@@ -122,7 +125,8 @@ public class MsgId implements Serializable {
 		return minutes;
 	}
 	/**
-	 * @param minutes the minutes to set
+	 * @param minutes
+	 *            the minutes to set
 	 */
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
@@ -134,7 +138,8 @@ public class MsgId implements Serializable {
 		return seconds;
 	}
 	/**
-	 * @param seconds the seconds to set
+	 * @param seconds
+	 *            the seconds to set
 	 */
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
@@ -146,7 +151,8 @@ public class MsgId implements Serializable {
 		return gateId;
 	}
 	/**
-	 * @param gateId the gateId to set
+	 * @param gateId
+	 *            the gateId to set
 	 */
 	public void setGateId(int gateId) {
 		this.gateId = gateId;
@@ -158,19 +164,20 @@ public class MsgId implements Serializable {
 		return sequenceId & 0xffff;
 	}
 	/**
-	 * @param sequenceId the sequenceId to set
+	 * @param sequenceId
+	 *            the sequenceId to set
 	 */
 	public void setSequenceId(int sequenceId) {
 		this.sequenceId = sequenceId & 0xffff;
 	}
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String
-				.format("%1$02d%2$02d%3$02d%4$02d%5$02d%6$07d%7$05d",
-						month, day, hour, minutes, seconds, gateId, sequenceId);
+		return String.format("%1$02d%2$02d%3$02d%4$02d%5$02d%6$07d%7$05d", month, day, hour, minutes, seconds, gateId, sequenceId);
 	}
 	@Override
 	public int hashCode() {
@@ -210,7 +217,5 @@ public class MsgId implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

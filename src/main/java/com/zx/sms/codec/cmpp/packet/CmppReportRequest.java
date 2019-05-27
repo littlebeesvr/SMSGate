@@ -3,8 +3,6 @@
  */
 package com.zx.sms.codec.cmpp.packet;
 
-
-
 /**
  * @author huzorro(huzorro@gmail.com)
  *
@@ -17,15 +15,15 @@ public enum CmppReportRequest implements PacketStructure {
 	DESTTERMINALID(CmppDataType.OCTERSTRING, true, 32),
 	SMSCSEQUENCE(CmppDataType.UNSIGNEDINT, true, 4);
 
-    private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private CmppReportRequest(DataType dataType, boolean isFixFiledLength, int length) {
-        this.dataType = dataType;
-        this.isFixFiledLength = isFixFiledLength;
-        this.length = length;
-    }
+	private DataType dataType;
+	private boolean isFixFiledLength;
+	private int length;
+
+	private CmppReportRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+		this.length = length;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -48,7 +46,7 @@ public enum CmppReportRequest implements PacketStructure {
 
 	@Override
 	public int getBodyLength() {
-        
-        return 71;
+
+		return 71;
 	}
 }

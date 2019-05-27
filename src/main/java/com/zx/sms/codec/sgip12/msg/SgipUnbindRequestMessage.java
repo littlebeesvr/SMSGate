@@ -12,14 +12,14 @@ import com.zx.sms.codec.sgip12.packet.SgipPacketType;
  *
  */
 public class SgipUnbindRequestMessage extends DefaultMessage {
-	
+
 	private static final long serialVersionUID = 6344903835739798820L;
 	public SgipUnbindRequestMessage() {
 		super(SgipPacketType.UNBINDREQUEST);
 	}
-	
+
 	public SgipUnbindRequestMessage(Header header) {
-		super(SgipPacketType.UNBINDREQUEST,header);
+		super(SgipPacketType.UNBINDREQUEST, header);
 	}
-	
+
 }

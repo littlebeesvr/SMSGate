@@ -25,13 +25,13 @@ package com.zx.sms.codec.smpp;
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class TerminatingNullByteNotFoundException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
-    
-    public TerminatingNullByteNotFoundException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public TerminatingNullByteNotFoundException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public TerminatingNullByteNotFoundException(String msg) {
+		super(msg);
+	}
+
+	public TerminatingNullByteNotFoundException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

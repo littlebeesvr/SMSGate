@@ -10,14 +10,14 @@ import com.zx.sms.codec.cmpp.packet.CmppPacketType;
  * @author Lihuanghe(18852780@qq.com)
  *
  */
-public class CmppActiveTestResponseMessage extends DefaultMessage{
+public class CmppActiveTestResponseMessage extends DefaultMessage {
 	private static final long serialVersionUID = 4300214238350805590L;
 	private short reserved = 0;
 	public CmppActiveTestResponseMessage(long sequenceId) {
-		super(CmppPacketType.CMPPACTIVETESTRESPONSE,sequenceId);
+		super(CmppPacketType.CMPPACTIVETESTRESPONSE, sequenceId);
 	}
 	public CmppActiveTestResponseMessage(Header header) {
-		super(CmppPacketType.CMPPACTIVETESTRESPONSE,header);
+		super(CmppPacketType.CMPPACTIVETESTRESPONSE, header);
 	}
 	public short getReserved() {
 		return reserved;

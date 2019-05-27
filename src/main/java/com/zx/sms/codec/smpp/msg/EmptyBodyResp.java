@@ -1,5 +1,8 @@
 package com.zx.sms.codec.smpp.msg;
 
+import com.zx.sms.codec.smpp.RecoverablePduException;
+import com.zx.sms.codec.smpp.UnrecoverablePduException;
+
 /*
  * #%L
  * ch-smpp
@@ -22,38 +25,35 @@ package com.zx.sms.codec.smpp.msg;
 
 import io.netty.buffer.ByteBuf;
 
-import com.zx.sms.codec.smpp.RecoverablePduException;
-import com.zx.sms.codec.smpp.UnrecoverablePduException;
-
 public abstract class EmptyBodyResp extends PduResponse {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4591976508943538165L;
 
 	public EmptyBodyResp(int commandId, String name) {
-        super(commandId, name);
-    }
+		super(commandId, name);
+	}
 
-    @Override
-    public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        // no body
-    }
+	@Override
+	public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		// no body
+	}
 
-    @Override
-    public int calculateByteSizeOfBody() {
-        return 0;   // no body
-    }
+	@Override
+	public int calculateByteSizeOfBody() {
+		return 0; // no body
+	}
 
-    @Override
-    public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        // no body
-    }
+	@Override
+	public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		// no body
+	}
 
-    @Override
-    public void appendBodyToString(StringBuilder buffer) {
-        // no body
-    }
-    
+	@Override
+	public void appendBodyToString(StringBuilder buffer) {
+		// no body
+	}
+
 }

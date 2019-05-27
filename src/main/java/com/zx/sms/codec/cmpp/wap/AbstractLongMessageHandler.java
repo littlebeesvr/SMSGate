@@ -18,31 +18,32 @@ import io.netty.handler.codec.MessageToMessageCodec;
 public abstract class AbstractLongMessageHandler<T extends BaseMessage> extends MessageToMessageCodec<T, T> {
 	private final Logger logger = LoggerFactory.getLogger(AbstractLongMessageHandler.class);
 
-	private EndpointEntity  entity;
-	
+	private EndpointEntity entity;
+
 	public AbstractLongMessageHandler(EndpointEntity entity) {
 		this.entity = entity;
 	}
-	
+
 	@Override
 	protected void decode(ChannelHandlerContext ctx, T msg, List<Object> out) throws Exception {
-		if ((entity==null || entity.getSupportLongmsg() == SupportLongMessage.BOTH||entity.getSupportLongmsg() == SupportLongMessage.RECV) && msg instanceof LongSMSMessage && needHandleLongMessage(msg)) {
-			
+		if ((entity == null || entity.getSupportLongmsg() == SupportLongMessage.BOTH || entity.getSupportLongmsg() == SupportLongMessage.RECV) && msg instanceof LongSMSMessage
+				&& needHandleLongMessage(msg)) {
+
 			String key = generateFrameKey(msg);
 			try {
-				SmsMessageHolder hoder = LongMessageFrameHolder.INS.putAndget(key, ((LongSMSMessage)msg));
+				SmsMessageHolder hoder = LongMessageFrameHolder.INS.putAndget(key, ((LongSMSMessage) msg));
 
 				if (hoder != null) {
-					
-					resetMessageContent((T)hoder.msg, hoder.smsMessage);
-					
-					//长短信合并完成，返回的这个msg里已经包含了所有的短信短断。后边的handler响应response时要包含这些片断。
+
+					resetMessageContent((T) hoder.msg, hoder.smsMessage);
+
+					// 长短信合并完成，返回的这个msg里已经包含了所有的短信短断。后边的handler响应response时要包含这些片断。
 					out.add(hoder.msg);
-				} 
+				}
 			} catch (Exception ex) {
 				logger.error("", ex);
 				// 长短信解析失败，直接给网关回复 resp . 并丢弃这个短信
-				logger.error("Decode Message Error ,msg dump :{}", ByteBufUtil.hexDump(((LongSMSMessage)msg).generateFrame().getMsgContentBytes()));
+				logger.error("Decode Message Error ,msg dump :{}", ByteBufUtil.hexDump(((LongSMSMessage) msg).generateFrame().getMsgContentBytes()));
 				BaseMessage res = response(msg);
 				res.setRequest(msg);
 				ctx.writeAndFlush(res);
@@ -54,13 +55,14 @@ public abstract class AbstractLongMessageHandler<T extends BaseMessage> extends 
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, T requestMessage, List<Object> out) throws Exception {
-		if ((entity==null || entity.getSupportLongmsg() == SupportLongMessage.BOTH||entity.getSupportLongmsg() == SupportLongMessage.SEND) && requestMessage instanceof LongSMSMessage  && needHandleLongMessage(requestMessage)) {
-			SmsMessage msgcontent = ((LongSMSMessage)requestMessage).getSmsMessage();
+		if ((entity == null || entity.getSupportLongmsg() == SupportLongMessage.BOTH || entity.getSupportLongmsg() == SupportLongMessage.SEND)
+				&& requestMessage instanceof LongSMSMessage && needHandleLongMessage(requestMessage)) {
+			SmsMessage msgcontent = ((LongSMSMessage) requestMessage).getSmsMessage();
 			List<LongMessageFrame> frameList = LongMessageFrameHolder.INS.splitmsgcontent(msgcontent);
 			boolean first = true;
-			LongSMSMessage lmsg = (LongSMSMessage)requestMessage;
+			LongSMSMessage lmsg = (LongSMSMessage) requestMessage;
 			for (LongMessageFrame frame : frameList) {
-				T t = (T)lmsg.generateMessage(frame);
+				T t = (T) lmsg.generateMessage(frame);
 				out.add(t);
 			}
 		} else {

@@ -9,20 +9,18 @@ import org.apache.commons.lang3.StringUtils;
 public class PropertiesUtils {
 	private static final Properties global = loadProperties("global.properties");
 	private static final Properties je = loadProperties("je.properties");
-    public static String globalBDBBaseHome = PropertiesUtils.getproperties("BDBBaseHome",System.getProperty("java.io.tmpdir"));
-	public static String getdefaultTransportCharset()
-	{
+	public static String globalBDBBaseHome = PropertiesUtils.getproperties("BDBBaseHome", System.getProperty("java.io.tmpdir"));
+	public static String getdefaultTransportCharset() {
 		String charset = global.getProperty("defaultTransportCharset");
-		return charset==null?"UTF-8":charset;
+		return charset == null ? "UTF-8" : charset;
 	}
-	
-	public static String getproperties(String key,String defaultValue)
-	{
+
+	public static String getproperties(String key, String defaultValue) {
 		String ret = global.getProperty(key);
-		return  StringUtils.isBlank(ret) ? defaultValue :ret;
+		return StringUtils.isBlank(ret) ? defaultValue : ret;
 	}
-	
-	public static Properties getJeProperties(){
+
+	public static Properties getJeProperties() {
 		Properties properties = new Properties();
 		properties.putAll(je);
 		return properties;
@@ -33,10 +31,10 @@ public class PropertiesUtils {
 		InputStream inputstream = PropertiesUtils.class.getClassLoader().getResourceAsStream(resources);
 		// new 一个Properties
 		Properties properties = new Properties();
-		if(inputstream==null) {
+		if (inputstream == null) {
 			return properties;
 		}
-			
+
 		try {
 
 			// 加载配置文件

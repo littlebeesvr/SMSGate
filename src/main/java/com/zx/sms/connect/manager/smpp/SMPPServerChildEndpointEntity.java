@@ -3,8 +3,7 @@ package com.zx.sms.connect.manager.smpp;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.ServerEndpoint;
 
-
-public class SMPPServerChildEndpointEntity extends SMPPEndpointEntity implements ServerEndpoint{
+public class SMPPServerChildEndpointEntity extends SMPPEndpointEntity implements ServerEndpoint {
 
 	@Override
 	public SMPPServerChildEndpointConnector buildConnector() {
@@ -14,13 +13,13 @@ public class SMPPServerChildEndpointEntity extends SMPPEndpointEntity implements
 	@Override
 	public void addchild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removechild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

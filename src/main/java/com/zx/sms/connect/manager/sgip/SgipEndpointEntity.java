@@ -4,7 +4,7 @@ import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.connect.manager.EndpointEntity;
 
 public abstract class SgipEndpointEntity extends EndpointEntity {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -441048745116970563L;
@@ -28,5 +28,5 @@ public abstract class SgipEndpointEntity extends EndpointEntity {
 	}
 	public void setNodeId(long nodeId) {
 		this.nodeId = nodeId;
-	}    
+	}
 }

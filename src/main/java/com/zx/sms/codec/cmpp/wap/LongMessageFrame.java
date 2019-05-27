@@ -19,9 +19,9 @@ public class LongMessageFrame {
 	private byte[] msgContentBytes = GlobalConstance.emptyBytes;
 
 	private String contentPart;
-	
+
 	private long sequence;
-	
+
 	/**
 	 * @return the pktotal
 	 */
@@ -124,7 +124,6 @@ public class LongMessageFrame {
 		this.contentPart = contentPart;
 	}
 
-
 	public long getSequence() {
 		return sequence;
 	}
@@ -141,17 +140,17 @@ public class LongMessageFrame {
 			System.arraycopy(msgContentBytes, udhl + 1, payload, 0, payloadlength);
 			// 如果是7bit编码.先转成8bit编码
 			switch (this.msgfmt.getAlphabet()) {
-			case GSM:
-				return LongMessageFrameHolder.octetStream2septetStream(payload);
-			default:
-				return payload;
+				case GSM :
+					return LongMessageFrameHolder.octetStream2septetStream(payload);
+				default :
+					return payload;
 			}
 		} else {
 			switch (this.msgfmt.getAlphabet()) {
-			case GSM:
-				return LongMessageFrameHolder.octetStream2septetStream(msgContentBytes);
-			default:
-				return msgContentBytes;
+				case GSM :
+					return LongMessageFrameHolder.octetStream2septetStream(msgContentBytes);
+				default :
+					return msgContentBytes;
 			}
 		}
 	}

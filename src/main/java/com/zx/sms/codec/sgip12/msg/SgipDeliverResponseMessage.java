@@ -22,7 +22,7 @@ public class SgipDeliverResponseMessage extends DefaultMessage {
 		super(SgipPacketType.DELIVERRESPONSE);
 	}
 	public SgipDeliverResponseMessage(Header header) {
-		super(SgipPacketType.DELIVERRESPONSE,header);
+		super(SgipPacketType.DELIVERRESPONSE, header);
 	}
 	/**
 	 * @return the result
@@ -31,7 +31,8 @@ public class SgipDeliverResponseMessage extends DefaultMessage {
 		return result;
 	}
 	/**
-	 * @param result the result to set
+	 * @param result
+	 *            the result to set
 	 */
 	public void setResult(short result) {
 		this.result = result;
@@ -43,19 +44,20 @@ public class SgipDeliverResponseMessage extends DefaultMessage {
 		return reserve;
 	}
 	/**
-	 * @param reserve the reserve to set
+	 * @param reserve
+	 *            the reserve to set
 	 */
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String
-				.format("SgipDeliverResponseMessage [result=%s, reserve=%s, header=%s]",
-						result, reserve, getHeader());
+		return String.format("SgipDeliverResponseMessage [result=%s, reserve=%s, header=%s]", result, reserve, getHeader());
 	}
-	
+
 }

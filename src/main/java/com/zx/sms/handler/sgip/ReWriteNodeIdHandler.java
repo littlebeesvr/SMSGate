@@ -14,8 +14,8 @@ public class ReWriteNodeIdHandler extends ChannelDuplexHandler {
 	}
 	@Override
 	public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-		if(msg instanceof DefaultMessage && entity instanceof SgipEndpointEntity) {
-			if(((DefaultMessage)msg).isRequest() && entity.getNodeId()!=0) {
+		if (msg instanceof DefaultMessage && entity instanceof SgipEndpointEntity) {
+			if (((DefaultMessage) msg).isRequest() && entity.getNodeId() != 0) {
 				((DefaultMessage) msg).getHeader().setNodeId(entity.getNodeId());
 			}
 		}

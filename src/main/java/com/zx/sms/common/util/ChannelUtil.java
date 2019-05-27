@@ -14,9 +14,7 @@ import com.zx.sms.codec.cmpp.wap.LongMessageFrameHolder;
 import com.zx.sms.connect.manager.EndpointConnector;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.EndpointManager;
-import com.zx.sms.session.AbstractSessionStateManager;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -85,15 +83,15 @@ public class ChannelUtil {
 	public static <T extends BaseMessage> List<Promise<T>> syncWriteLongMsgToEntity(String entity, BaseMessage msg) throws Exception {
 
 		EndpointConnector connector = EndpointManager.INS.getEndpointConnector(entity);
-		
+
 		if (msg instanceof LongSMSMessage) {
 			LongSMSMessage<BaseMessage> lmsg = (LongSMSMessage<BaseMessage>) msg;
 			if (!lmsg.isReport()) {
 				// 长短信拆分
 				SmsMessage msgcontent = lmsg.getSmsMessage();
 				List<LongMessageFrame> frameList = LongMessageFrameHolder.INS.splitmsgcontent(msgcontent);
-				
-				//保证同一条长短信，通过同一个tcp连接发送
+
+				// 保证同一条长短信，通过同一个tcp连接发送
 				List<BaseMessage> msgs = new ArrayList<BaseMessage>();
 				for (LongMessageFrame frame : frameList) {
 					BaseMessage basemsg = (BaseMessage) lmsg.generateMessage(frame);
@@ -116,10 +114,7 @@ public class ChannelUtil {
 
 	/**
 	 * 同步发送消息类型 <br/>
-	 * 注意：该方法将直接发送至编码器，不会再调用BusinessHandler里的write方法了。
-	 * 因此对于Deliver和Submit消息必须自己进行长短信拆分，设置PDU等相关字段
-	 *一般此方法用来发送二进制短信等特殊短信，需要自己生成短信的二进制内容。
-	 *正常短信下发要使用 syncWriteLongMsgToEntity 方法
+	 * 注意：该方法将直接发送至编码器，不会再调用BusinessHandler里的write方法了。 因此对于Deliver和Submit消息必须自己进行长短信拆分，设置PDU等相关字段 一般此方法用来发送二进制短信等特殊短信，需要自己生成短信的二进制内容。 正常短信下发要使用 syncWriteLongMsgToEntity 方法
 	 */
 	public static <T extends BaseMessage> Promise<T> syncWriteBinaryMsgToEntity(String entity, BaseMessage msg) throws Exception {
 

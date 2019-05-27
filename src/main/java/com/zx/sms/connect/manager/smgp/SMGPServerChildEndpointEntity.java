@@ -3,8 +3,7 @@ package com.zx.sms.connect.manager.smgp;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.ServerEndpoint;
 
-
-public class SMGPServerChildEndpointEntity extends SMGPEndpointEntity implements ServerEndpoint{
+public class SMGPServerChildEndpointEntity extends SMGPEndpointEntity implements ServerEndpoint {
 
 	/**
 	 * 
@@ -19,13 +18,13 @@ public class SMGPServerChildEndpointEntity extends SMGPEndpointEntity implements
 	@Override
 	public void addchild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removechild(EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

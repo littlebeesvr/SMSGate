@@ -23,20 +23,18 @@ package com.zx.sms.codec.smpp;
 import com.zx.sms.codec.smpp.msg.Pdu;
 
 /**
- * Thrown when an unsupported or invalid Command ID was decoded.  This is likely
- * a recoverable error.  The recommended action is to either return a NAK or
- * a specific SMPP error code.
+ * Thrown when an unsupported or invalid Command ID was decoded. This is likely a recoverable error. The recommended action is to either return a NAK or a specific SMPP error code.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class UnknownCommandIdException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 
-    public UnknownCommandIdException(Pdu partialPdu, String msg) {
-        super(partialPdu, msg);
-    }
+	public UnknownCommandIdException(Pdu partialPdu, String msg) {
+		super(partialPdu, msg);
+	}
 
-    public UnknownCommandIdException(Pdu partialPdu, String msg, Throwable t) {
-        super(partialPdu, msg, t);
-    }
+	public UnknownCommandIdException(Pdu partialPdu, String msg, Throwable t) {
+		super(partialPdu, msg, t);
+	}
 }

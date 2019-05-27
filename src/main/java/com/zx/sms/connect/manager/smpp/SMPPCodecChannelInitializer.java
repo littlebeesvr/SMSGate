@@ -14,14 +14,14 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 public class SMPPCodecChannelInitializer extends ChannelInitializer<Channel> {
 	private static final Logger logger = LoggerFactory.getLogger(SMPPCodecChannelInitializer.class);
-	
+
 	public static String pipeName() {
 		return "smppCodec";
 	}
 	@Override
 	protected void initChannel(Channel ch) throws Exception {
 		ChannelPipeline pipeline = ch.pipeline();
-		pipeline.addBefore(pipeName(), "FrameDecoder", new LengthFieldBasedFrameDecoder(4 * 1024 , 0, 4, -4, 0, true));
+		pipeline.addBefore(pipeName(), "FrameDecoder", new LengthFieldBasedFrameDecoder(4 * 1024, 0, 4, -4, 0, true));
 
 		pipeline.addBefore(pipeName(), GlobalConstance.codecName, new SMPPMessageCodec());
 		pipeline.addBefore(pipeName(), "DeliverSmReceiptCodec", new DeliverSmReceiptCodec());

@@ -39,83 +39,69 @@ import java.util.Date;
 import org.marre.util.StringUtil;
 import org.marre.wap.mms.MmsConstants;
 
-public class MmsHeaders
-{
-    private static final int DEFAULT_TRANSACTION_ID_LENGTH = 6;
-    
-    protected int    messageTypeId_ = MmsConstants.X_MMS_MESSAGE_TYPE_ID_M_SEND_REQ;
-    protected String transactionId_;
-    protected int    version_     = MmsConstants.X_MMS_MMS_VERSION_1_2;
-    protected String subject_;
-    protected String from_;
-    protected String to_;
-    protected String messageId_;
-    protected Date date;
-    
-    public MmsHeaders()
-    {
-        transactionId_ = StringUtil.randString(DEFAULT_TRANSACTION_ID_LENGTH);
-    }
-    
-    public int getMessageType()
-    {
-        return messageTypeId_;
-    }
-    
-    public void setMessageType(int msgTypeId)
-    {
-        messageTypeId_ = msgTypeId;
-    }
-    
-    public String getTransactionId()
-    {
-        return transactionId_;
-    }
-    
-    public void setTransactionId(String transactionId)
-    {
-        transactionId_ = transactionId;
-    }
-    
-    public int getVersion()
-    {
-        return version_;
-    }
-    
-    public void setVersion(int versionId)
-    {
-    	version_ = versionId;
-    }
-    
-    public String getSubject()
-    {
-        return subject_;
-    }
-    
-    public void setSubject(String subject)
-    {
-        subject_ = subject;
-    }
-    
-    public String getFrom()
-    {
-        return from_;
-    }
-    
-    public void setFrom(String from)
-    {
-        from_ = from;
-    }
-    
-    public String getTo()
-    {
-        return to_;
-    }
-    
-    public void setTo(String to)
-    {
-        to_ = to;
-    }
+public class MmsHeaders {
+	private static final int DEFAULT_TRANSACTION_ID_LENGTH = 6;
+
+	protected int messageTypeId_ = MmsConstants.X_MMS_MESSAGE_TYPE_ID_M_SEND_REQ;
+	protected String transactionId_;
+	protected int version_ = MmsConstants.X_MMS_MMS_VERSION_1_2;
+	protected String subject_;
+	protected String from_;
+	protected String to_;
+	protected String messageId_;
+	protected Date date;
+
+	public MmsHeaders() {
+		transactionId_ = StringUtil.randString(DEFAULT_TRANSACTION_ID_LENGTH);
+	}
+
+	public int getMessageType() {
+		return messageTypeId_;
+	}
+
+	public void setMessageType(int msgTypeId) {
+		messageTypeId_ = msgTypeId;
+	}
+
+	public String getTransactionId() {
+		return transactionId_;
+	}
+
+	public void setTransactionId(String transactionId) {
+		transactionId_ = transactionId;
+	}
+
+	public int getVersion() {
+		return version_;
+	}
+
+	public void setVersion(int versionId) {
+		version_ = versionId;
+	}
+
+	public String getSubject() {
+		return subject_;
+	}
+
+	public void setSubject(String subject) {
+		subject_ = subject;
+	}
+
+	public String getFrom() {
+		return from_;
+	}
+
+	public void setFrom(String from) {
+		from_ = from;
+	}
+
+	public String getTo() {
+		return to_;
+	}
+
+	public void setTo(String to) {
+		to_ = to;
+	}
 
 	public String getMessageId() {
 		return messageId_;
@@ -131,7 +117,6 @@ public class MmsHeaders
 
 	public void setDate(Date date) {
 		this.date = date;
-	}    
-    
-	
+	}
+
 }

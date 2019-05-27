@@ -40,101 +40,83 @@ import java.io.IOException;
 /**
  *
  */
-public class BitArrayOutputStream extends ByteArrayOutputStream
-{
-    private int bitOffset_;
-    private int buffer_;
+public class BitArrayOutputStream extends ByteArrayOutputStream {
+	private int bitOffset_;
+	private int buffer_;
 
-    /**
-     * Default constructor.
-     */
-    public BitArrayOutputStream(int size)
-    {
-        super(size);
-        resetBitCounter();
-    }
+	/**
+	 * Default constructor.
+	 */
+	public BitArrayOutputStream(int size) {
+		super(size);
+		resetBitCounter();
+	}
 
-    public synchronized byte[] toByteArray()
-    {
-        flushByte();
-        return super.toByteArray();
-    }
+	public synchronized byte[] toByteArray() {
+		flushByte();
+		return super.toByteArray();
+	}
 
-    private synchronized void resetBitCounter()
-    {
-        bitOffset_ = 0;
-        buffer_ = 0x00;
-    }
+	private synchronized void resetBitCounter() {
+		bitOffset_ = 0;
+		buffer_ = 0x00;
+	}
 
-    public synchronized void reset()
-    {
-        super.reset();
-        resetBitCounter();
-    }
+	public synchronized void reset() {
+		super.reset();
+		resetBitCounter();
+	}
 
-    public synchronized void flushByte()
-    {
-        if (bitOffset_ > 0)
-        {
-            super.write(buffer_);
-            resetBitCounter();
-        }
-    }
+	public synchronized void flushByte() {
+		if (bitOffset_ > 0) {
+			super.write(buffer_);
+			resetBitCounter();
+		}
+	}
 
-    public synchronized void writeBits( byte[] data, int nBits )
-    {
-        int bitsLeft = nBits;
-        
-        for (int i = 0; bitsLeft > 0; i++)
-        {
-            writeBits(data[i], Math.min(bitsLeft, 8));
-            bitsLeft -= 8;
-        }
-    }
+	public synchronized void writeBits(byte[] data, int nBits) {
+		int bitsLeft = nBits;
 
-    public synchronized void writeBits( int data, int nBits )
-    {
-        int bitsLeft = nBits;
-        int dataLeft = data;
-        
-        while (bitsLeft > 0)
-        {
-            writeBit(dataLeft & 0x01);
-            dataLeft >>= 1;
-            bitsLeft--;
-        }
-    }
+		for (int i = 0; bitsLeft > 0; i++) {
+			writeBits(data[i], Math.min(bitsLeft, 8));
+			bitsLeft -= 8;
+		}
+	}
 
-    public synchronized void writeBit( int bit )
-    {
-        buffer_ |= ((bit & 0x01) << bitOffset_);
-        bitOffset_++;
+	public synchronized void writeBits(int data, int nBits) {
+		int bitsLeft = nBits;
+		int dataLeft = data;
 
-        if (bitOffset_ == 8)
-        {
-            flushByte();
-        }
-    }
+		while (bitsLeft > 0) {
+			writeBit(dataLeft & 0x01);
+			dataLeft >>= 1;
+			bitsLeft--;
+		}
+	}
 
-    public synchronized void write(int data)
-    {
-        writeBits(data, 8);
-    }
+	public synchronized void writeBit(int bit) {
+		buffer_ |= ((bit & 0x01) << bitOffset_);
+		bitOffset_++;
 
-    public synchronized void write(byte[] data)
-    {
-        writeBits(data, 8 * data.length);
-    }
+		if (bitOffset_ == 8) {
+			flushByte();
+		}
+	}
 
-    public synchronized void write(byte[] data, int off, int len)
-    {
-        throw new RuntimeException("Not supported yet");
-    }
+	public synchronized void write(int data) {
+		writeBits(data, 8);
+	}
 
-    public synchronized void close()
-        throws IOException
-    {
-        flushByte();
-        super.close();
-    }
+	public synchronized void write(byte[] data) {
+		writeBits(data, 8 * data.length);
+	}
+
+	public synchronized void write(byte[] data, int off, int len) {
+		throw new RuntimeException("Not supported yet");
+	}
+
+	public synchronized void close() throws IOException {
+		flushByte();
+		super.close();
+	}
 }

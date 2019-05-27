@@ -6,14 +6,6 @@ import java.util.List;
 
 import org.marre.sms.SmsDcs;
 import org.marre.sms.SmsMessage;
-import org.marre.sms.SmsPortAddressedTextMessage;
-import org.marre.sms.SmsSimTookitSecurityMessage;
-import org.marre.sms.SmsTextMessage;
-import org.marre.wap.push.SmsMmsNotificationMessage;
-import org.marre.wap.push.SmsWapPushMessage;
-import org.marre.wap.push.WapSIPush;
-import org.marre.wap.push.WapSLPush;
-import org.marre.wap.wbxml.WbxmlDocument;
 
 import com.zx.sms.LongSMSMessage;
 import com.zx.sms.codec.cmpp.packet.CmppPacketType;
@@ -293,7 +285,7 @@ public class CmppSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	public void setDestterminalId(String destterminalId) {
-		this.destterminalId = new String[] { destterminalId };
+		this.destterminalId = new String[]{destterminalId};
 	}
 
 	/**
@@ -431,7 +423,7 @@ public class CmppSubmitRequestMessage extends DefaultMessage implements LongSMSM
 
 	public static CmppSubmitRequestMessage create(String phone, String spid, String text) {
 		CmppSubmitRequestMessage ret = new CmppSubmitRequestMessage();
-		ret.setDestterminalId(new String[] { phone });
+		ret.setDestterminalId(new String[]{phone});
 		ret.setSrcId(spid);
 		ret.setMsgContent(text);
 		return ret;
@@ -444,9 +436,9 @@ public class CmppSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("CmppSubmitRequestMessage [msgid=").append(msgid).append(", serviceId=").append(serviceId).append(", srcId=").append(srcId)
-				.append(", msgsrc=").append(msgsrc).append(", destterminalId=").append(Arrays.toString(destterminalId)).append(", msgContent=")
-				.append(getMsgContent()).append(", sequenceId=").append(getHeader().getSequenceId()).append("]");
+		sb.append("CmppSubmitRequestMessage [msgid=").append(msgid).append(", serviceId=").append(serviceId).append(", srcId=").append(srcId).append(", msgsrc=").append(msgsrc)
+				.append(", destterminalId=").append(Arrays.toString(destterminalId)).append(", msgContent=").append(getMsgContent()).append(", sequenceId=")
+				.append(getHeader().getSequenceId()).append("]");
 		return sb.toString();
 	}
 

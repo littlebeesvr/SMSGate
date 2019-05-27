@@ -37,9 +37,7 @@ package org.marre.sms;
 /**
  * Represents an phonenumber in SMSj.
  * <p>
- * The address can be a phonenumber (+463482422) or alphanumeric
- * ('SmsService'). Not all networks and transports supports alphanumeric
- * sending id.
+ * The address can be a phonenumber (+463482422) or alphanumeric ('SmsService'). Not all networks and transports supports alphanumeric sending id.
  * <p>
  * Max address length is <br>
  * - 20 digits (excluding any initial '+') or<br>
@@ -49,147 +47,129 @@ package org.marre.sms;
  * @author Markus Eriksson
  * @version $Id$
  */
-public final class SmsAddress
-{
-    private static final String ALLOWED_DIGITS = "+0123456789*#ab";
+public final class SmsAddress {
+	private static final String ALLOWED_DIGITS = "+0123456789*#ab";
 
-    private SmsTon ton_ = SmsTon.INTERNATIONAL;
-    private SmsNpi npi_ = SmsNpi.ISDN_TELEPHONE;
+	private SmsTon ton_ = SmsTon.INTERNATIONAL;
+	private SmsNpi npi_ = SmsNpi.ISDN_TELEPHONE;
 
-    private String address_;
+	private String address_;
 
-    /**
-     * Creates an SmsAddress object.
-     * <p>
-     * This constructor tries to be intelligent by choosing the correct
-     * NPI and TON from the given address.
-     *
-     * @param address The address
-     * @throws SmsException Thrown if the address is invalid
-     */
-    public SmsAddress(String address)
-        throws SmsException
-    {
-        SmsNpi npi = SmsNpi.ISDN_TELEPHONE;
-        SmsTon ton = SmsTon.INTERNATIONAL;
+	/**
+	 * Creates an SmsAddress object.
+	 * <p>
+	 * This constructor tries to be intelligent by choosing the correct NPI and TON from the given address.
+	 *
+	 * @param address
+	 *            The address
+	 * @throws SmsException
+	 *             Thrown if the address is invalid
+	 */
+	public SmsAddress(String address) throws SmsException {
+		SmsNpi npi = SmsNpi.ISDN_TELEPHONE;
+		SmsTon ton = SmsTon.INTERNATIONAL;
 
-        for (int i = 0; i < address.length(); i++)
-        {
-            char ch = address.charAt(i);
-            if (ALLOWED_DIGITS.indexOf(ch) == -1)
-            {
-                ton = SmsTon.ALPHANUMERIC;
-                npi = SmsNpi.UNKNOWN;
-                break;
-            }
-        }
+		for (int i = 0; i < address.length(); i++) {
+			char ch = address.charAt(i);
+			if (ALLOWED_DIGITS.indexOf(ch) == -1) {
+				ton = SmsTon.ALPHANUMERIC;
+				npi = SmsNpi.UNKNOWN;
+				break;
+			}
+		}
 
-        init(address, ton, npi);
-    }
+		init(address, ton, npi);
+	}
 
-    /**
-     * Creates an SmsAddress object.
-     * <p>
-     * If you choose TON_ALPHANUMERIC then the NPI will be set to NPI_UNKNOWN.
-     *
-     * @param address The address
-     * @param ton The type of number
-     * @param npi The number plan indication
-     * @throws SmsException Thrown if the address is invalid
-     */
-    public SmsAddress(String address, SmsTon ton, SmsNpi npi)
-        throws SmsException
-    {
-        init(address, ton, npi);
-    }
+	/**
+	 * Creates an SmsAddress object.
+	 * <p>
+	 * If you choose TON_ALPHANUMERIC then the NPI will be set to NPI_UNKNOWN.
+	 *
+	 * @param address
+	 *            The address
+	 * @param ton
+	 *            The type of number
+	 * @param npi
+	 *            The number plan indication
+	 * @throws SmsException
+	 *             Thrown if the address is invalid
+	 */
+	public SmsAddress(String address, SmsTon ton, SmsNpi npi) throws SmsException {
+		init(address, ton, npi);
+	}
 
-    private void init(String address, SmsTon ton, SmsNpi npi)
-        throws SmsException
-    {
-        int msisdnLength;
+	private void init(String address, SmsTon ton, SmsNpi npi) throws SmsException {
+		int msisdnLength;
 
-        if (address == null)
-        {
-            throw new SmsException("Empty msisdn.");
-        }
+		if (address == null) {
+			throw new SmsException("Empty msisdn.");
+		}
 
-        ton_ = ton;
-        address_ = address.trim();
-        msisdnLength = address_.length();
+		ton_ = ton;
+		address_ = address.trim();
+		msisdnLength = address_.length();
 
-        if (msisdnLength == 0)
-        {
-            throw new SmsException("Empty address.");
-        }
+		if (msisdnLength == 0) {
+			throw new SmsException("Empty address.");
+		}
 
-        if (ton == SmsTon.ALPHANUMERIC)
-        {
-            npi_ = SmsNpi.UNKNOWN;
+		if (ton == SmsTon.ALPHANUMERIC) {
+			npi_ = SmsNpi.UNKNOWN;
 
-            if (address.length() > 11)
-            {
-                throw new SmsException("Alphanumeric address can be at most 11 chars.");
-            }
-        }
-        else
-        {
-            npi_ = npi;
+			if (address.length() > 11) {
+				throw new SmsException("Alphanumeric address can be at most 11 chars.");
+			}
+		} else {
+			npi_ = npi;
 
-            // Trim '+' from address
-            if (address_.charAt(0) == '+')
-            {
-                address_ = address_.substring(1);
-                msisdnLength -= 1;
-            }
+			// Trim '+' from address
+			if (address_.charAt(0) == '+') {
+				address_ = address_.substring(1);
+				msisdnLength -= 1;
+			}
 
-            if (msisdnLength > 20)
-            {
-                throw new SmsException("Too long address, Max allowed is 20 digits (excluding any inital '+').");
-            }
+			if (msisdnLength > 20) {
+				throw new SmsException("Too long address, Max allowed is 20 digits (excluding any inital '+').");
+			}
 
-            for (int i = 0; i < address.length(); i++)
-            {
-                char ch = address.charAt(i);
-                if (ALLOWED_DIGITS.indexOf(ch) == -1)
-                {
-                    throw new SmsException("Invalid digit in address. '" + ch + "'.");
-                }
-            }
-        }
-    }
+			for (int i = 0; i < address.length(); i++) {
+				char ch = address.charAt(i);
+				if (ALLOWED_DIGITS.indexOf(ch) == -1) {
+					throw new SmsException("Invalid digit in address. '" + ch + "'.");
+				}
+			}
+		}
+	}
 
-    /**
-     * Returns the msisdn.
-     *
-     * @return The address
-     */
-    public String getAddress()
-    {
-        return address_;
-    }
+	/**
+	 * Returns the msisdn.
+	 *
+	 * @return The address
+	 */
+	public String getAddress() {
+		return address_;
+	}
 
-    public boolean isAlphanumeric() {
-        return ton_ == SmsTon.ALPHANUMERIC;
-    }
+	public boolean isAlphanumeric() {
+		return ton_ == SmsTon.ALPHANUMERIC;
+	}
 
-    /**
-     * Returns the TON field
-     *
-     * @return The TON
-     */
-    public SmsTon getTypeOfNumber()
-    {
-        return ton_;
-    }
+	/**
+	 * Returns the TON field
+	 *
+	 * @return The TON
+	 */
+	public SmsTon getTypeOfNumber() {
+		return ton_;
+	}
 
-    /**
-     * Returns the NPI field
-     *
-     * @return The NPI
-     */
-    public SmsNpi getNumberingPlanIdentification()
-    {
-        return npi_;
-    }
+	/**
+	 * Returns the NPI field
+	 *
+	 * @return The NPI
+	 */
+	public SmsNpi getNumberingPlanIdentification() {
+		return npi_;
+	}
 }
-

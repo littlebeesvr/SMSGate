@@ -26,13 +26,13 @@ package com.zx.sms.codec.smpp;
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppInvalidArgumentException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 
-    public SmppInvalidArgumentException(String msg) {
-        super(null, msg);
-    }
+	public SmppInvalidArgumentException(String msg) {
+		super(null, msg);
+	}
 
-    public SmppInvalidArgumentException(String msg, Throwable t) {
-        super(null, msg, t);
-    }
+	public SmppInvalidArgumentException(String msg, Throwable t) {
+		super(null, msg, t);
+	}
 }

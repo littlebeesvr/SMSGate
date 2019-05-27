@@ -28,20 +28,21 @@ import com.zx.sms.common.util.HexUtil;
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class UnexpectedPduResponseException extends UnrecoverablePduException {
-    static final long serialVersionUID = 1L;
+	static final long serialVersionUID = 1L;
 
-    private final PduResponse responsePdu;
+	private final PduResponse responsePdu;
 
-    public UnexpectedPduResponseException(PduResponse responsePdu) {
-        super(buildErrorMessage(responsePdu));
-        this.responsePdu = responsePdu;
-    }
+	public UnexpectedPduResponseException(PduResponse responsePdu) {
+		super(buildErrorMessage(responsePdu));
+		this.responsePdu = responsePdu;
+	}
 
-    public PduResponse getResponsePdu() {
-        return this.responsePdu;
-    }
+	public PduResponse getResponsePdu() {
+		return this.responsePdu;
+	}
 
-    static public String buildErrorMessage(PduResponse responsePdu) {
-        return "Unexpected response PDU [" + responsePdu.getClass().getName() + "] [error: 0x" + HexUtil.toHexString(responsePdu.getCommandStatus()) + " \"" + responsePdu.getResultMessage() + "\"]";
-    }
+	static public String buildErrorMessage(PduResponse responsePdu) {
+		return "Unexpected response PDU [" + responsePdu.getClass().getName() + "] [error: 0x" + HexUtil.toHexString(responsePdu.getCommandStatus()) + " \""
+				+ responsePdu.getResultMessage() + "\"]";
+	}
 }

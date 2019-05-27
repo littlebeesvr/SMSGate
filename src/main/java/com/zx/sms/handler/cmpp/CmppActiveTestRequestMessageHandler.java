@@ -3,10 +3,6 @@
  */
 package com.zx.sms.handler.cmpp;
 
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +10,10 @@ import com.zx.sms.codec.cmpp.msg.CmppActiveTestRequestMessage;
 import com.zx.sms.codec.cmpp.msg.CmppActiveTestResponseMessage;
 import com.zx.sms.codec.cmpp.packet.CmppPacketType;
 import com.zx.sms.codec.cmpp.packet.PacketType;
+
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * @author huzorro(huzorro@gmail.com)

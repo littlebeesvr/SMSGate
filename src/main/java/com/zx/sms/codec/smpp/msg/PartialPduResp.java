@@ -21,14 +21,14 @@ package com.zx.sms.codec.smpp.msg;
  */
 
 public class PartialPduResp extends EmptyBodyResp {
-    
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5390918907167743338L;
 
 	public PartialPduResp(int commandId) {
-        super(commandId, "partial_pdu_resp");
-    }
-    
+		super(commandId, "partial_pdu_resp");
+	}
+
 }

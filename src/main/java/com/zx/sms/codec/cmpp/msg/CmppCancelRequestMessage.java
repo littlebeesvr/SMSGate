@@ -14,9 +14,9 @@ import com.zx.sms.common.util.MsgId;
 public class CmppCancelRequestMessage extends DefaultMessage {
 	private static final long serialVersionUID = -4633530203133110407L;
 	private MsgId msgId = new MsgId();
-	
+
 	public CmppCancelRequestMessage(Header header) {
-		super(CmppPacketType.CMPPCANCELREQUEST,header);
+		super(CmppPacketType.CMPPCANCELREQUEST, header);
 	}
 
 	public CmppCancelRequestMessage() {
@@ -30,10 +30,11 @@ public class CmppCancelRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param msgId the msgId to set
+	 * @param msgId
+	 *            the msgId to set
 	 */
 	public void setMsgId(MsgId msgId) {
 		this.msgId = msgId;
 	}
-	
+
 }

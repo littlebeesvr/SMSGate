@@ -28,13 +28,13 @@ import com.zx.sms.common.util.HexUtil;
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class GenericNackException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
-    
-    public GenericNackException(GenericNack nack) {
-        super(buildErrorMessage(nack));
-    }
+	static final long serialVersionUID = 1L;
 
-    static public String buildErrorMessage(GenericNack nack) {
-        return "Negative acknowledgement for request [error: 0x" + HexUtil.toHexString(nack.getCommandStatus()) + " \"" + nack.getResultMessage() + "\"]";
-    }
+	public GenericNackException(GenericNack nack) {
+		super(buildErrorMessage(nack));
+	}
+
+	static public String buildErrorMessage(GenericNack nack) {
+		return "Negative acknowledgement for request [error: 0x" + HexUtil.toHexString(nack.getCommandStatus()) + " \"" + nack.getResultMessage() + "\"]";
+	}
 }

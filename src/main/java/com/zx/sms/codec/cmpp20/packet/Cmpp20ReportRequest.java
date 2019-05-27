@@ -7,8 +7,6 @@ import com.zx.sms.codec.cmpp.packet.CmppDataType;
 import com.zx.sms.codec.cmpp.packet.DataType;
 import com.zx.sms.codec.cmpp.packet.PacketStructure;
 
-
-
 /**
  * @author huzorro(huzorro@gmail.com)
  *
@@ -21,15 +19,15 @@ public enum Cmpp20ReportRequest implements PacketStructure {
 	DESTTERMINALID(CmppDataType.OCTERSTRING, true, 21),
 	SMSCSEQUENCE(CmppDataType.UNSIGNEDINT, true, 4);
 
-    private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private Cmpp20ReportRequest(DataType dataType, boolean isFixFiledLength, int length) {
-        this.dataType = dataType;
-        this.isFixFiledLength = isFixFiledLength;
-        this.length = length;
-    }
+	private DataType dataType;
+	private boolean isFixFiledLength;
+	private int length;
+
+	private Cmpp20ReportRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+		this.length = length;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -52,7 +50,7 @@ public enum Cmpp20ReportRequest implements PacketStructure {
 
 	@Override
 	public int getBodyLength() {
-      
-        return 60;
+
+		return 60;
 	}
 }

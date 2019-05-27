@@ -13,14 +13,14 @@ import com.zx.sms.codec.cmpp.packet.PacketStructure;
 public enum SgipUnbindResponse implements PacketStructure {
 	;
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipUnbindResponse(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipUnbindResponse(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -44,7 +44,7 @@ public enum SgipUnbindResponse implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipUnbindResponse r : SgipUnbindResponse.values()) {
+		for (SgipUnbindResponse r : SgipUnbindResponse.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;

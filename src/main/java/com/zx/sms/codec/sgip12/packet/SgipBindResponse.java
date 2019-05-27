@@ -7,19 +7,19 @@ import com.zx.sms.codec.cmpp.packet.PacketStructure;
  * @author huzorro(huzorro@gmail.com)
  *
  */
-public  enum SgipBindResponse implements PacketStructure {
+public enum SgipBindResponse implements PacketStructure {
 	RESULT(SgipDataType.UNSIGNEDINT, true, 1),
 	RESERVE(SgipDataType.OCTERSTRING, true, 8);
-	
+
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipBindResponse(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipBindResponse(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -43,10 +43,10 @@ public  enum SgipBindResponse implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipBindResponse r : SgipBindResponse.values()) {
+		for (SgipBindResponse r : SgipBindResponse.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;
-	}	
+	}
 
 }

@@ -13,16 +13,16 @@ import com.zx.sms.codec.cmpp.packet.PacketStructure;
 public enum SgipReportResponse implements PacketStructure {
 	RESULT(SgipDataType.UNSIGNEDINT, true, 1),
 	RESERVE(SgipDataType.OCTERSTRING, true, 8);
-	
+
 	private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private SgipReportResponse(DataType dataType, boolean isFixFiledLength, int length) {
-    	this.length = length;
-    	this.dataType = dataType;
-    	this.isFixFiledLength = isFixFiledLength;
-    }
+	private boolean isFixFiledLength;
+	private int length;
+
+	private SgipReportResponse(DataType dataType, boolean isFixFiledLength, int length) {
+		this.length = length;
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+	}
 	@Override
 	public DataType getDataType() {
 		return dataType;
@@ -46,9 +46,9 @@ public enum SgipReportResponse implements PacketStructure {
 	@Override
 	public int getBodyLength() {
 		int bodyLength = 0;
-		for(SgipReportResponse r : SgipReportResponse.values()) {
+		for (SgipReportResponse r : SgipReportResponse.values()) {
 			bodyLength += r.getLength();
 		}
 		return bodyLength;
-	}	
+	}
 }

@@ -1,6 +1,6 @@
 package com.zx.sms.common;
 
-public class SmsLifeTerminateException extends RuntimeException{
+public class SmsLifeTerminateException extends RuntimeException {
 	/**
 	 * 
 	 */

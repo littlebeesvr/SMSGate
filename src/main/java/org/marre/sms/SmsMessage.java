@@ -40,13 +40,11 @@ package org.marre.sms;
  * @author Markus Eriksson
  * @version $Id$
  */
-public interface SmsMessage
-{
-    /**
-     * Returns the content of this SmsMessage in form of pdus.
-     *
-     * @return Pdus
-     */
-    SmsPdu[] getPdus();
+public interface SmsMessage {
+	/**
+	 * Returns the content of this SmsMessage in form of pdus.
+	 *
+	 * @return Pdus
+	 */
+	SmsPdu[] getPdus();
 }
-

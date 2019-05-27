@@ -21,50 +21,54 @@ package com.zx.sms.codec.smpp;
  */
 
 /**
- * Exception that represents more data is required in order to parse an SMPP PDU.
- * In as many cases as possible, this exception should include an
- * estimate of how many bytes are needed/missing in order to succeed in parsing.
- * An estimate of -1 represents an uknown amount of data.
+ * Exception that represents more data is required in order to parse an SMPP PDU. In as many cases as possible, this exception should include an estimate of how many bytes are
+ * needed/missing in order to succeed in parsing. An estimate of -1 represents an uknown amount of data.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class NotEnoughDataInBufferException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
-    
-    private int available;
-    private int expected;
+	static final long serialVersionUID = 1L;
 
-    /**
-     * Constructs an instance of <code>AtNotEnoughDataInBufferException</code>
-     * with the specified detail message and estimated number of bytes required.
-     * An estimate of -1 represents an unknown amount.
-     * @param msg the detail message.
-     * @param available Number of bytes that were available
-     * @param expected Number of bytes expected or -1 if unknown
-     */
-    public NotEnoughDataInBufferException(int available, int expected) {
-        this(null, available, expected);
-    }
+	private int available;
+	private int expected;
 
-    /**
-     * Constructs an instance of <code>AtNotEnoughDataInBufferException</code>
-     * with the specified detail message and estimated number of bytes required.
-     * An estimate of -1 represents an unknown amount.
-     * @param msg the detail message.
-     * @param available Number of bytes that were available
-     * @param expected Number of bytes expected or -1 if unknown
-     */
-    public NotEnoughDataInBufferException(String msg, int available, int expected) {
-        super("Not enough data in byte buffer to complete encoding/decoding [expected: " + expected + ", available: " + available + "]" + (msg == null ? "" : ": " + msg));
-        this.available = available;
-        this.expected = expected;
-    }
+	/**
+	 * Constructs an instance of <code>AtNotEnoughDataInBufferException</code> with the specified detail message and estimated number of bytes required. An estimate of -1
+	 * represents an unknown amount.
+	 * 
+	 * @param msg
+	 *            the detail message.
+	 * @param available
+	 *            Number of bytes that were available
+	 * @param expected
+	 *            Number of bytes expected or -1 if unknown
+	 */
+	public NotEnoughDataInBufferException(int available, int expected) {
+		this(null, available, expected);
+	}
 
-    public int getAvailable() {
-        return available;
-    }
+	/**
+	 * Constructs an instance of <code>AtNotEnoughDataInBufferException</code> with the specified detail message and estimated number of bytes required. An estimate of -1
+	 * represents an unknown amount.
+	 * 
+	 * @param msg
+	 *            the detail message.
+	 * @param available
+	 *            Number of bytes that were available
+	 * @param expected
+	 *            Number of bytes expected or -1 if unknown
+	 */
+	public NotEnoughDataInBufferException(String msg, int available, int expected) {
+		super("Not enough data in byte buffer to complete encoding/decoding [expected: " + expected + ", available: " + available + "]" + (msg == null ? "" : ": " + msg));
+		this.available = available;
+		this.expected = expected;
+	}
 
-    public int getExpected() {
-        return expected;
-    }
+	public int getAvailable() {
+		return available;
+	}
+
+	public int getExpected() {
+		return expected;
+	}
 }

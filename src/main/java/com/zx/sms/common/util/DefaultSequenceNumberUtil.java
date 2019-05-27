@@ -17,7 +17,7 @@ import org.apache.commons.lang3.time.DateUtils;
  *
  */
 public class DefaultSequenceNumberUtil {
-	
+
 	public static byte[] sequenceN2Bytes(SequenceNumber sn) {
 		byte[] bytes = new byte[12];
 		long t = Long.parseLong(sn.getTimeString());
@@ -26,49 +26,50 @@ public class DefaultSequenceNumberUtil {
 
 	}
 	private static final String[] datePattern = new String[]{"yyyyMMddHHmmss"};
-	
+
 	public static SequenceNumber bytes2SequenceN(byte[] bytes) {
 		long nodeIds = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 0, 4)).getInt() & 0xFFFFFFFFL;
-		
-		//sgip协议里时间不带年份信息，这里判断下年份信息
+
+		// sgip协议里时间不带年份信息，这里判断下年份信息
 		String year = DateFormatUtils.format(CachedMillisecondClock.INS.now(), "yyyy");
-		String t = String.format("%1$s%2$010d",year, ByteBuffer.wrap(Arrays.copyOfRange(bytes, 4, 8)).getInt() & 0xFFFFFFFFL);
-		
-		Date d ;
+		String t = String.format("%1$s%2$010d", year, ByteBuffer.wrap(Arrays.copyOfRange(bytes, 4, 8)).getInt() & 0xFFFFFFFFL);
+
+		Date d;
 		try {
 			d = DateUtils.parseDate(t, datePattern);
-			//如果正好是年末，这个时间有可能差一年，则必须取上一年
-			//这里判断取200天，防止因不同主机时间不同步造成误差
-			if(d.getTime() - CachedMillisecondClock.INS.now() > 86400000L * 200){
+			// 如果正好是年末，这个时间有可能差一年，则必须取上一年
+			// 这里判断取200天，防止因不同主机时间不同步造成误差
+			if (d.getTime() - CachedMillisecondClock.INS.now() > 86400000L * 200) {
 				d = DateUtils.addYears(d, -1);
 			}
 		} catch (ParseException e) {
 			d = new Date();
 			e.printStackTrace();
 		}
-		
+
 		long sequenceId = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 8, 12)).getInt() & 0xFFFFFFFFL;
-		SequenceNumber sn = new SequenceNumber(d.getTime(),nodeIds,sequenceId);
+		SequenceNumber sn = new SequenceNumber(d.getTime(), nodeIds, sequenceId);
 		return sn;
 	}
 
 	public static long getSequenceNo() {
-		return getNextAtomicValue(sequenceId,Limited);
+		return getNextAtomicValue(sequenceId, Limited);
 	}
-	
+
 	/**
-	 *实现AtomicLong对象的线程安全循环自增
-	 *@param  atomicObj
-	 *需要自增的Atomic对象
-	 *@param limited
-	 *最大值
+	 * 实现AtomicLong对象的线程安全循环自增
+	 * 
+	 * @param atomicObj
+	 *            需要自增的Atomic对象
+	 * @param limited
+	 *            最大值
 	 */
-	public static long getNextAtomicValue(AtomicLong atomicObj,long limited){
+	public static long getNextAtomicValue(AtomicLong atomicObj, long limited) {
 		long ret = atomicObj.getAndIncrement();
 
 		if (ret > limited) { // Long.MAX_VALUE - 0xfff
 			synchronized (atomicObj) {
-				//双重判断，只能有一个线程更新值
+				// 双重判断，只能有一个线程更新值
 				if (atomicObj.get() > limited) {
 					atomicObj.set(0);
 					return 0;

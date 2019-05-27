@@ -34,10 +34,8 @@
  * ***** END LICENSE BLOCK ***** */
 package org.marre.mime;
 
-public class MimeMultipartAlternative extends MimeMultipart
-{
-    public MimeMultipartAlternative()
-    {
-        super("multipart/alternative");
-    }    
+public class MimeMultipartAlternative extends MimeMultipart {
+	public MimeMultipartAlternative() {
+		super("multipart/alternative");
+	}
 }

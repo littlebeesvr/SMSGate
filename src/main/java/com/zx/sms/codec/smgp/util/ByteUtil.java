@@ -67,18 +67,18 @@ public class ByteUtil {
 
 	public static byte[] removeString(byte[] buffer, int offset) {
 
-	    int len=0;    
-	    while(offset+len< buffer.length  && buffer[offset+len]!=0){
-	    	len++; 	
-	    }
-       
-	    byte[] bytes=null;
-	    if(offset+len<buffer.length)
-	        bytes=new byte[len+1];
-	    else
-	    	bytes=new byte[len];
-	    System.arraycopy(buffer, offset, bytes, 0, len);
-	    return bytes;	
+		int len = 0;
+		while (offset + len < buffer.length && buffer[offset + len] != 0) {
+			len++;
+		}
+
+		byte[] bytes = null;
+		if (offset + len < buffer.length)
+			bytes = new byte[len + 1];
+		else
+			bytes = new byte[len];
+		System.arraycopy(buffer, offset, bytes, 0, len);
+		return bytes;
 	}
 
 	public static byte[] lfillBytes(byte[] src, int len) {
@@ -139,10 +139,10 @@ public class ByteUtil {
 				break;
 			}
 		}
-		if (i == src.length-1) {
+		if (i == src.length - 1) {
 			return src;
 		}
-		if( i == -1){
+		if (i == -1) {
 			return new byte[0];
 		}
 		byte[] tmp = new byte[i + 1];
@@ -160,18 +160,18 @@ public class ByteUtil {
 		}
 		if (i == src.length) {
 			return new byte[0];
-		};
-		
+		} ;
+
 		if (i == 0) {
 			return src;
-		};
-		
+		} ;
+
 		byte[] tmp = new byte[src.length - i];
 		System.arraycopy(src, i, tmp, 0, src.length - i);
 		return tmp;
 	}
 
-	private static String HexCode[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+	private static String HexCode[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
 	public static String byteToHexString(byte b) {
 		int n = b;
@@ -192,8 +192,7 @@ public class ByteUtil {
 	}
 
 	public static int byte2int(byte b[], int offset) {
-		return b[offset + 3] & 0xff | (b[offset + 2] & 0xff) << 8 | (b[offset + 1] & 0xff) << 16
-				| (b[offset] & 0xff) << 24;
+		return b[offset + 3] & 0xff | (b[offset + 2] & 0xff) << 8 | (b[offset + 1] & 0xff) << 16 | (b[offset] & 0xff) << 24;
 	}
 
 	public static int byte2int(byte b[]) {
@@ -201,16 +200,13 @@ public class ByteUtil {
 	}
 
 	public static long byte2long(byte b[]) {
-		return (long) b[7] & (long) 255 | ((long) b[6] & (long) 255) << 8 | ((long) b[5] & (long) 255) << 16
-				| ((long) b[4] & (long) 255) << 24 | ((long) b[3] & (long) 255) << 32
+		return (long) b[7] & (long) 255 | ((long) b[6] & (long) 255) << 8 | ((long) b[5] & (long) 255) << 16 | ((long) b[4] & (long) 255) << 24 | ((long) b[3] & (long) 255) << 32
 				| ((long) b[2] & (long) 255) << 40 | ((long) b[1] & (long) 255) << 48 | (long) b[0] << 56;
 	}
 
 	public static long byte2long(byte b[], int offset) {
-		return (long) b[offset + 7] & (long) 255 | ((long) b[offset + 6] & (long) 255) << 8
-				| ((long) b[offset + 5] & (long) 255) << 16 | ((long) b[offset + 4] & (long) 255) << 24
-				| ((long) b[offset + 3] & (long) 255) << 32 | ((long) b[offset + 2] & (long) 255) << 40
-				| ((long) b[offset + 1] & (long) 255) << 48 | (long) b[offset] << 56;
+		return (long) b[offset + 7] & (long) 255 | ((long) b[offset + 6] & (long) 255) << 8 | ((long) b[offset + 5] & (long) 255) << 16 | ((long) b[offset + 4] & (long) 255) << 24
+				| ((long) b[offset + 3] & (long) 255) << 32 | ((long) b[offset + 2] & (long) 255) << 40 | ((long) b[offset + 1] & (long) 255) << 48 | (long) b[offset] << 56;
 	}
 
 	public static byte[] int2byte(int n) {

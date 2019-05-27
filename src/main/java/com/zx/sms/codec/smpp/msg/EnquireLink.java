@@ -23,25 +23,25 @@ package com.zx.sms.codec.smpp.msg;
 import com.zx.sms.codec.smpp.SmppConstants;
 
 public class EnquireLink extends EmptyBody<EnquireLinkResp> {
-    
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2201331052566427144L;
 
 	public EnquireLink() {
-        super(SmppConstants.CMD_ID_ENQUIRE_LINK, "enquire_link");
-    }
+		super(SmppConstants.CMD_ID_ENQUIRE_LINK, "enquire_link");
+	}
 
-    @Override
-    public EnquireLinkResp createResponse() {
-        EnquireLinkResp resp = new EnquireLinkResp();
-        resp.setSequenceNumber(this.getSequenceNumber());
-        return resp;
-    }
+	@Override
+	public EnquireLinkResp createResponse() {
+		EnquireLinkResp resp = new EnquireLinkResp();
+		resp.setSequenceNumber(this.getSequenceNumber());
+		return resp;
+	}
 
-    @Override
-    public Class<EnquireLinkResp> getResponseClass() {
-        return EnquireLinkResp.class;
-    }
+	@Override
+	public Class<EnquireLinkResp> getResponseClass() {
+		return EnquireLinkResp.class;
+	}
 }

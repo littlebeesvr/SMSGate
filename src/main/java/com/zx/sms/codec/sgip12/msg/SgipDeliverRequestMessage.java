@@ -6,17 +6,8 @@ package com.zx.sms.codec.sgip12.msg;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.marre.sms.SmsAlphabet;
 import org.marre.sms.SmsDcs;
 import org.marre.sms.SmsMessage;
-import org.marre.sms.SmsMsgClass;
-import org.marre.sms.SmsPortAddressedTextMessage;
-import org.marre.sms.SmsTextMessage;
-import org.marre.wap.push.SmsMmsNotificationMessage;
-import org.marre.wap.push.SmsWapPushMessage;
-import org.marre.wap.push.WapSIPush;
-import org.marre.wap.push.WapSLPush;
-import org.marre.wap.wbxml.WbxmlDocument;
 
 import com.zx.sms.LongSMSMessage;
 import com.zx.sms.codec.cmpp.msg.DefaultMessage;
@@ -32,7 +23,7 @@ import com.zx.sms.common.util.DefaultSequenceNumberUtil;
  * @author huzorro(huzorro@gmail.com)
  * 
  */
-public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMSMessage<SgipDeliverRequestMessage>{
+public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMSMessage<SgipDeliverRequestMessage> {
 	private static final long serialVersionUID = -605827022369453415L;
 
 	private String usernumber = GlobalConstance.emptyString;
@@ -48,11 +39,11 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	public SgipDeliverRequestMessage() {
 		super(SgipPacketType.DELIVERREQUEST);
 	}
-	
+
 	public SgipDeliverRequestMessage(Header header) {
-		super(SgipPacketType.DELIVERREQUEST,header);
+		super(SgipPacketType.DELIVERREQUEST, header);
 	}
-	
+
 	public SmsDcs getMsgfmt() {
 		return msgfmt;
 	}
@@ -68,7 +59,8 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	}
 
 	/**
-	 * @param usernumber the usernumber to set
+	 * @param usernumber
+	 *            the usernumber to set
 	 */
 	public void setUsernumber(String usernumber) {
 		this.usernumber = usernumber;
@@ -82,7 +74,8 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	}
 
 	/**
-	 * @param spnumber the spnumber to set
+	 * @param spnumber
+	 *            the spnumber to set
 	 */
 	public void setSpnumber(String spnumber) {
 		this.spnumber = spnumber;
@@ -96,7 +89,8 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	}
 
 	/**
-	 * @param tppid the tppid to set
+	 * @param tppid
+	 *            the tppid to set
 	 */
 	public void setTppid(short tppid) {
 		this.tppid = tppid;
@@ -110,7 +104,8 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	}
 
 	/**
-	 * @param tpudhi the tpudhi to set
+	 * @param tpudhi
+	 *            the tpudhi to set
 	 */
 	public void setTpudhi(short tpudhi) {
 		this.tpudhi = tpudhi;
@@ -124,7 +119,8 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	}
 
 	/**
-	 * @param messagelength the messagelength to set
+	 * @param messagelength
+	 *            the messagelength to set
 	 */
 	public void setMessagelength(int messagelength) {
 		this.messagelength = messagelength;
@@ -136,43 +132,44 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	public String getReserve() {
 		return reserve;
 	}
-	
+
 	public boolean isReport() {
 		return false;
 	}
 
 	/**
-	 * @param reserve the reserve to set
+	 * @param reserve
+	 *            the reserve to set
 	 */
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-	
+
 	public String getMsgContent() {
-		if(msg instanceof SmsMessage){
+		if (msg instanceof SmsMessage) {
 			return msg.toString();
 		}
-		
-		if(msgContentBytes!=null && msgContentBytes.length>0){
+
+		if (msgContentBytes != null && msgContentBytes.length > 0) {
 			LongMessageFrame frame = generateFrame();
 			return LongMessageFrameHolder.INS.getPartTextMsg(frame);
 		}
-	
-	return "";
-}
-	
+
+		return "";
+	}
+
 	public void setMsgContent(String msgContent) {
 		setMsgContent(CMPPCommonUtil.buildTextMessage(msgContent));
 	}
-	
-	public void setMsgContent(SmsMessage msg){
+
+	public void setMsgContent(SmsMessage msg) {
 		this.msg = msg;
 	}
 
 	public SmsMessage getSmsMessage() {
 		return msg;
 	}
-	
+
 	/**
 	 * @return the msgContentBytes
 	 */
@@ -180,25 +177,28 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 		return msgContentBytes;
 	}
 	/**
-	 * @param msgContentBytes the msgContentBytes to set
+	 * @param msgContentBytes
+	 *            the msgContentBytes to set
 	 */
 	public void setMsgContentBytes(byte[] msgContentBytes) {
 		this.msgContentBytes = msgContentBytes;
 	}
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SgipDeliverRequestMessage [").append("destId=").append(usernumber).append(", srcterminalId=").append(spnumber)
-				.append(", msgContent=").append(getMsgContent()).append(", header=").append(getHeader()).append("]");
+		sb.append("SgipDeliverRequestMessage [").append("destId=").append(usernumber).append(", srcterminalId=").append(spnumber).append(", msgContent=").append(getMsgContent())
+				.append(", header=").append(getHeader()).append("]");
 		return sb.toString();
 	}
 	public SgipDeliverRequestMessage clone() throws CloneNotSupportedException {
 		return (SgipDeliverRequestMessage) super.clone();
 	}
-	
+
 	@Override
 	public LongMessageFrame generateFrame() {
 		LongMessageFrame frame = new LongMessageFrame();
@@ -206,7 +206,7 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 		frame.setTpudhi(getTpudhi());
 		frame.setMsgfmt(getMsgfmt());
 		frame.setMsgContentBytes(getMsgContentBytes());
-		frame.setMsgLength((short)getMessagelength());
+		frame.setMsgLength((short) getMessagelength());
 		frame.setSequence(getSequenceNo());
 		return frame;
 	}
@@ -214,20 +214,20 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 	@Override
 	public SgipDeliverRequestMessage generateMessage(LongMessageFrame frame) throws Exception {
 		SgipDeliverRequestMessage requestMessage = this.clone();
-		
+
 		requestMessage.setTpudhi(frame.getTpudhi());
 		requestMessage.setMsgfmt(frame.getMsgfmt());
 		requestMessage.setMsgContentBytes(frame.getMsgContentBytes());
-		requestMessage.setMessagelength((short)frame.getMsgLength());
-		
-		if(frame.getPknumber()!=1){
+		requestMessage.setMessagelength((short) frame.getMsgLength());
+
+		if (frame.getPknumber() != 1) {
 			requestMessage.getHeader().setSequenceId(DefaultSequenceNumberUtil.getSequenceNo());
 		}
-		requestMessage.setMsgContent((SmsMessage)null);
+		requestMessage.setMsgContent((SmsMessage) null);
 		return requestMessage;
 	}
 	private List<SgipDeliverRequestMessage> fragments = null;
-	
+
 	@Override
 	public List<SgipDeliverRequestMessage> getFragments() {
 		return fragments;
@@ -235,10 +235,10 @@ public class SgipDeliverRequestMessage extends DefaultMessage implements LongSMS
 
 	@Override
 	public void addFragment(SgipDeliverRequestMessage fragment) {
-		if(fragments==null)
+		if (fragments == null)
 			fragments = new ArrayList<SgipDeliverRequestMessage>();
-		
+
 		fragments.add(fragment);
 	}
-	
+
 }

@@ -51,11 +51,10 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 		if (Arrays.equals(authBytes, message.getAuthenticatorSource())) {
 			return 0;
 		} else {
-			logger.error("AuthenticatorSource valided failed.s:{},c:{}",Hex.encodeHexString(authBytes),Hex.encodeHexString(message.getAuthenticatorSource()));
+			logger.error("AuthenticatorSource valided failed.s:{},c:{}", Hex.encodeHexString(authBytes), Hex.encodeHexString(message.getAuthenticatorSource()));
 			return 3;
 		}
 	}
-
 
 	@Override
 	protected void doLogin(Channel ch) {
@@ -76,8 +75,8 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 
 	@Override
 	protected EndpointEntity queryEndpointEntityByMsg(Object msg) {
-		if(msg instanceof CmppConnectRequestMessage){
-			CmppConnectRequestMessage  message = (CmppConnectRequestMessage)msg;
+		if (msg instanceof CmppConnectRequestMessage) {
+			CmppConnectRequestMessage message = (CmppConnectRequestMessage) msg;
 			String username = message.getSourceAddr();
 			if (entity instanceof ServerEndpoint) {
 				ServerEndpoint serverEntity = (ServerEndpoint) entity;
@@ -88,64 +87,63 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 	}
 
 	@Override
-	protected boolean validAddressHost(EndpointEntity childentity,Channel channel) {
+	protected boolean validAddressHost(EndpointEntity childentity, Channel channel) {
 		return true;
 	}
 
 	@Override
 	protected int validClientMsg(EndpointEntity entity, Object message) {
 		try {
-			return validClientMsg((CmppConnectRequestMessage)message,(CMPPServerChildEndpointEntity)entity);
+			return validClientMsg((CmppConnectRequestMessage) message, (CMPPServerChildEndpointEntity) entity);
 		} catch (Exception e) {
-			logger.error("AuthenticatorSource valided failed",e);
+			logger.error("AuthenticatorSource valided failed", e);
 			return 3;
 		}
 	}
 
 	@Override
 	protected int validServermsg(Object message) {
-		if(message instanceof CmppConnectResponseMessage){
+		if (message instanceof CmppConnectResponseMessage) {
 			CmppConnectResponseMessage resp = (CmppConnectResponseMessage) message;
-			//不校验服务器验证码了。直接返回状态
+			// 不校验服务器验证码了。直接返回状态
 			return (int) resp.getStatus();
-		}else{
-			logger.error("connect msg type error : {}" , message);
+		} else {
+			logger.error("connect msg type error : {}", message);
 			return 9;
 		}
 	}
 
 	@Override
-	protected void changeProtoVersion(ChannelHandlerContext ctx, EndpointEntity entity,Object msg) throws Exception{
-		
-		CMPPServerChildEndpointEntity childentity = (CMPPServerChildEndpointEntity)entity;
-		CmppConnectRequestMessage message = (CmppConnectRequestMessage)msg;
+	protected void changeProtoVersion(ChannelHandlerContext ctx, EndpointEntity entity, Object msg) throws Exception {
+
+		CMPPServerChildEndpointEntity childentity = (CMPPServerChildEndpointEntity) entity;
+		CmppConnectRequestMessage message = (CmppConnectRequestMessage) msg;
 		short version = message.getVersion();
-		//默认的是cmpp30的协议，如果不是cmpp30则要更换解析器版本
-		if ((short)0x30 != childentity.getVersion()) {
-			//发送ConnectRequest里的Version跟配置的不同
-			if(childentity.getVersion() != version){
-				logger.warn("receive version code {} ,expected version is {} .I would use version {}",version ,childentity.getVersion(),childentity.getVersion());
+		// 默认的是cmpp30的协议，如果不是cmpp30则要更换解析器版本
+		if ((short) 0x30 != childentity.getVersion()) {
+			// 发送ConnectRequest里的Version跟配置的不同
+			if (childentity.getVersion() != version) {
+				logger.warn("receive version code {} ,expected version is {} .I would use version {}", version, childentity.getVersion(), childentity.getVersion());
 			}
-			
-			//以配置的协议版本为准
-			//更换协议解析器
+
+			// 以配置的协议版本为准
+			// 更换协议解析器
 			logger.info("changeCodec to version:{}", childentity.getVersion());
-			ctx.pipeline().replace(GlobalConstance.codecName, GlobalConstance.codecName,
-					CMPPCodecChannelInitializer.getCodecHandler(childentity.getVersion()));
+			ctx.pipeline().replace(GlobalConstance.codecName, GlobalConstance.codecName, CMPPCodecChannelInitializer.getCodecHandler(childentity.getVersion()));
 		}
 	}
 
 	@Override
-	protected void doLoginSuccess(ChannelHandlerContext ctx, EndpointEntity entity,Object msg) {
-		
-		CMPPServerChildEndpointEntity childentity = (CMPPServerChildEndpointEntity)entity;
-		CmppConnectRequestMessage message = (CmppConnectRequestMessage)msg;
-		//channelHandler已绑定完成，给客户端发resp.
+	protected void doLoginSuccess(ChannelHandlerContext ctx, EndpointEntity entity, Object msg) {
+
+		CMPPServerChildEndpointEntity childentity = (CMPPServerChildEndpointEntity) entity;
+		CmppConnectRequestMessage message = (CmppConnectRequestMessage) msg;
+		// channelHandler已绑定完成，给客户端发resp.
 		CmppConnectResponseMessage resp = new CmppConnectResponseMessage(message.getHeader().getSequenceId());
 		resp.setVersion(childentity.getVersion());
 		resp.setStatus(0);
-		resp.setAuthenticatorISMG(DigestUtils.md5(Bytes.concat(Ints.toByteArray((int)resp.getStatus()), message.getAuthenticatorSource(), childentity
-				.getPassword().getBytes(childentity.getCharset()))));
+		resp.setAuthenticatorISMG(DigestUtils
+				.md5(Bytes.concat(Ints.toByteArray((int) resp.getStatus()), message.getAuthenticatorSource(), childentity.getPassword().getBytes(childentity.getCharset()))));
 		ctx.channel().writeAndFlush(resp);
 	}
 
@@ -154,9 +152,9 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 	 * 状态 0：正确 1：消息结构错 2：非法源地址 3：认证错 4：版本太高 5~ ：其他错误
 	 */
 	protected void failedLogin(ChannelHandlerContext ctx, Object msg, long status) {
-		if(msg instanceof CmppConnectRequestMessage){
-			logger.error("Connected error status :{}" , status);
-			CmppConnectRequestMessage message = (CmppConnectRequestMessage)msg;
+		if (msg instanceof CmppConnectRequestMessage) {
+			logger.error("Connected error status :{}", status);
+			CmppConnectRequestMessage message = (CmppConnectRequestMessage) msg;
 			// 认证失败
 			CmppConnectResponseMessage resp = new CmppConnectResponseMessage(message.getHeader().getSequenceId());
 			resp.setAuthenticatorISMG(new byte[16]);
@@ -170,8 +168,8 @@ public class SessionLoginManager extends AbstractSessionLoginManager {
 					finalctx.close();
 				}
 			});
-		}else{
-			logger.error("connect msg type error : {}" , msg);
+		} else {
+			logger.error("connect msg type error : {}", msg);
 			ctx.close();
 		}
 

@@ -21,8 +21,8 @@ public class SMGPSubmitRespMessage extends SMGPBaseMessage {
 	@Override
 	protected int setBody(byte[] bodyBytes) throws Exception {
 		int offset = 0;
-		
-		byte[]msgId=new byte[10];
+
+		byte[] msgId = new byte[10];
 		System.arraycopy(bodyBytes, offset, msgId, 0, 10);
 		this.msgId = SMGPMsgIdUtil.bytes2MsgId(msgId);
 		offset += 10;
@@ -64,15 +64,14 @@ public class SMGPSubmitRespMessage extends SMGPBaseMessage {
 		this.status = status;
 	}
 
-	private String msgIdString(){
+	private String msgIdString() {
 		return msgId.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPSubmitRespMessage:[sequenceNumber=").append(
-				sequenceString()).append(",");
+		buffer.append("SMGPSubmitRespMessage:[sequenceNumber=").append(sequenceString()).append(",");
 		buffer.append("msgId=").append(msgIdString()).append(",");
 		buffer.append("status=").append(status).append("]");
 		return buffer.toString();

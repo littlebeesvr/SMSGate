@@ -31,28 +31,26 @@ import org.marre.sms.SmsUserData;
  * @author Markus Eriksson
  * @version $Id$
  */
-public class NokiaRingTone extends SmsPortAddressedMessage
-{
-    /**
+public class NokiaRingTone extends SmsPortAddressedMessage {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5021440309527738820L;
 	protected final byte[] ringToneData_;
-    
-    /**
-     * Creates a ring tone
-     *
-     * @param ringToneData The ring tone in nokia binary format
-     */
-    public NokiaRingTone(byte[] ringToneData)
-    {
-        super(SmsPort.NOKIA_RING_TONE, SmsPort.ZERO);
-        
-        ringToneData_ = ringToneData;
-    }
 
-    public SmsUserData getUserData()
-    {
-        return new SmsUserData(ringToneData_);
-    }
+	/**
+	 * Creates a ring tone
+	 *
+	 * @param ringToneData
+	 *            The ring tone in nokia binary format
+	 */
+	public NokiaRingTone(byte[] ringToneData) {
+		super(SmsPort.NOKIA_RING_TONE, SmsPort.ZERO);
+
+		ringToneData_ = ringToneData;
+	}
+
+	public SmsUserData getUserData() {
+		return new SmsUserData(ringToneData_);
+	}
 }

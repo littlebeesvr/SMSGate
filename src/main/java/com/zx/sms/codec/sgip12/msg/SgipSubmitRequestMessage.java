@@ -7,17 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.marre.sms.SmsAlphabet;
 import org.marre.sms.SmsDcs;
 import org.marre.sms.SmsMessage;
-import org.marre.sms.SmsMsgClass;
-import org.marre.sms.SmsPortAddressedTextMessage;
-import org.marre.sms.SmsTextMessage;
-import org.marre.wap.push.SmsMmsNotificationMessage;
-import org.marre.wap.push.SmsWapPushMessage;
-import org.marre.wap.push.WapSIPush;
-import org.marre.wap.push.WapSLPush;
-import org.marre.wap.wbxml.WbxmlDocument;
 
 import com.zx.sms.LongSMSMessage;
 import com.zx.sms.codec.cmpp.msg.DefaultMessage;
@@ -33,7 +24,7 @@ import com.zx.sms.common.util.DefaultSequenceNumberUtil;
  * @author huzorro(huzorro@gmail.com)
  * 
  */
-public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSMessage<SgipSubmitRequestMessage>{
+public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSMessage<SgipSubmitRequestMessage> {
 	private static final long serialVersionUID = 5265747696709571791L;
 
 	private String spnumber = GlobalConstance.emptyString;
@@ -56,18 +47,18 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	private short messagetype = 0;
 	private int messagelength = 120;
 	private String reserve = GlobalConstance.emptyString;
-	
+
 	private byte[] msgContentBytes = GlobalConstance.emptyBytes;
 	private SmsMessage msg;
-	
+
 	public SgipSubmitRequestMessage() {
 		super(SgipPacketType.SUBMITREQUEST);
 	}
 
 	public SgipSubmitRequestMessage(Header header) {
-		super(SgipPacketType.SUBMITREQUEST,header);
+		super(SgipPacketType.SUBMITREQUEST, header);
 	}
-	
+
 	public boolean isReport() {
 		return false;
 	}
@@ -80,7 +71,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param spnumber the spnumber to set
+	 * @param spnumber
+	 *            the spnumber to set
 	 */
 	public void setSpnumber(String spnumber) {
 		this.spnumber = spnumber;
@@ -94,7 +86,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param chargenumber the chargenumber to set
+	 * @param chargenumber
+	 *            the chargenumber to set
 	 */
 	public void setChargenumber(String chargenumber) {
 		this.chargenumber = chargenumber;
@@ -106,7 +99,7 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	public short getUsercount() {
 		return (short) usernumber.length;
 	}
-	
+
 	public String[] getUsernumber() {
 		return usernumber;
 	}
@@ -115,7 +108,7 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 		this.usernumber = usernumber;
 	}
 	public void setUsernumber(String usernumber) {
-		this.usernumber = new String [] {usernumber};
+		this.usernumber = new String[]{usernumber};
 	}
 	/**
 	 * @return the corpid
@@ -125,7 +118,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param corpid the corpid to set
+	 * @param corpid
+	 *            the corpid to set
 	 */
 	public void setCorpid(String corpid) {
 		this.corpid = corpid;
@@ -139,7 +133,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param servicetype the servicetype to set
+	 * @param servicetype
+	 *            the servicetype to set
 	 */
 	public void setServicetype(String servicetype) {
 		this.servicetype = servicetype;
@@ -153,7 +148,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param feetype the feetype to set
+	 * @param feetype
+	 *            the feetype to set
 	 */
 	public void setFeetype(short feetype) {
 		this.feetype = feetype;
@@ -167,7 +163,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param feevalue the feevalue to set
+	 * @param feevalue
+	 *            the feevalue to set
 	 */
 	public void setFeevalue(String feevalue) {
 		this.feevalue = feevalue;
@@ -181,7 +178,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param givenvalue the givenvalue to set
+	 * @param givenvalue
+	 *            the givenvalue to set
 	 */
 	public void setGivenvalue(String givenvalue) {
 		this.givenvalue = givenvalue;
@@ -195,7 +193,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param agentflag the agentflag to set
+	 * @param agentflag
+	 *            the agentflag to set
 	 */
 	public void setAgentflag(short agentflag) {
 		this.agentflag = agentflag;
@@ -209,7 +208,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param morelatetomtflag the morelatetomtflag to set
+	 * @param morelatetomtflag
+	 *            the morelatetomtflag to set
 	 */
 	public void setMorelatetomtflag(short morelatetomtflag) {
 		this.morelatetomtflag = morelatetomtflag;
@@ -223,7 +223,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param priority the priority to set
+	 * @param priority
+	 *            the priority to set
 	 */
 	public void setPriority(short priority) {
 		this.priority = priority;
@@ -237,7 +238,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param expiretime the expiretime to set
+	 * @param expiretime
+	 *            the expiretime to set
 	 */
 	public void setExpiretime(String expiretime) {
 		this.expiretime = expiretime;
@@ -251,7 +253,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param scheduletime the scheduletime to set
+	 * @param scheduletime
+	 *            the scheduletime to set
 	 */
 	public void setScheduletime(String scheduletime) {
 		this.scheduletime = scheduletime;
@@ -265,7 +268,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param reportflag the reportflag to set
+	 * @param reportflag
+	 *            the reportflag to set
 	 */
 	public void setReportflag(short reportflag) {
 		this.reportflag = reportflag;
@@ -279,7 +283,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param tppid the tppid to set
+	 * @param tppid
+	 *            the tppid to set
 	 */
 	public void setTppid(short tppid) {
 		this.tppid = tppid;
@@ -293,7 +298,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param tpudhi the tpudhi to set
+	 * @param tpudhi
+	 *            the tpudhi to set
 	 */
 	public void setTpudhi(short tpudhi) {
 		this.tpudhi = tpudhi;
@@ -307,7 +313,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param messagetype the messagetype to set
+	 * @param messagetype
+	 *            the messagetype to set
 	 */
 	public void setMessagetype(short messagetype) {
 		this.messagetype = messagetype;
@@ -321,7 +328,8 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param messagelength the messagelength to set
+	 * @param messagelength
+	 *            the messagelength to set
 	 */
 	public void setMessagelength(int messagelength) {
 		this.messagelength = messagelength;
@@ -335,54 +343,55 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	}
 
 	/**
-	 * @param reserve the reserve to set
+	 * @param reserve
+	 *            the reserve to set
 	 */
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-    /**
+	/**
 	 * @return the msgContentBytes
 	 */
 	public byte[] getMsgContentBytes() {
 		return msgContentBytes;
 	}
 	/**
-	 * @param msgContentBytes the msgContentBytes to set
+	 * @param msgContentBytes
+	 *            the msgContentBytes to set
 	 */
 	public void setMsgContentBytes(byte[] msgContentBytes) {
 		this.msgContentBytes = msgContentBytes;
 	}
-	
-	
+
 	public String getMsgContent() {
-		if(msg instanceof SmsMessage){
+		if (msg instanceof SmsMessage) {
 			return msg.toString();
 		}
-		
-		if(msgContentBytes!=null && msgContentBytes.length>0){
+
+		if (msgContentBytes != null && msgContentBytes.length > 0) {
 			LongMessageFrame frame = generateFrame();
 			return LongMessageFrameHolder.INS.getPartTextMsg(frame);
 		}
-	
-	return "";
-}
-	
+
+		return "";
+	}
+
 	public void setMsgContent(String msgContent) {
 		setMsgContent(CMPPCommonUtil.buildTextMessage(msgContent));
 	}
-	
-	public void setMsgContent(SmsMessage msg){
+
+	public void setMsgContent(SmsMessage msg) {
 		this.msg = msg;
 	}
 
 	public SmsMessage getSmsMessage() {
 		return msg;
 	}
-	
+
 	public SgipSubmitRequestMessage clone() throws CloneNotSupportedException {
 		return (SgipSubmitRequestMessage) super.clone();
 	}
-	
+
 	public SmsDcs getMsgfmt() {
 		return msgfmt;
 	}
@@ -390,7 +399,7 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	public void setMsgfmt(SmsDcs msgfmt) {
 		this.msgfmt = msgfmt;
 	}
-	
+
 	@Override
 	public LongMessageFrame generateFrame() {
 		LongMessageFrame frame = new LongMessageFrame();
@@ -398,7 +407,7 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 		frame.setTpudhi(getTpudhi());
 		frame.setMsgfmt(getMsgfmt());
 		frame.setMsgContentBytes(getMsgContentBytes());
-		frame.setMsgLength((short)getMessagelength());
+		frame.setMsgLength((short) getMessagelength());
 		frame.setSequence(getSequenceNo());
 		return frame;
 	}
@@ -406,31 +415,28 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 	@Override
 	public SgipSubmitRequestMessage generateMessage(LongMessageFrame frame) throws Exception {
 		SgipSubmitRequestMessage requestMessage = this.clone();
-		
+
 		requestMessage.setTpudhi(frame.getTpudhi());
 		requestMessage.setMsgfmt(frame.getMsgfmt());
 		requestMessage.setMsgContentBytes(frame.getMsgContentBytes());
-		requestMessage.setMessagelength((short)frame.getMsgLength());
-		
-		if(frame.getPknumber()!=1){
+		requestMessage.setMessagelength((short) frame.getMsgLength());
+
+		if (frame.getPknumber() != 1) {
 			requestMessage.getHeader().setSequenceId(DefaultSequenceNumberUtil.getSequenceNo());
 		}
-		requestMessage.setMsgContent((SmsMessage)null);
+		requestMessage.setMsgContent((SmsMessage) null);
 		return requestMessage;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("SgipSubmitRequestMessage [corpid=").append(corpid)
-		.append(", spnumber=").append(spnumber)
-		.append(", destterminalId=").append(Arrays.toString(usernumber))
-		.append(", msgContent=").append(getMsgContent())
-		.append(", Header=").append(getHeader()).append("]");
+		sb.append("SgipSubmitRequestMessage [corpid=").append(corpid).append(", spnumber=").append(spnumber).append(", destterminalId=").append(Arrays.toString(usernumber))
+				.append(", msgContent=").append(getMsgContent()).append(", Header=").append(getHeader()).append("]");
 		return sb.toString();
 	}
 	private List<SgipSubmitRequestMessage> fragments = null;
-	
+
 	@Override
 	public List<SgipSubmitRequestMessage> getFragments() {
 		return fragments;
@@ -438,9 +444,9 @@ public class SgipSubmitRequestMessage extends DefaultMessage implements LongSMSM
 
 	@Override
 	public void addFragment(SgipSubmitRequestMessage fragment) {
-		if(fragments==null)
+		if (fragments == null)
 			fragments = new ArrayList<SgipSubmitRequestMessage>();
-		
+
 		fragments.add(fragment);
 	}
 

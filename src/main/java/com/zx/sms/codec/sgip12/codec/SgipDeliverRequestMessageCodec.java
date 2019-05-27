@@ -4,11 +4,6 @@
 package com.zx.sms.codec.sgip12.codec;
 
 import static com.zx.sms.common.util.NettyByteBufUtil.toArray;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -24,6 +19,12 @@ import com.zx.sms.codec.sgip12.packet.SgipDeliverRequest;
 import com.zx.sms.codec.sgip12.packet.SgipPacketType;
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.CMPPCommonUtil;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author huzorro(huzorro@gmail.com)
@@ -58,10 +59,8 @@ public class SgipDeliverRequestMessageCodec extends MessageToMessageCodec<Messag
 		SgipDeliverRequestMessage requestMessage = new SgipDeliverRequestMessage(message.getHeader());
 		requestMessage.setTimestamp(message.getTimestamp());
 
-		requestMessage.setUsernumber(bodyBuffer.readCharSequence(SgipDeliverRequest.USERNUMBER.getLength(), GlobalConstance.defaultTransportCharset).toString()
-				.trim());
-		requestMessage.setSpnumber(bodyBuffer.readCharSequence(SgipDeliverRequest.SPNUMBER.getLength(), GlobalConstance.defaultTransportCharset).toString()
-				.trim());
+		requestMessage.setUsernumber(bodyBuffer.readCharSequence(SgipDeliverRequest.USERNUMBER.getLength(), GlobalConstance.defaultTransportCharset).toString().trim());
+		requestMessage.setSpnumber(bodyBuffer.readCharSequence(SgipDeliverRequest.SPNUMBER.getLength(), GlobalConstance.defaultTransportCharset).toString().trim());
 		requestMessage.setTppid(bodyBuffer.readUnsignedByte());
 		requestMessage.setTpudhi(bodyBuffer.readUnsignedByte());
 		requestMessage.setMsgfmt(new SmsDcs((byte) bodyBuffer.readUnsignedByte()));
@@ -70,12 +69,11 @@ public class SgipDeliverRequestMessageCodec extends MessageToMessageCodec<Messag
 
 		byte[] contentbytes = new byte[frameLength];
 		bodyBuffer.readBytes(contentbytes);
-		
+
 		requestMessage.setMsgContentBytes(contentbytes);
 		requestMessage.setMessagelength(frameLength);
 
-		requestMessage.setReserve(bodyBuffer.readCharSequence(SgipDeliverRequest.RESERVE.getLength(), GlobalConstance.defaultTransportCharset).toString()
-				.trim());
+		requestMessage.setReserve(bodyBuffer.readCharSequence(SgipDeliverRequest.RESERVE.getLength(), GlobalConstance.defaultTransportCharset).toString().trim());
 
 		out.add(requestMessage);
 
@@ -87,17 +85,17 @@ public class SgipDeliverRequestMessageCodec extends MessageToMessageCodec<Messag
 
 		ByteBuf bodyBuffer = ctx.alloc().buffer(SgipDeliverRequest.USERNUMBER.getBodyLength() + requestMessage.getMessagelength());
 
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getUsernumber().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipDeliverRequest.USERNUMBER.getLength(), 0));
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getSpnumber().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipDeliverRequest.SPNUMBER.getLength(), 0));
+		bodyBuffer.writeBytes(
+				CMPPCommonUtil.ensureLength(requestMessage.getUsernumber().getBytes(GlobalConstance.defaultTransportCharset), SgipDeliverRequest.USERNUMBER.getLength(), 0));
+		bodyBuffer.writeBytes(
+				CMPPCommonUtil.ensureLength(requestMessage.getSpnumber().getBytes(GlobalConstance.defaultTransportCharset), SgipDeliverRequest.SPNUMBER.getLength(), 0));
 		bodyBuffer.writeByte(requestMessage.getTppid());
 		bodyBuffer.writeByte(requestMessage.getTpudhi());
 		bodyBuffer.writeByte(requestMessage.getMsgfmt().getValue());
 		bodyBuffer.writeInt((int) requestMessage.getMessagelength());
 		bodyBuffer.writeBytes(requestMessage.getMsgContentBytes());
-		bodyBuffer.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getReserve().getBytes(GlobalConstance.defaultTransportCharset),
-				SgipDeliverRequest.RESERVE.getLength(), 0));
+		bodyBuffer
+				.writeBytes(CMPPCommonUtil.ensureLength(requestMessage.getReserve().getBytes(GlobalConstance.defaultTransportCharset), SgipDeliverRequest.RESERVE.getLength(), 0));
 
 		requestMessage.setBodyBuffer(toArray(bodyBuffer, bodyBuffer.readableBytes()));
 		requestMessage.getHeader().setBodyLength(requestMessage.getBodyBuffer().length);

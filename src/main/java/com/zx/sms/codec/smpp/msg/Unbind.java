@@ -23,26 +23,26 @@ package com.zx.sms.codec.smpp.msg;
 import com.zx.sms.codec.smpp.SmppConstants;
 
 public class Unbind extends EmptyBody<UnbindResp> {
-    
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1777566735396989201L;
 
 	public Unbind() {
-        super(SmppConstants.CMD_ID_UNBIND, "unbind");
-    }
+		super(SmppConstants.CMD_ID_UNBIND, "unbind");
+	}
 
-    @Override
-    public UnbindResp createResponse() {
-        UnbindResp resp = new UnbindResp();
-        resp.setSequenceNumber(this.getSequenceNumber());
-        return resp;
-    }
+	@Override
+	public UnbindResp createResponse() {
+		UnbindResp resp = new UnbindResp();
+		resp.setSequenceNumber(this.getSequenceNumber());
+		return resp;
+	}
 
-    @Override
-    public Class<UnbindResp> getResponseClass() {
-        return UnbindResp.class;
-    }
-    
+	@Override
+	public Class<UnbindResp> getResponseClass() {
+		return UnbindResp.class;
+	}
+
 }

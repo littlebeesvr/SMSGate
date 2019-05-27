@@ -16,36 +16,36 @@ import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.CMPPCommonUtil;
 import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 
-public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage<SMGPSubmitMessage>{
+public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage<SMGPSubmitMessage> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1347896099727385979L;
 
-	private byte msgType=(byte)6; // 1
+	private byte msgType = (byte) 6; // 1
 
-	private boolean needReport=true; // 1
+	private boolean needReport = true; // 1
 
-	private byte priority=2; // 1
+	private byte priority = 2; // 1
 
-	private String serviceId=""; // 10
+	private String serviceId = ""; // 10
 
-	private String feeType="00"; // 2
+	private String feeType = "00"; // 2
 
-	private String feeCode="000000"; // 6
+	private String feeCode = "000000"; // 6
 
-	private String fixedFee="000000"; // 6
+	private String fixedFee = "000000"; // 6
 
 	private SmsDcs msgFmt = GlobalConstance.defaultmsgfmt;
 
-	private String validTime=""; // 17
+	private String validTime = ""; // 17
 
-	private String atTime=""; // 17
+	private String atTime = ""; // 17
 
-	private String srcTermId=""; // 21
+	private String srcTermId = ""; // 21
 
-	private String chargeTermId=""; // 21
+	private String chargeTermId = ""; // 21
 
 	private byte destTermIdCount; // 1
 
@@ -53,10 +53,10 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 
 	private byte[] bMsgContent; // msgLength
 
-	private String reserve=""; // 8
-	
+	private String reserve = ""; // 8
+
 	private SmsMessage msg;
-	
+
 	public SMGPSubmitMessage() {
 		this.commandId = SMGPConstants.SMGP_SUBMIT;
 		registerOptional(tpPid);
@@ -74,123 +74,119 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		registerOptional(spDealResult);
 		registerOptional(mServiceId);
 	}
-	
-	
-	private TLVByte     tpPid   =new TLVByte(SMGPConstants.OPT_TP_PID);
-	private TLVByte     tpUdhi  =new TLVByte(SMGPConstants.OPT_TP_UDHI);
-	private TLVString   linkId  =new TLVString(SMGPConstants.OPT_LINK_ID);
-	private TLVString   msgSrc  =new TLVString(SMGPConstants.OPT_MSG_SRC);
-	private TLVByte     chargeUserType=new TLVByte(SMGPConstants.OPT_CHARGE_USER_TYPE);
-	private TLVByte     chargeTermType=new TLVByte(SMGPConstants.OPT_CHARGE_TERM_TYPE);
-	private TLVString   chargeTermPseudo=new TLVString(SMGPConstants.OPT_CHARGE_TERM_PSEUDO);
-	private TLVByte     destTermType=new TLVByte(SMGPConstants.OPT_DEST_TERM_TYPE);
-	private TLVString   destTermPseudo=new TLVString(SMGPConstants.OPT_DEST_TERM_PSEUDO);
-	private TLVByte     pkTotal=new TLVByte(SMGPConstants.OPT_PK_TOTAL);
-	private TLVByte     pkNumber=new TLVByte(SMGPConstants.OPT_PK_NUMBER);
-	private TLVByte     submitMsgType=new TLVByte(SMGPConstants.OPT_SUBMIT_MSG_TYPE);
-	private TLVByte     spDealResult=new TLVByte(SMGPConstants.OPT_SP_DEAL_RESULT);
-	private TLVString   mServiceId=new TLVString(SMGPConstants.OPT_M_SERVICE_ID);
-	
-	public void setTpPid(byte value){
+
+	private TLVByte tpPid = new TLVByte(SMGPConstants.OPT_TP_PID);
+	private TLVByte tpUdhi = new TLVByte(SMGPConstants.OPT_TP_UDHI);
+	private TLVString linkId = new TLVString(SMGPConstants.OPT_LINK_ID);
+	private TLVString msgSrc = new TLVString(SMGPConstants.OPT_MSG_SRC);
+	private TLVByte chargeUserType = new TLVByte(SMGPConstants.OPT_CHARGE_USER_TYPE);
+	private TLVByte chargeTermType = new TLVByte(SMGPConstants.OPT_CHARGE_TERM_TYPE);
+	private TLVString chargeTermPseudo = new TLVString(SMGPConstants.OPT_CHARGE_TERM_PSEUDO);
+	private TLVByte destTermType = new TLVByte(SMGPConstants.OPT_DEST_TERM_TYPE);
+	private TLVString destTermPseudo = new TLVString(SMGPConstants.OPT_DEST_TERM_PSEUDO);
+	private TLVByte pkTotal = new TLVByte(SMGPConstants.OPT_PK_TOTAL);
+	private TLVByte pkNumber = new TLVByte(SMGPConstants.OPT_PK_NUMBER);
+	private TLVByte submitMsgType = new TLVByte(SMGPConstants.OPT_SUBMIT_MSG_TYPE);
+	private TLVByte spDealResult = new TLVByte(SMGPConstants.OPT_SP_DEAL_RESULT);
+	private TLVString mServiceId = new TLVString(SMGPConstants.OPT_M_SERVICE_ID);
+
+	public void setTpPid(byte value) {
 		tpPid.setValue(value);
 	}
-	public byte getTpPid(){
+	public byte getTpPid() {
 		return tpPid.getValue();
 	}
-	public void setTpUdhi(byte value){
+	public void setTpUdhi(byte value) {
 		tpUdhi.setValue(value);
 	}
-	public byte getTpUdhi(){
+	public byte getTpUdhi() {
 		return tpUdhi.getValue();
 	}
-	public void setLinkId(String value){
+	public void setLinkId(String value) {
 		linkId.setValue(value);
 	}
-	public String getLinkId(){
+	public String getLinkId() {
 		return linkId.getValue();
 	}
-	public void setMsgSrc(String value){
+	public void setMsgSrc(String value) {
 		msgSrc.setValue(value);
 	}
-	public String getMsgSrc(){
+	public String getMsgSrc() {
 		return msgSrc.getValue();
 	}
-	public void setChargeUserType(byte value){
+	public void setChargeUserType(byte value) {
 		chargeUserType.setValue(value);
 	}
-	public byte getChargeUserType(){
+	public byte getChargeUserType() {
 		return chargeUserType.getValue();
 	}
-	
-	public void setChargeTermType(byte value){
+
+	public void setChargeTermType(byte value) {
 		chargeTermType.setValue(value);
 	}
-	public byte getChargeTermType(){
+	public byte getChargeTermType() {
 		return chargeTermType.getValue();
 	}
-	
-	public void setChargeTermPseudo(String value){
+
+	public void setChargeTermPseudo(String value) {
 		chargeTermPseudo.setValue(value);
 	}
-	public String getChargeTermPseudo(){
+	public String getChargeTermPseudo() {
 		return chargeTermPseudo.getValue();
 	}
 	public boolean isReport() {
 		return false;
 	}
-	
-	public void setDestTermType(byte value){
+
+	public void setDestTermType(byte value) {
 		destTermType.setValue(value);
 	}
-	public byte getDestTermType(){
+	public byte getDestTermType() {
 		return destTermType.getValue();
 	}
-	
-	public void setDestTermPseudo(String value){
+
+	public void setDestTermPseudo(String value) {
 		destTermPseudo.setValue(value);
 	}
-	public String getDestTermPseudo(){
+	public String getDestTermPseudo() {
 		return destTermPseudo.getValue();
-	}	
-	
+	}
 
-	public void setPkTotal(byte value){
+	public void setPkTotal(byte value) {
 		pkTotal.setValue(value);
 	}
-	public byte getPkTotal(){
+	public byte getPkTotal() {
 		return pkTotal.getValue();
 	}
-	
-	public void setPkNumber(byte value){
+
+	public void setPkNumber(byte value) {
 		pkNumber.setValue(value);
 	}
-	public byte getPkNumber(){
+	public byte getPkNumber() {
 		return pkNumber.getValue();
 	}
-	
-	public void setSubmitMsgType(byte value){
+
+	public void setSubmitMsgType(byte value) {
 		submitMsgType.setValue(value);
 	}
-	public byte getSubmitMsgType(){
+	public byte getSubmitMsgType() {
 		return submitMsgType.getValue();
 	}
-	
-	public void setSpDealResult(byte value){
+
+	public void setSpDealResult(byte value) {
 		spDealResult.setValue(value);
 	}
-	public byte getSpDealResult(){
+	public byte getSpDealResult() {
 		return spDealResult.getValue();
 	}
 
-	public void setMServiceId(String value){
+	public void setMServiceId(String value) {
 		mServiceId.setValue(value);
 	}
-	public String getMServiceId(){
+	public String getMServiceId() {
 		return mServiceId.getValue();
-	}	
-	
-	
-	
+	}
+
 	@Override
 	protected int setBody(byte[] bodyBytes) throws Exception {
 		int offset = 0;
@@ -251,7 +247,6 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		destTermIdCount = bodyBytes[offset];
 		offset += 1;
 
-
 		if (destTermIdCount >= 100 || destTermIdCount <= 0) {
 			throw new Exception("destTermIdCount must be in [1,99],but " + destTermIdCount);
 		}
@@ -265,8 +260,8 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		byte b = bodyBytes[offset];
 		offset += 1;
 
-	    int msgLength = b >= 0 ? b : (256 + b); // byte 最大只有128，这种处理可以取得129-140的数据
-		if(msgLength>0){
+		int msgLength = b >= 0 ? b : (256 + b); // byte 最大只有128，这种处理可以取得129-140的数据
+		if (msgLength > 0) {
 			tmp = new byte[msgLength];
 			System.arraycopy(bodyBytes, offset, tmp, 0, msgLength);
 			offset += msgLength;
@@ -284,13 +279,13 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 	@Override
 	protected byte[] getBody() throws Exception {
 		int msgLength = bMsgContent.length;
-		int len =0+1 + 1 + 1 + 10 + 2 + 6 + 6 + 1 + 17 + 17 + 21 + 21 + 1 + 21* destTermIdCount + 1 + msgLength + 8;
+		int len = 0 + 1 + 1 + 1 + 10 + 2 + 6 + 6 + 1 + 17 + 17 + 21 + 21 + 1 + 21 * destTermIdCount + 1 + msgLength + 8;
 		int offset = 0;
 		byte[] bodyBytes = new byte[len];
 		bodyBytes[offset] = msgType;
 		offset += 1;
 
-		bodyBytes[offset] = needReport?(byte)1:0;
+		bodyBytes[offset] = needReport ? (byte) 1 : 0;
 		offset += 1;
 
 		bodyBytes[offset] = priority;
@@ -327,19 +322,18 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		offset += 1;
 
 		for (int i = 0; i < destTermIdCount; i++) {
-			ByteUtil.rfillBytes(destTermIdArray[i].getBytes(), 21,
-					bodyBytes, offset);
+			ByteUtil.rfillBytes(destTermIdArray[i].getBytes(), 21, bodyBytes, offset);
 			offset += 21;
 		}
 
-		bodyBytes[offset] = (byte)msgLength;
+		bodyBytes[offset] = (byte) msgLength;
 		offset += 1;
 
 		if (bMsgContent != null) {
-			ByteUtil.rfillBytes(bMsgContent, msgLength, bodyBytes, offset);			
+			ByteUtil.rfillBytes(bMsgContent, msgLength, bodyBytes, offset);
 		}
-		offset+=msgLength;
-		
+		offset += msgLength;
+
 		ByteUtil.rfillBytes(reserve.getBytes(), 8, bodyBytes, offset);
 		offset += 8;
 
@@ -449,20 +443,20 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 	}
 
 	public void setDestTermIdArray(String destTermIdArray) {
-		this.destTermIdArray = new String[] { destTermIdArray};
-		this.destTermIdCount=(byte)1;
+		this.destTermIdArray = new String[]{destTermIdArray};
+		this.destTermIdCount = (byte) 1;
 	}
-	
+
 	public void setDestTermIdArray(String[] destTermIdArray) {
 		this.destTermIdArray = destTermIdArray;
-		this.destTermIdCount=(byte)(destTermIdArray==null?0:destTermIdArray.length);
+		this.destTermIdCount = (byte) (destTermIdArray == null ? 0 : destTermIdArray.length);
 	}
-	
+
 	public void setMsgContent(String msgContent) {
 		setMsgContent(CMPPCommonUtil.buildTextMessage(msgContent));
 	}
-	
-	public void setMsgContent(SmsMessage msg){
+
+	public void setMsgContent(SmsMessage msg) {
 		this.msg = msg;
 	}
 
@@ -485,25 +479,24 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-	
+
 	public String getMsgContent() {
-		if(msg instanceof SmsMessage){
+		if (msg instanceof SmsMessage) {
 			return msg.toString();
 		}
-		
-		if(bMsgContent!=null && bMsgContent.length>0){
+
+		if (bMsgContent != null && bMsgContent.length > 0) {
 			LongMessageFrame frame = generateFrame();
 			return LongMessageFrameHolder.INS.getPartTextMsg(frame);
 		}
-	
-	return "";
-}
+
+		return "";
+	}
 
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPSubmitMessage:[sequenceNumber=").append(
-				sequenceString()).append(",");
+		buffer.append("SMGPSubmitMessage:[sequenceNumber=").append(sequenceString()).append(",");
 		buffer.append("msgType=").append(msgType).append(",");
 		buffer.append("needReport=").append(needReport).append(",");
 		buffer.append("validTime=").append(validTime).append(",");
@@ -522,7 +515,7 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		buffer.append("msgContent=").append(getMsgContent()).append("]");
 		return buffer.toString();
 	}
-	
+
 	public SMGPSubmitMessage clone() throws CloneNotSupportedException {
 		SMGPSubmitMessage cloned = new SMGPSubmitMessage();
 		cloned.setAtTime(this.getAtTime());
@@ -559,7 +552,7 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		cloned.setMsgContent(this.getSmsMessage());
 		return cloned;
 	}
-	
+
 	@Override
 	public LongMessageFrame generateFrame() {
 		LongMessageFrame frame = new LongMessageFrame();
@@ -567,7 +560,7 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 		frame.setTpudhi(getTpUdhi());
 		frame.setMsgfmt(getMsgFmt());
 		frame.setMsgContentBytes(getBMsgContent());
-		frame.setMsgLength((short)bMsgContent.length);
+		frame.setMsgLength((short) bMsgContent.length);
 		frame.setSequence(getSequenceNo());
 		return frame;
 	}
@@ -575,20 +568,20 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 	public SMGPSubmitMessage generateMessage(LongMessageFrame frame) throws Exception {
 		SMGPSubmitMessage requestMessage = this.clone();
 
-		requestMessage.setTpUdhi((byte)frame.getTpudhi());
+		requestMessage.setTpUdhi((byte) frame.getTpudhi());
 		requestMessage.setMsgFmt(frame.getMsgfmt());
 		requestMessage.setBMsgContent(frame.getMsgContentBytes());
-		requestMessage.setPkTotal((byte)frame.getPktotal());
-		requestMessage.setPkNumber((byte)frame.getPknumber());
-		if(frame.getPknumber()!=1){
+		requestMessage.setPkTotal((byte) frame.getPktotal());
+		requestMessage.setPkNumber((byte) frame.getPknumber());
+		if (frame.getPknumber() != 1) {
 			requestMessage.setSequenceNumber(DefaultSequenceNumberUtil.getSequenceNo());
 		}
-		requestMessage.setMsgContent((SmsMessage)null);
+		requestMessage.setMsgContent((SmsMessage) null);
 		return requestMessage;
 	}
-	
+
 	private List<SMGPSubmitMessage> fragments = null;
-	
+
 	@Override
 	public List<SMGPSubmitMessage> getFragments() {
 		return fragments;
@@ -596,9 +589,9 @@ public class SMGPSubmitMessage extends SMGPBaseMessage implements LongSMSMessage
 
 	@Override
 	public void addFragment(SMGPSubmitMessage fragment) {
-		if(fragments==null)
+		if (fragments == null)
 			fragments = new ArrayList<SMGPSubmitMessage>();
-		
+
 		fragments.add(fragment);
 	}
 }

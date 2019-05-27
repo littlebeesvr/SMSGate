@@ -15,12 +15,10 @@ public class SMGPLoginMessage extends SMGPBaseMessage {
 
 	private String clientId; // 8
 
-	private byte[] clientAuth=new byte[16]; // 16
+	private byte[] clientAuth = new byte[16]; // 16
 
 	/**
-	 * 0 : Send Mode 只发送
-	 * 1 : Receive Mode 只接收
-	 * 2 : Transmit Mode 收发
+	 * 0 : Send Mode 只发送 1 : Receive Mode 只接收 2 : Transmit Mode 收发
 	 */
 	private byte loginMode; // 1
 
@@ -64,7 +62,7 @@ public class SMGPLoginMessage extends SMGPBaseMessage {
 		bodyBytes[offset] = loginMode;
 		offset += 1;
 
-		ByteUtil.int2byte((int)getTimestamp(), bodyBytes, offset);
+		ByteUtil.int2byte((int) getTimestamp(), bodyBytes, offset);
 		offset += 4;
 
 		bodyBytes[offset] = version;
@@ -108,8 +106,7 @@ public class SMGPLoginMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPLoginMessage:[sequenceNumber=").append(
-				sequenceString()).append(",");
+		buffer.append("SMGPLoginMessage:[sequenceNumber=").append(sequenceString()).append(",");
 		buffer.append("clientId=").append(clientId).append(",");
 		buffer.append("clientAuth=").append(clientAuth).append(",");
 		buffer.append("loginMode=").append(loginMode).append(",");

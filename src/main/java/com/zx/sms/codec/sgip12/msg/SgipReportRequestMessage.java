@@ -15,7 +15,7 @@ import com.zx.sms.common.util.SequenceNumber;
  */
 public class SgipReportRequestMessage extends DefaultMessage {
 	private static final long serialVersionUID = 4460557848888343195L;
-	private SequenceNumber sequenceId ;
+	private SequenceNumber sequenceId;
 	private short reporttype = 0;
 	private String usernumber = GlobalConstance.emptyString;
 	private short state = 0;
@@ -25,11 +25,10 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	public SgipReportRequestMessage() {
 		super(SgipPacketType.REPORTREQUEST);
 	}
-	
-	public SgipReportRequestMessage(Header header) {
-		super(SgipPacketType.REPORTREQUEST,header);
-	}
 
+	public SgipReportRequestMessage(Header header) {
+		super(SgipPacketType.REPORTREQUEST, header);
+	}
 
 	/**
 	 * @return the reporttype
@@ -39,7 +38,8 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param reporttype the reporttype to set
+	 * @param reporttype
+	 *            the reporttype to set
 	 */
 	public void setReporttype(short reporttype) {
 		this.reporttype = reporttype;
@@ -53,7 +53,8 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param usernumber the usernumber to set
+	 * @param usernumber
+	 *            the usernumber to set
 	 */
 	public void setUsernumber(String usernumber) {
 		this.usernumber = usernumber;
@@ -67,7 +68,8 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param state the state to set
+	 * @param state
+	 *            the state to set
 	 */
 	public void setState(short state) {
 		this.state = state;
@@ -81,7 +83,8 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param errorcode the errorcode to set
+	 * @param errorcode
+	 *            the errorcode to set
 	 */
 	public void setErrorcode(short errorcode) {
 		this.errorcode = errorcode;
@@ -95,13 +98,12 @@ public class SgipReportRequestMessage extends DefaultMessage {
 	}
 
 	/**
-	 * @param reserve the reserve to set
+	 * @param reserve
+	 *            the reserve to set
 	 */
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-	
-	
 
 	public SequenceNumber getSequenceId() {
 		return sequenceId;
@@ -113,11 +115,8 @@ public class SgipReportRequestMessage extends DefaultMessage {
 
 	@Override
 	public String toString() {
-		return String
-				.format("ReportRequestMessage [ reporttype=%s, usernumber=%s, state=%s, errorcode=%s, reserve=%s, header=%s]",
-						 reporttype, usernumber, state,
-						errorcode, reserve, 
-						getHeader());
+		return String.format("ReportRequestMessage [ reporttype=%s, usernumber=%s, state=%s, errorcode=%s, reserve=%s, header=%s]", reporttype, usernumber, state, errorcode,
+				reserve, getHeader());
 	}
-	
+
 }

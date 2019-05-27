@@ -34,7 +34,10 @@
  * ***** END LICENSE BLOCK ***** */
 package org.marre.mime;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Represents a MIME body part.
@@ -44,169 +47,163 @@ import java.util.*;
  * @author Markus Eriksson
  * @version $Id$
  */
-public class MimeBodyPart
-{
-    protected byte[] body_;
-    protected MimeContentType contentType_;
+public class MimeBodyPart {
+	protected byte[] body_;
+	protected MimeContentType contentType_;
 
-    protected final List<MimeHeader> headers_ = new LinkedList<MimeHeader>();
+	protected final List<MimeHeader> headers_ = new LinkedList<MimeHeader>();
 
-    /**
-     * Creates a new empty MimeBodyPart.
-     */
-    public MimeBodyPart()
-    {
-    }
+	/**
+	 * Creates a new empty MimeBodyPart.
+	 */
+	public MimeBodyPart() {
+	}
 
-    /**
-     * Creates a new empty MimeBodyPart.
-     */
-    public MimeBodyPart(byte[] body, MimeContentType contentType)
-    {
-        this();
-        setContent(body, contentType);
-    }
-    
-    /**
-     * Creates a new empty MimeBodyPart.
-     */
-    public MimeBodyPart(byte[] body, String contentType)
-    {
-        this();
-        setContent(body, contentType);
-    }
-    
-    /**
-     * Adds a mime header to this body part.
-     * 
-     * @param header The header to add
-     */
-    public void addHeader(MimeHeader header)
-    {
-        headers_.add(header);
-    }
+	/**
+	 * Creates a new empty MimeBodyPart.
+	 */
+	public MimeBodyPart(byte[] body, MimeContentType contentType) {
+		this();
+		setContent(body, contentType);
+	}
 
-    /**
-     * Adds a header to this body part.
-     * 
-     * @param headerName The name of the header
-     * @param headerValue The value
-     */
-    public void addHeader(String headerName, String headerValue)
-    {
-        MimeHeader header = getHeader(headerName);
-        if (header != null)
-        {
-            headers_.remove(header);
-        }
-        addHeader(new MimeHeader(headerName, headerValue));
-    }
+	/**
+	 * Creates a new empty MimeBodyPart.
+	 */
+	public MimeBodyPart(byte[] body, String contentType) {
+		this();
+		setContent(body, contentType);
+	}
 
-    /**
-     * Retrieves all headers.
-     */
-    public Collection<MimeHeader> getHeaders() {
-        return Collections.unmodifiableCollection(headers_);
-    }
+	/**
+	 * Adds a mime header to this body part.
+	 * 
+	 * @param header
+	 *            The header to add
+	 */
+	public void addHeader(MimeHeader header) {
+		headers_.add(header);
+	}
 
-    /**
-     * Retrieves a header with the given name.
-     * 
-     * @param headerName The name of the header to find
-     * @return The header, or null if not found
-     */
-    public MimeHeader getHeader(String headerName)
-    {
-        for (MimeHeader header : headers_) {
-            if (header.getName().equalsIgnoreCase(headerName)) {
-                return header;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Sets the main content of this body part.
-     * 
-     * @param content The main content
-     * @param contentType The content-type of the content
-     */
-    public void setContent(byte[] content, String contentType)
-    {
-        body_ = new byte[content.length];
-        System.arraycopy(content, 0, body_, 0, content.length);
-        contentType_ = new MimeContentType(contentType);
-    }
+	/**
+	 * Adds a header to this body part.
+	 * 
+	 * @param headerName
+	 *            The name of the header
+	 * @param headerValue
+	 *            The value
+	 */
+	public void addHeader(String headerName, String headerValue) {
+		MimeHeader header = getHeader(headerName);
+		if (header != null) {
+			headers_.remove(header);
+		}
+		addHeader(new MimeHeader(headerName, headerValue));
+	}
 
-    /**
-     * Sets the main content of this body part.
-     * 
-     * @param content The main content
-     * @param contentType The content type
-     */
-    public void setContent(byte[] content, MimeContentType contentType)
-    {
-        body_ = new byte[content.length];
-        System.arraycopy(content, 0, body_, 0, content.length);
-        contentType_ = contentType;
-    }
-    
-    /**
-     * Sets the "Content-Id" header.
-     * 
-     * @param contentId The content-id
-     */
-    public void setContentId(String contentId)
-    {
-        addHeader("Content-Id", contentId);
-    }
+	/**
+	 * Retrieves all headers.
+	 */
+	public Collection<MimeHeader> getHeaders() {
+		return Collections.unmodifiableCollection(headers_);
+	}
 
-    /**
-     * Sets the "Content-Location" header.
-     * 
-     * @param contentLocation The content-location
-     */
-    public void setContentLocation(String contentLocation)
-    {
-        addHeader("Content-Location", contentLocation);
-    }
-    
-    /**
-     * Returns the content of this body part.
-     * 
-     * @return The content
-     */
-    public byte[] getBody()
-    {
-        byte[] bodyCopy = null;
-        
-        if (body_ != null)
-        {
-            bodyCopy = new byte[body_.length];
-            System.arraycopy(body_, 0, bodyCopy, 0, body_.length);
-        }
-        
-        return bodyCopy;
-    }
+	/**
+	 * Retrieves a header with the given name.
+	 * 
+	 * @param headerName
+	 *            The name of the header to find
+	 * @return The header, or null if not found
+	 */
+	public MimeHeader getHeader(String headerName) {
+		for (MimeHeader header : headers_) {
+			if (header.getName().equalsIgnoreCase(headerName)) {
+				return header;
+			}
+		}
 
-    /**
-     * Returns the size of the body in this body part.
-     * 
-     * @return The size of the body
-     */
-    public int getBodySize()
-    {
-        return body_.length;
-    }
+		return null;
+	}
 
-    /**
-     * Returns the content type.
-     * 
-     * @return The content type
-     */
-    public MimeContentType getContentType()
-    {
-        return contentType_;
-    }
+	/**
+	 * Sets the main content of this body part.
+	 * 
+	 * @param content
+	 *            The main content
+	 * @param contentType
+	 *            The content-type of the content
+	 */
+	public void setContent(byte[] content, String contentType) {
+		body_ = new byte[content.length];
+		System.arraycopy(content, 0, body_, 0, content.length);
+		contentType_ = new MimeContentType(contentType);
+	}
+
+	/**
+	 * Sets the main content of this body part.
+	 * 
+	 * @param content
+	 *            The main content
+	 * @param contentType
+	 *            The content type
+	 */
+	public void setContent(byte[] content, MimeContentType contentType) {
+		body_ = new byte[content.length];
+		System.arraycopy(content, 0, body_, 0, content.length);
+		contentType_ = contentType;
+	}
+
+	/**
+	 * Sets the "Content-Id" header.
+	 * 
+	 * @param contentId
+	 *            The content-id
+	 */
+	public void setContentId(String contentId) {
+		addHeader("Content-Id", contentId);
+	}
+
+	/**
+	 * Sets the "Content-Location" header.
+	 * 
+	 * @param contentLocation
+	 *            The content-location
+	 */
+	public void setContentLocation(String contentLocation) {
+		addHeader("Content-Location", contentLocation);
+	}
+
+	/**
+	 * Returns the content of this body part.
+	 * 
+	 * @return The content
+	 */
+	public byte[] getBody() {
+		byte[] bodyCopy = null;
+
+		if (body_ != null) {
+			bodyCopy = new byte[body_.length];
+			System.arraycopy(body_, 0, bodyCopy, 0, body_.length);
+		}
+
+		return bodyCopy;
+	}
+
+	/**
+	 * Returns the size of the body in this body part.
+	 * 
+	 * @return The size of the body
+	 */
+	public int getBodySize() {
+		return body_.length;
+	}
+
+	/**
+	 * Returns the content type.
+	 * 
+	 * @return The content type
+	 */
+	public MimeContentType getContentType() {
+		return contentType_;
+	}
 }

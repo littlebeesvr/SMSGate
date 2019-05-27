@@ -3,9 +3,6 @@
  */
 package com.zx.sms.codec.sgip12.codec;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
-
 import java.util.List;
 
 import com.zx.sms.codec.cmpp.msg.Message;
@@ -14,13 +11,16 @@ import com.zx.sms.codec.sgip12.msg.SgipUnbindResponseMessage;
 import com.zx.sms.codec.sgip12.packet.SgipPacketType;
 import com.zx.sms.common.GlobalConstance;
 
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
+
 /**
  * @author huzorro(huzorro@gmail.com)
  *
  */
 public class SgipUnbindResponseMessageCodec extends MessageToMessageCodec<Message, SgipUnbindResponseMessage> {
 	private PacketType packetType;
-	
+
 	public SgipUnbindResponseMessageCodec() {
 		this(SgipPacketType.UNBINDRESPONSE);
 	}
@@ -29,19 +29,18 @@ public class SgipUnbindResponseMessageCodec extends MessageToMessageCodec<Messag
 		this.packetType = packetType;
 	}
 
-
 	@Override
 	protected void decode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
-        long commandId = ((Long) msg.getHeader().getCommandId()).longValue();
-        if(packetType.getCommandId() != commandId) {
-			//不解析，交给下一个codec
+		long commandId = ((Long) msg.getHeader().getCommandId()).longValue();
+		if (packetType.getCommandId() != commandId) {
+			// 不解析，交给下一个codec
 			out.add(msg);
 			return;
-        } 
-        
-        SgipUnbindResponseMessage responseMessage = new SgipUnbindResponseMessage(msg.getHeader());
-        responseMessage.setTimestamp(msg.getTimestamp());
-        out.add(responseMessage);
+		}
+
+		SgipUnbindResponseMessage responseMessage = new SgipUnbindResponseMessage(msg.getHeader());
+		responseMessage.setTimestamp(msg.getTimestamp());
+		out.add(responseMessage);
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class SgipUnbindResponseMessageCodec extends MessageToMessageCodec<Messag
 		msg.setBodyBuffer(GlobalConstance.emptyBytes);
 		msg.getHeader().setBodyLength(msg.getBodyBuffer().length);
 		out.add(msg);
-		
+
 	}
 
 }

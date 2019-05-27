@@ -1,6 +1,5 @@
 package com.zx.sms.codec.smgp.msg;
 
-
 public class SMGPActiveTestRespMessage extends SMGPBaseMessage {
 
 	/**
@@ -18,9 +17,8 @@ public class SMGPActiveTestRespMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPActiveTestRespMessage:[sequenceNumber=").append(
-				sequenceString()).append("]");
-		
+		buffer.append("SMGPActiveTestRespMessage:[sequenceNumber=").append(sequenceString()).append("]");
+
 		return buffer.toString();
 	}
 	@Override

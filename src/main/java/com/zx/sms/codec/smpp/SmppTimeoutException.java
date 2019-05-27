@@ -21,19 +21,18 @@ package com.zx.sms.codec.smpp;
  */
 
 /**
- * Thrown specifically when an operation times out vs. some sort of underlying
- * I/O exception like the channel was closed.
+ * Thrown specifically when an operation times out vs. some sort of underlying I/O exception like the channel was closed.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class SmppTimeoutException extends Exception {
-    static final long serialVersionUID = 1L;
-    
-    public SmppTimeoutException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public SmppTimeoutException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public SmppTimeoutException(String msg) {
+		super(msg);
+	}
+
+	public SmppTimeoutException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

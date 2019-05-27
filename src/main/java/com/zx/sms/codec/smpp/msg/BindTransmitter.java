@@ -24,25 +24,25 @@ import com.zx.sms.codec.smpp.SmppConstants;
 
 public class BindTransmitter extends BaseBind<BindTransmitterResp> {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2826061322294121962L;
 
 	public BindTransmitter() {
-        super(SmppConstants.CMD_ID_BIND_TRANSMITTER, "bind_transmitter");
-    }
+		super(SmppConstants.CMD_ID_BIND_TRANSMITTER, "bind_transmitter");
+	}
 
-    @Override
-    public BindTransmitterResp createResponse() {
-        BindTransmitterResp resp = new BindTransmitterResp();
-        resp.setSequenceNumber(this.getSequenceNumber());
-        return resp;
-    }
+	@Override
+	public BindTransmitterResp createResponse() {
+		BindTransmitterResp resp = new BindTransmitterResp();
+		resp.setSequenceNumber(this.getSequenceNumber());
+		return resp;
+	}
 
-    @Override
-    public Class<BindTransmitterResp> getResponseClass() {
-        return BindTransmitterResp.class;
-    }
-    
+	@Override
+	public Class<BindTransmitterResp> getResponseClass() {
+		return BindTransmitterResp.class;
+	}
+
 }

@@ -17,9 +17,9 @@ public class SMGPDeliverLongMessageHandler extends AbstractLongMessageHandler<SM
 	}
 
 	@Override
-	protected BaseMessage response( SMGPDeliverMessage msg) {
-		
-		//短信片断未接收完全，直接给网关回复resp，等待其它片断
+	protected BaseMessage response(SMGPDeliverMessage msg) {
+
+		// 短信片断未接收完全，直接给网关回复resp，等待其它片断
 		SMGPDeliverRespMessage responseMessage = new SMGPDeliverRespMessage();
 		responseMessage.setSequenceNumber(msg.getSequenceNo());
 		responseMessage.setStatus(0);
@@ -29,13 +29,13 @@ public class SMGPDeliverLongMessageHandler extends AbstractLongMessageHandler<SM
 
 	@Override
 	protected boolean needHandleLongMessage(SMGPDeliverMessage msg) {
-	
+
 		return !msg.isReport();
 	}
 
 	@Override
 	protected String generateFrameKey(SMGPDeliverMessage msg) {
-		return msg.getSrcTermId()+msg.getDestTermId();
+		return msg.getSrcTermId() + msg.getDestTermId();
 	}
 
 	@Override

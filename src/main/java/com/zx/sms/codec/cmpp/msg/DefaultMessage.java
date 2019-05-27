@@ -12,24 +12,23 @@ import com.zx.sms.common.util.DefaultSequenceNumberUtil;
  * @author huzorro(huzorro@gmail.com)
  * @author Lihuanghe(18852780@qq.com)
  */
-public class DefaultMessage implements Message ,Cloneable {
+public class DefaultMessage implements Message, Cloneable {
 	private static final long serialVersionUID = -4245789758843785127L;
 	private PacketType packetType;
 	private long timestamp = CachedMillisecondClock.INS.now();
-	//消息的生命周期，单位秒, 0表示永不过期
-	private long lifeTime=0;
-	
-//	private Message response;
+	// 消息的生命周期，单位秒, 0表示永不过期
+	private long lifeTime = 0;
+
+	// private Message response;
 	private Message request;
 	private Header header;
 	private byte[] buffer;
 
 	/**
-	 * CMPP的消息字段太少,增加一个附加字段,方便业务处理,
-	 * 比如给attach设置一个Map
+	 * CMPP的消息字段太少,增加一个附加字段,方便业务处理, 比如给attach设置一个Map
 	 **/
 	private Serializable attachment;
-	
+
 	public DefaultMessage() {
 	};
 
@@ -67,7 +66,6 @@ public class DefaultMessage implements Message ,Cloneable {
 		return packetType;
 	}
 
-
 	@Override
 	public void setHeader(Header header) {
 		this.header = header;
@@ -88,7 +86,6 @@ public class DefaultMessage implements Message ,Cloneable {
 		return buffer;
 	}
 
-	
 	public long getTimestamp() {
 		return timestamp;
 	}
@@ -112,7 +109,7 @@ public class DefaultMessage implements Message ,Cloneable {
 
 	@Override
 	public boolean isTerminated() {
-		return lifeTime !=0 && (( timestamp + lifeTime*1000 ) - CachedMillisecondClock.INS.now() < 0L);
+		return lifeTime != 0 && ((timestamp + lifeTime * 1000) - CachedMillisecondClock.INS.now() < 0L);
 	}
 
 	public Serializable getAttachment() {
@@ -124,8 +121,8 @@ public class DefaultMessage implements Message ,Cloneable {
 	}
 
 	protected DefaultMessage clone() throws CloneNotSupportedException {
-		DefaultMessage msg =  (DefaultMessage) super.clone();
-		
+		DefaultMessage msg = (DefaultMessage) super.clone();
+
 		DefaultHeader newHeader = new DefaultHeader();
 		newHeader.setNodeId(header.getNodeId());
 		newHeader.setSequenceId(header.getSequenceId());
@@ -147,7 +144,7 @@ public class DefaultMessage implements Message ,Cloneable {
 
 	@Override
 	public void setRequest(BaseMessage message) {
-		this.request = (Message)message;
+		this.request = (Message) message;
 	}
 
 	@Override

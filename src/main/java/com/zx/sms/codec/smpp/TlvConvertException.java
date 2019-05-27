@@ -20,25 +20,23 @@ package com.zx.sms.codec.smpp;
  * #L%
  */
 
-
 /**
- * Thrown when attempting to cast a TLV value into a different type such as a
- * byte, string, etc. 
+ * Thrown when attempting to cast a TLV value into a different type such as a byte, string, etc.
  * 
  * @author joelauer (twitter: @jjlauer or <a href="http://twitter.com/jjlauer" target=window>http://twitter.com/jjlauer</a>)
  */
 public class TlvConvertException extends RecoverablePduException {
-    static final long serialVersionUID = 1L;
-    
-    public TlvConvertException(String msg) {
-        super(msg);
-    }
+	static final long serialVersionUID = 1L;
 
-    public TlvConvertException(String typeName, String extraMsg) {
-        super("Unable to cast TLV value into " + typeName + ": " + extraMsg);
-    }
+	public TlvConvertException(String msg) {
+		super(msg);
+	}
 
-    public TlvConvertException(String msg, Throwable t) {
-        super(msg, t);
-    }
+	public TlvConvertException(String typeName, String extraMsg) {
+		super("Unable to cast TLV value into " + typeName + ": " + extraMsg);
+	}
+
+	public TlvConvertException(String msg, Throwable t) {
+		super(msg, t);
+	}
 }

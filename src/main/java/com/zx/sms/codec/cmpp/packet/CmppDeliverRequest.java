@@ -3,8 +3,6 @@
  */
 package com.zx.sms.codec.cmpp.packet;
 
-
-
 /**
  * @author huzorro(huzorro@gmail.com)
  *
@@ -22,18 +20,18 @@ public enum CmppDeliverRequest implements PacketStructure {
 	MSGLENGTH(CmppDataType.UNSIGNEDINT, true, 1),
 	MSGCONTENT(CmppDataType.OCTERSTRING, false, 0),
 	LINKID(CmppDataType.OCTERSTRING, true, 20);
-	
+
 	private final static int bodyLength = 97;
-			
-    private DataType dataType;
-    private boolean isFixFiledLength; 
-    private int length;
-    
-    private CmppDeliverRequest(DataType dataType, boolean isFixFiledLength, int length) {
-        this.dataType = dataType;
-        this.isFixFiledLength = isFixFiledLength;
-        this.length = length;
-    }
+
+	private DataType dataType;
+	private boolean isFixFiledLength;
+	private int length;
+
+	private CmppDeliverRequest(DataType dataType, boolean isFixFiledLength, int length) {
+		this.dataType = dataType;
+		this.isFixFiledLength = isFixFiledLength;
+		this.length = length;
+	}
 
 	@Override
 	public DataType getDataType() {
@@ -57,7 +55,7 @@ public enum CmppDeliverRequest implements PacketStructure {
 
 	@Override
 	public int getBodyLength() {
-       
-        return bodyLength;
-	}	
+
+		return bodyLength;
+	}
 }

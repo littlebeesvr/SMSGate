@@ -200,12 +200,9 @@ public class CmppQueryResponseMessage extends DefaultMessage {
 	}
 
 	/*
-	 * 字段名 字节数 属性 描述 Time 8 Octet String 时间(精确至日)。 Query_Type 1 Unsigned Integer
-	 * 查询类别： 0：总数查询； 1：按业务类型查询。 Query_Code 10 Octet String 查询码。 MT_TLMsg 4
-	 * Unsigned Integer 从SP接收信息总数。 MT_Tlusr 4 Unsigned Integer 从SP接收用户总数。 MT_Scs
-	 * 4 Unsigned Integer 成功转发数量。 MT_WT 4 Unsigned Integer 待转发数量。 MT_FL 4
-	 * Unsigned Integer 转发失败数量。 MO_Scs 4 Unsigned Integer 向SP成功送达数量。 MO_WT 4
-	 * Unsigned Integer 向SP待送达数量。 MO_FL 4 Unsigned Integer 向SP送达失败数量。
+	 * 字段名 字节数 属性 描述 Time 8 Octet String 时间(精确至日)。 Query_Type 1 Unsigned Integer 查询类别： 0：总数查询； 1：按业务类型查询。 Query_Code 10 Octet String 查询码。 MT_TLMsg 4 Unsigned Integer 从SP接收信息总数。
+	 * MT_Tlusr 4 Unsigned Integer 从SP接收用户总数。 MT_Scs 4 Unsigned Integer 成功转发数量。 MT_WT 4 Unsigned Integer 待转发数量。 MT_FL 4 Unsigned Integer 转发失败数量。 MO_Scs 4 Unsigned Integer
+	 * 向SP成功送达数量。 MO_WT 4 Unsigned Integer 向SP待送达数量。 MO_FL 4 Unsigned Integer 向SP送达失败数量。
 	 */
 
 }

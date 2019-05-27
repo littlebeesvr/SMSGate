@@ -1,5 +1,10 @@
 package com.zx.sms.codec.smpp.msg;
 
+import com.zx.sms.codec.smpp.RecoverablePduException;
+import com.zx.sms.codec.smpp.UnrecoverablePduException;
+import com.zx.sms.common.util.ByteBufUtil;
+import com.zx.sms.common.util.PduUtil;
+
 /*
  * #%L
  * ch-smpp
@@ -21,12 +26,6 @@ package com.zx.sms.codec.smpp.msg;
  */
 
 import io.netty.buffer.ByteBuf;
-import io.netty.util.internal.StringUtil;
-
-import com.zx.sms.codec.smpp.RecoverablePduException;
-import com.zx.sms.codec.smpp.UnrecoverablePduException;
-import com.zx.sms.common.util.ByteBufUtil;
-import com.zx.sms.common.util.PduUtil;
 
 /**
  * 
@@ -34,50 +33,50 @@ import com.zx.sms.common.util.PduUtil;
  */
 public abstract class BaseSmResp extends PduResponse {
 
-    private String messageId;
+	private String messageId;
 
-    public BaseSmResp(int commandId, String name) {
-        super(commandId, name);
-    }
+	public BaseSmResp(int commandId, String name) {
+		super(commandId, name);
+	}
 
-    public String getMessageId() {
-        return this.messageId;
-    }
+	public String getMessageId() {
+		return this.messageId;
+	}
 
-    public void setMessageId(String value) {
-        this.messageId = value;
-    }
+	public void setMessageId(String value) {
+		this.messageId = value;
+	}
 
-    @Override
-    public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        // the body may or may not contain a messageId -- the helper utility
-        // method will take care of returning null if there aren't any readable bytes
-        this.messageId = ByteBufUtil.readNullTerminatedString(buffer);
-    }
+	@Override
+	public void readBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		// the body may or may not contain a messageId -- the helper utility
+		// method will take care of returning null if there aren't any readable bytes
+		this.messageId = ByteBufUtil.readNullTerminatedString(buffer);
+	}
 
-    @Override
-    public int calculateByteSizeOfBody() {
-        int bodyLength = 0;
-        bodyLength += PduUtil.calculateByteSizeOfNullTerminatedString(this.messageId);
-        return bodyLength;
-    }
+	@Override
+	public int calculateByteSizeOfBody() {
+		int bodyLength = 0;
+		bodyLength += PduUtil.calculateByteSizeOfNullTerminatedString(this.messageId);
+		return bodyLength;
+	}
 
-    @Override
-    public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
-        // when this PDU was parsed, it's possible it was missing the messageId instead
-        // of having a NULL messageId. If that's the case, the commandLength will be just
-        // enough for the headers (and theoretically any optional TLVs). Don't try to
-        // write the NULL byte for that case.
-        // See special note in 4.4.2 of SMPP 3.4 spec
-        if (!((buffer.writableBytes() == 0) && (this.messageId == null))) {
-            ByteBufUtil.writeNullTerminatedString(buffer, this.messageId);
-        }
-    }
+	@Override
+	public void writeBody(ByteBuf buffer) throws UnrecoverablePduException, RecoverablePduException {
+		// when this PDU was parsed, it's possible it was missing the messageId instead
+		// of having a NULL messageId. If that's the case, the commandLength will be just
+		// enough for the headers (and theoretically any optional TLVs). Don't try to
+		// write the NULL byte for that case.
+		// See special note in 4.4.2 of SMPP 3.4 spec
+		if (!((buffer.writableBytes() == 0) && (this.messageId == null))) {
+			ByteBufUtil.writeNullTerminatedString(buffer, this.messageId);
+		}
+	}
 
-    @Override
-    public void appendBodyToString(StringBuilder buffer) {
-        buffer.append("(messageId [");
-        buffer.append((this.messageId));
-        buffer.append("])");
-    }
+	@Override
+	public void appendBodyToString(StringBuilder buffer) {
+		buffer.append("(messageId [");
+		buffer.append((this.messageId));
+		buffer.append("])");
+	}
 }

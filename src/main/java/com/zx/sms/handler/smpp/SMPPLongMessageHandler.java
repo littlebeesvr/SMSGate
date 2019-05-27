@@ -12,8 +12,7 @@ import com.zx.sms.common.NotSupportedException;
 import com.zx.sms.connect.manager.EndpointEntity;
 
 public class SMPPLongMessageHandler extends AbstractLongMessageHandler<BaseSm> {
-	
-	
+
 	public SMPPLongMessageHandler(EndpointEntity entity) {
 		super(entity);
 	}
@@ -25,22 +24,21 @@ public class SMPPLongMessageHandler extends AbstractLongMessageHandler<BaseSm> {
 
 	@Override
 	protected boolean needHandleLongMessage(BaseSm msg) {
-		
-		if(msg instanceof DeliverSmReceipt)
-		{
+
+		if (msg instanceof DeliverSmReceipt) {
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	protected String generateFrameKey(BaseSm msg) throws Exception{
-		if(msg instanceof SubmitSm){
-			return msg.getDestAddress().getAddress()+msg.getSourceAddress().getAddress();
-		}else if(msg instanceof DeliverSm){
-			return msg.getSourceAddress().getAddress()+msg.getDestAddress().getAddress();
-		}else{
-			throw new NotSupportedException("not support LongMessage Type  "+ msg.getClass());
+	protected String generateFrameKey(BaseSm msg) throws Exception {
+		if (msg instanceof SubmitSm) {
+			return msg.getDestAddress().getAddress() + msg.getSourceAddress().getAddress();
+		} else if (msg instanceof DeliverSm) {
+			return msg.getSourceAddress().getAddress() + msg.getDestAddress().getAddress();
+		} else {
+			throw new NotSupportedException("not support LongMessage Type  " + msg.getClass());
 		}
 	}
 
@@ -48,5 +46,5 @@ public class SMPPLongMessageHandler extends AbstractLongMessageHandler<BaseSm> {
 	protected void resetMessageContent(BaseSm t, SmsMessage content) {
 		t.setSmsMsg(content);
 	}
-	
+
 }

@@ -29,7 +29,6 @@ import org.marre.sms.SmsPort;
 import org.marre.sms.SmsPortAddressedTextMessage;
 import org.marre.sms.SmsSimTookitSecurityMessage;
 import org.marre.sms.SmsTextMessage;
-import org.marre.sms.SmsUdhElement;
 import org.marre.sms.SmsUdhIei;
 import org.marre.sms.SmsUserData;
 import org.marre.wap.mms.MmsConstants;
@@ -62,7 +61,6 @@ import es.rickyepoderi.wbxml.definition.WbXmlInitialization;
 import es.rickyepoderi.wbxml.stream.WbXmlInputFactory;
 import io.netty.buffer.ByteBufUtil;
 
-
 //短信片断持久化需要集中保存，因为同一短信的不同分片会从不同的连接发送。可能不在同一台主机。
 //可以使用 Redis.Memcached等。
 
@@ -77,21 +75,18 @@ public enum LongMessageFrameHolder {
 			RemovalCause cause = notification.getCause();
 			FrameHolder h = notification.getValue();
 			switch (cause) {
-			case EXPIRED:
-			case SIZE:
-			case COLLECTED:
-				logger.error("Long Message Lost cause by {}. {}|{}|{}|{}", cause,
-						DateFormatUtils.format(h.getTimestamp(), DateFormatUtils.ISO_DATETIME_FORMAT.getPattern()), notification.getKey(), h.getSequence(),
-						buildTextMessage(h.mergeAllcontent(), h.getMsgfmt()).getText());
-			default:
-				return;
+				case EXPIRED :
+				case SIZE :
+				case COLLECTED :
+					logger.error("Long Message Lost cause by {}. {}|{}|{}|{}", cause, DateFormatUtils.format(h.getTimestamp(), DateFormatUtils.ISO_DATETIME_FORMAT.getPattern()),
+							notification.getKey(), h.getSequence(), buildTextMessage(h.mergeAllcontent(), h.getMsgfmt()).getText());
+				default :
+					return;
 			}
 		}
 	};
 	/**
-	 * 以服务号码+帧唯一码为key
-	 * 注意：这里使用的jvm缓存保证长短信的分片。如果是集群部署，从网关过来的长短信会随机发送到不同的主机，需要使用集群缓存
-	 * ，如redis,memcached来保存长短信分片。 由于可能有短信分片丢失，造成一直不能组装完成，为防止内存泄漏，这里要使用支持过期失效的缓存。
+	 * 以服务号码+帧唯一码为key 注意：这里使用的jvm缓存保证长短信的分片。如果是集群部署，从网关过来的长短信会随机发送到不同的主机，需要使用集群缓存 ，如redis,memcached来保存长短信分片。 由于可能有短信分片丢失，造成一直不能组装完成，为防止内存泄漏，这里要使用支持过期失效的缓存。
 	 */
 	private static Cache<String, FrameHolder> cache = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.HOURS).removalListener(removealListener).build();
 	private static ConcurrentMap<String, FrameHolder> map = cache.asMap();
@@ -118,37 +113,37 @@ public enum LongMessageFrameHolder {
 					throw new NotSupportedException("Nokia手机支持的OTA浏览器书签,无法解析");
 				}
 
-				logger.warn("UnsupportedportMessage UDH:0x{} udhdata:{},pdu:[{}]", ByteBufUtil.hexDump(new byte[] {udheader.udhIei.getValue()}), ByteBufUtil.hexDump(udheader.infoEleData),
-						ByteBufUtil.hexDump(contents));
+				logger.warn("UnsupportedportMessage UDH:0x{} udhdata:{},pdu:[{}]", ByteBufUtil.hexDump(new byte[]{udheader.udhIei.getValue()}),
+						ByteBufUtil.hexDump(udheader.infoEleData), ByteBufUtil.hexDump(contents));
 
 				SmsTextMessage text = buildTextMessage(contents, frame.getMsgfmt());
 				return new SmsPortAddressedTextMessage(new SmsPort(destport), new SmsPort(srcport), text);
-			} else if(frame.getTppid()==0x7f && (SmsUdhIei.COMMAND_PACKET.equals(udheader.udhIei)||SmsUdhIei.COMMAND_RESPONSE_PACKET.equals(udheader.udhIei))){
-				//Tppid()==0x7f sim data download
-				//(U)SIM Toolkit Securit 用于远程写卡
-				SmsSimTookitSecurityMessage  sts = new SmsSimTookitSecurityMessage(udheader.udhIei.getValue() ,udheader.infoEleData,contents);
+			} else if (frame.getTppid() == 0x7f && (SmsUdhIei.COMMAND_PACKET.equals(udheader.udhIei) || SmsUdhIei.COMMAND_RESPONSE_PACKET.equals(udheader.udhIei))) {
+				// Tppid()==0x7f sim data download
+				// (U)SIM Toolkit Securit 用于远程写卡
+				SmsSimTookitSecurityMessage sts = new SmsSimTookitSecurityMessage(udheader.udhIei.getValue(), udheader.infoEleData, contents);
 				return sts;
-			}
-			else {
+			} else {
 				// 其它都当成文本短信
-				logger.warn("Unsupported UDH:0x{} udhdata:{},pdu:[{}]", ByteBufUtil.hexDump(new byte[] {udheader.udhIei.getValue()}), ByteBufUtil.hexDump(udheader.infoEleData), ByteBufUtil.hexDump(contents));
+				logger.warn("Unsupported UDH:0x{} udhdata:{},pdu:[{}]", ByteBufUtil.hexDump(new byte[]{udheader.udhIei.getValue()}), ByteBufUtil.hexDump(udheader.infoEleData),
+						ByteBufUtil.hexDump(contents));
 				return buildTextMessage(contents, frame.getMsgfmt());
 			}
 		}
 	}
-	
-	static SmsTextMessage buildTextMessage(byte[] bytes,SmsDcs msgfmt){
+
+	static SmsTextMessage buildTextMessage(byte[] bytes, SmsDcs msgfmt) {
 		String text = null;
-		switch(msgfmt.getAlphabet()){
-		case GSM:
-			text = SmsPduUtil.unencodedSeptetsToString(bytes);
-			break;
-		default:
-			text = new String(bytes,CMPPCommonUtil.switchCharset(msgfmt.getAlphabet()));
+		switch (msgfmt.getAlphabet()) {
+			case GSM :
+				text = SmsPduUtil.unencodedSeptetsToString(bytes);
+				break;
+			default :
+				text = new String(bytes, CMPPCommonUtil.switchCharset(msgfmt.getAlphabet()));
 		}
 		return new SmsTextMessage(text, msgfmt);
 	}
-	
+
 	/**
 	 * 获取长短信切分后的短信片断内容
 	 * 
@@ -164,7 +159,7 @@ public enum LongMessageFrameHolder {
 		return null;
 
 	}
-	
+
 	/**
 	 * 获取一条完整的长短信，如果长短信组装未完成，返回null
 	 **/
@@ -174,19 +169,19 @@ public enum LongMessageFrameHolder {
 		// 短信内容不带协议头，直接获取短信内容
 		// udhi只取第一个bit
 		if (frame.getTpudhi() == 0) {
-			SmsTextMessage smsmsg =  buildTextMessage(frame.getPayloadbytes(0), frame.getMsgfmt());
-			return new SmsMessageHolder(smsmsg,msg);
+			SmsTextMessage smsmsg = buildTextMessage(frame.getPayloadbytes(0), frame.getMsgfmt());
+			return new SmsMessageHolder(smsmsg, msg);
 		} else if ((frame.getTpudhi() & 0x01) == 1 || (frame.getTpudhi() & 0x40) == 0x40) {
 
 			try {
 				FrameHolder fh = createFrameHolder(serviceNum, frame);
-				
-				if(fh == null)
+
+				if (fh == null)
 					return null;
-				
+
 				// 判断是否只有一帧
 				if (fh.isComplete()) {
-					return new SmsMessageHolder(generatorSmsMessage(fh, frame),msg);
+					return new SmsMessageHolder(generatorSmsMessage(fh, frame), msg);
 				}
 
 				// 超过一帧的，进行长短信合并
@@ -197,19 +192,19 @@ public enum LongMessageFrameHolder {
 				if (oldframeHolder != null) {
 
 					mergeFrameHolder(oldframeHolder, frame);
-					oldframeHolder.getMsg().addFragment(msg); //后续收到的片断加入列表
+					oldframeHolder.getMsg().addFragment(msg); // 后续收到的片断加入列表
 				} else {
-					//保存第一个收到的短信片断
+					// 保存第一个收到的短信片断
 					fh.setMsg(msg);
 					oldframeHolder = fh;
 				}
 
 				if (oldframeHolder.isComplete()) {
 					map.remove(mapKey);
-					return new SmsMessageHolder(generatorSmsMessage(oldframeHolder, frame),oldframeHolder.getMsg());
+					return new SmsMessageHolder(generatorSmsMessage(oldframeHolder, frame), oldframeHolder.getMsg());
 				}
 			} catch (Exception ex) {
-				logger.error("",ex);
+				logger.error("", ex);
 				return null;
 			}
 
@@ -230,7 +225,7 @@ public enum LongMessageFrameHolder {
 			frame.setPktotal((short) pdus.length);
 			frame.setPknumber((short) i++);
 			frame.setMsgfmt(aMsgPdu.getDcs());
-			
+
 			frame.setTpudhi(udh != null ? (short) 1 : (short) 0);
 
 			ByteArrayOutputStream btos = new ByteArrayOutputStream(200);
@@ -325,7 +320,7 @@ public enum LongMessageFrameHolder {
 			t.udhIei = SmsUdhIei.valueOf(pdu[i++]); // 00
 			t.infoEleLength = pdu[i++]; // 03
 			t.infoEleData = new byte[t.infoEleLength];
-			if(t.infoEleLength>0) {
+			if (t.infoEleLength > 0) {
 				System.arraycopy(pdu, i, t.infoEleData, 0, t.infoEleLength);
 				i += t.infoEleLength;
 			}
@@ -339,16 +334,12 @@ public enum LongMessageFrameHolder {
 		List<InformationElement> infoElement;
 	}
 
-
-
 	/**
-	 * Convert a stream of septets read as octets into a byte array containing
-	 * the 7-bit values from the octet stream.
+	 * Convert a stream of septets read as octets into a byte array containing the 7-bit values from the octet stream.
 	 * 
 	 * @param octets
 	 * @param bitSkip
-	 *            FIXME pass the septet length in here, so if there is a spare
-	 *            septet at the end of the octet, we can ignore that
+	 *            FIXME pass the septet length in here, so if there is a spare septet at the end of the octet, we can ignore that
 	 * @return
 	 */
 
@@ -385,9 +376,7 @@ public enum LongMessageFrameHolder {
 		WspTypeDecoder pduDecoder = new WspTypeDecoder(pdu);
 
 		/**
-		 * Parse HeaderLen(unsigned integer). From wap-230-wsp-20010705-a
-		 * section 8.1.2 The maximum size of a uintvar is 32 bits. So it will be
-		 * encoded in no more than 5 octets.
+		 * Parse HeaderLen(unsigned integer). From wap-230-wsp-20010705-a section 8.1.2 The maximum size of a uintvar is 32 bits. So it will be encoded in no more than 5 octets.
 		 */
 		if (!pduDecoder.decodeUintvarInteger(index)) {
 
@@ -401,11 +390,8 @@ public enum LongMessageFrameHolder {
 		/**
 		 * Parse Content-Type. From wap-230-wsp-20010705-a section 8.4.2.24
 		 *
-		 * Content-type-value = Constrained-media | Content-general-form
-		 * Content-general-form = Value-length Media-type Media-type =
-		 * (Well-known-media | Extension-Media) *(Parameter) Value-length =
-		 * Short-length | (Length-quote Length) Short-length = <Any octet 0-30>
-		 * (octet <= WAP_PDU_SHORT_LENGTH_MAX) Length-quote = <Octet 31>
+		 * Content-type-value = Constrained-media | Content-general-form Content-general-form = Value-length Media-type Media-type = (Well-known-media | Extension-Media)
+		 * *(Parameter) Value-length = Short-length | (Length-quote Length) Short-length = <Any octet 0-30> (octet <= WAP_PDU_SHORT_LENGTH_MAX) Length-quote = <Octet 31>
 		 * (WAP_PDU_LENGTH_QUOTE) Length = Uintvar-integer
 		 */
 		if (!pduDecoder.decodeContentType(index)) {
@@ -419,30 +405,29 @@ public enum LongMessageFrameHolder {
 			// TODO we should have more generic way to map binaryContentType
 			// code to mimeType.
 			switch (binaryContentType) {
-			case WspTypeDecoder.CONTENT_TYPE_B_DRM_RIGHTS_XML:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_DRM_RIGHTS_XML;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_DRM_RIGHTS_WBXML:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_DRM_RIGHTS_WBXML;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SI:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_SI;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SL:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_SL;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_PUSH_CO:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_CO;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_MMS:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_MMS;
-				break;
-			case WspTypeDecoder.CONTENT_TYPE_B_VND_DOCOMO_PF:
-				mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_VND_DOCOMO_PF;
-				break;
-			default:
-				;
-				return null;
+				case WspTypeDecoder.CONTENT_TYPE_B_DRM_RIGHTS_XML :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_DRM_RIGHTS_XML;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_DRM_RIGHTS_WBXML :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_DRM_RIGHTS_WBXML;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SI :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_SI;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SL :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_SL;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_PUSH_CO :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_PUSH_CO;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_MMS :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_MMS;
+					break;
+				case WspTypeDecoder.CONTENT_TYPE_B_VND_DOCOMO_PF :
+					mimeType = WspTypeDecoder.CONTENT_MIME_TYPE_B_VND_DOCOMO_PF;
+					break;
+				default :;
+					return null;
 			}
 		} else {
 			if (mimeType.equals(WspTypeDecoder.CONTENT_MIME_TYPE_B_DRM_RIGHTS_XML)) {
@@ -467,19 +452,19 @@ public enum LongMessageFrameHolder {
 		index += pduDecoder.getDecodedDataLength();
 
 		switch (binaryContentType) {
-		case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SI:
-			return dispatchWapPdu_PushWBXML(pdu, transactionId, pduType, headerStartIndex, headerLength, XMLFact.INS.SIinFact);
+			case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SI :
+				return dispatchWapPdu_PushWBXML(pdu, transactionId, pduType, headerStartIndex, headerLength, XMLFact.INS.SIinFact);
 
-		case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SL:
-			return dispatchWapPdu_PushWBXML(pdu, transactionId, pduType, headerStartIndex, headerLength, XMLFact.INS.SLinFact);
+			case WspTypeDecoder.CONTENT_TYPE_B_PUSH_SL :
+				return dispatchWapPdu_PushWBXML(pdu, transactionId, pduType, headerStartIndex, headerLength, XMLFact.INS.SLinFact);
 
-		case WspTypeDecoder.CONTENT_TYPE_B_MMS:
-			return dispatchWapPdu_MMS(pdu, transactionId, pduType, headerStartIndex, headerLength);
-		default:
-			return null;
+			case WspTypeDecoder.CONTENT_TYPE_B_MMS :
+				return dispatchWapPdu_MMS(pdu, transactionId, pduType, headerStartIndex, headerLength);
+			default :
+				return null;
 		}
 	}
-	
+
 	private enum XMLFact {
 		INS;
 		private final static XMLInputFactory SLinFact = createSLinFact();
@@ -497,7 +482,6 @@ public enum LongMessageFrameHolder {
 		}
 	}
 
-	
 	private SmsMessage dispatchWapPdu_PushWBXML(byte[] pdu, int transactionId, int pduType, int headerStartIndex, int headerLength, XMLInputFactory inFact) {
 		byte[] header = new byte[headerLength];
 		System.arraycopy(pdu, headerStartIndex, header, 0, header.length);
@@ -565,8 +549,7 @@ public enum LongMessageFrameHolder {
 		GenericPdu notify = parse.parse();
 		if (notify != null && notify instanceof NotificationInd) {
 			NotificationInd nind = (NotificationInd) notify;
-			SmsMmsNotificationMessage mms = new SmsMmsNotificationMessage(new String(nind.getContentLocation(), StandardCharsets.US_ASCII),
-					nind.getMessageSize());
+			SmsMmsNotificationMessage mms = new SmsMmsNotificationMessage(new String(nind.getContentLocation(), StandardCharsets.US_ASCII), nind.getMessageSize());
 			mms.setExpiry((int) (nind.getExpiry() - System.currentTimeMillis() / 1000));
 			if (nind.getFrom() != null)
 				mms.setFrom(nind.getFrom().getString());
@@ -591,10 +574,6 @@ public enum LongMessageFrameHolder {
 
 		return null;
 	}
-
-
-
-
 
 	protected Document wbxmlStream2Doc(XMLInputFactory inFact, InputStream in, boolean event) throws Exception {
 		XMLStreamReader xmlStreamReader = null;
@@ -630,20 +609,20 @@ public enum LongMessageFrameHolder {
 
 	private int encodePdu(SmsPdu pdu, OutputStream baos) throws SmsException {
 		switch (pdu.getDcs().getAlphabet()) {
-		case GSM:
-			return encodeSeptetPdu(pdu, baos);
-		default:
-			return encodeOctetPdu(pdu, baos);
+			case GSM :
+				return encodeSeptetPdu(pdu, baos);
+			default :
+				return encodeOctetPdu(pdu, baos);
 		}
 	}
 
 	// 如果是7bit编码，需要计算真实的数据长度
 	public static int getPayloadLength(SmsAlphabet alpha, int udl) {
 		switch (alpha) {
-		case GSM:
-			return LongMessageFrameHolder.octetLengthfromseptetsLength(udl);
-		default:
-			return udl;
+			case GSM :
+				return LongMessageFrameHolder.octetLengthfromseptetsLength(udl);
+			default :
+				return udl;
 		}
 	}
 

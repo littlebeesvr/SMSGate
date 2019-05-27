@@ -21,11 +21,11 @@ public class SMGPSubmitLongMessageHandler extends AbstractLongMessageHandler<SMG
 
 	@Override
 	protected BaseMessage response(SMGPSubmitMessage msg) {
-		//短信片断未接收完全，直接给网关回复resp，等待其它片断
+		// 短信片断未接收完全，直接给网关回复resp，等待其它片断
 		SMGPSubmitRespMessage responseMessage = new SMGPSubmitRespMessage();
 		responseMessage.setSequenceNumber(msg.getSequenceNo());
 		responseMessage.setStatus(0);
-		responseMessage.setMsgId( new MsgId());
+		responseMessage.setMsgId(new MsgId());
 		return responseMessage;
 	}
 
@@ -36,9 +36,9 @@ public class SMGPSubmitLongMessageHandler extends AbstractLongMessageHandler<SMG
 
 	@Override
 	protected String generateFrameKey(SMGPSubmitMessage msg) {
-		return StringUtils.join(msg.getDestTermIdArray(), "|")+msg.getSrcTermId();
+		return StringUtils.join(msg.getDestTermIdArray(), "|") + msg.getSrcTermId();
 	}
-	
+
 	@Override
 	protected void resetMessageContent(SMGPSubmitMessage t, SmsMessage content) {
 		t.setMsgContent(content);

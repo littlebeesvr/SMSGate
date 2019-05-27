@@ -14,15 +14,15 @@ import com.zx.sms.common.GlobalConstance;
  */
 public class SgipReportResponseMessage extends DefaultMessage {
 	private static final long serialVersionUID = 1530100000061666385L;
-	
+
 	private short result = 0;
 	private String reserve = GlobalConstance.emptyString;
-	
+
 	public SgipReportResponseMessage() {
 		super(SgipPacketType.REPORTRESPONSE);
 	}
 	public SgipReportResponseMessage(Header header) {
-		super(SgipPacketType.REPORTRESPONSE,header);
+		super(SgipPacketType.REPORTRESPONSE, header);
 	}
 	/**
 	 * @return the result
@@ -31,7 +31,8 @@ public class SgipReportResponseMessage extends DefaultMessage {
 		return result;
 	}
 	/**
-	 * @param result the result to set
+	 * @param result
+	 *            the result to set
 	 */
 	public void setResult(short result) {
 		this.result = result;
@@ -43,19 +44,20 @@ public class SgipReportResponseMessage extends DefaultMessage {
 		return reserve;
 	}
 	/**
-	 * @param reserve the reserve to set
+	 * @param reserve
+	 *            the reserve to set
 	 */
 	public void setReserve(String reserve) {
 		this.reserve = reserve;
 	}
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String
-				.format("ReportResponseMessage [result=%s, reserve=%s,  header=%s]",
-						result, reserve,  getHeader());
+		return String.format("ReportResponseMessage [result=%s, reserve=%s,  header=%s]", result, reserve, getHeader());
 	}
-	
+
 }

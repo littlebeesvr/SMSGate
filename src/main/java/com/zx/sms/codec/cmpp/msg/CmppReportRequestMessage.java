@@ -5,7 +5,6 @@ package com.zx.sms.codec.cmpp.msg;
 
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.common.util.CachedMillisecondClock;
-import com.zx.sms.common.util.DefaultSequenceNumberUtil;
 import com.zx.sms.common.util.MsgId;
 
 /**
@@ -15,7 +14,7 @@ import com.zx.sms.common.util.MsgId;
  */
 public class CmppReportRequestMessage extends DefaultMessage {
 	private static final long serialVersionUID = -4631945859346437882L;
-	
+
 	private MsgId msgId = new MsgId();
 	private String stat = GlobalConstance.emptyString;
 	private String submitTime = String.format("%ty%<tm%<td%<tH%<tM", CachedMillisecondClock.INS.now());
@@ -120,8 +119,8 @@ public class CmppReportRequestMessage extends DefaultMessage {
 	 */
 	@Override
 	public String toString() {
-		return String.format("CmppReportRequestMessage [msgId=%s, stat=%s, submitTime=%s, doneTime=%s, destterminalId=%s, smscSequence=%s]", msgId, stat,
-				submitTime, doneTime, destterminalId, smscSequence);
+		return String.format("CmppReportRequestMessage [msgId=%s, stat=%s, submitTime=%s, doneTime=%s, destterminalId=%s, smscSequence=%s]", msgId, stat, submitTime, doneTime,
+				destterminalId, smscSequence);
 	}
 
 }

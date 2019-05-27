@@ -1,5 +1,16 @@
 package com.zx.sms.connect.manager.tcp;
 
+import java.util.concurrent.ConcurrentMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.zx.sms.connect.manager.AbstractEndpointConnector;
+import com.zx.sms.connect.manager.EndpointEntity;
+import com.zx.sms.connect.manager.EventLoopGroupFactory;
+import com.zx.sms.connect.manager.ServerEndpoint;
+import com.zx.sms.session.AbstractSessionStateManager;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
@@ -12,38 +23,23 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 
-import java.util.concurrent.ConcurrentMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.zx.sms.connect.manager.AbstractEndpointConnector;
-import com.zx.sms.connect.manager.EndpointEntity;
-import com.zx.sms.connect.manager.EventLoopGroupFactory;
-import com.zx.sms.connect.manager.ServerEndpoint;
-import com.zx.sms.session.AbstractSessionStateManager;
-
 public class TCPServerEndpointConnector extends AbstractEndpointConnector {
 	private static final Logger logger = LoggerFactory.getLogger(TCPServerEndpointConnector.class);
 	private ServerBootstrap bootstrap = new ServerBootstrap();
-	
+
 	private Channel acceptorChannel = null;
-	
+
 	public TCPServerEndpointConnector(EndpointEntity e) {
 		super(e);
-		bootstrap.group(EventLoopGroupFactory.INS.getBoss(), EventLoopGroupFactory.INS.getWorker())
-				.channel(NioServerSocketChannel.class)
-				.option(ChannelOption.SO_BACKLOG, 100)
-				.option(ChannelOption.SO_RCVBUF, 2048)
-				.option(ChannelOption.SO_SNDBUF, 2048)
-				.childOption(ChannelOption.TCP_NODELAY, true)
-//				.handler(new LoggingHandler(LogLevel.INFO))
+		bootstrap.group(EventLoopGroupFactory.INS.getBoss(), EventLoopGroupFactory.INS.getWorker()).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 100)
+				.option(ChannelOption.SO_RCVBUF, 2048).option(ChannelOption.SO_SNDBUF, 2048).childOption(ChannelOption.TCP_NODELAY, true)
+				// .handler(new LoggingHandler(LogLevel.INFO))
 				.childHandler(initPipeLine());
 	}
 
 	@Override
 	public ChannelFuture open() throws Exception {
-		
+
 		ChannelFuture future = null;
 
 		if (getEndpointEntity().getHost() == null)
@@ -55,8 +51,6 @@ public class TCPServerEndpointConnector extends AbstractEndpointConnector {
 		return future;
 	}
 
-
-
 	@Override
 	public void close() throws Exception {
 
@@ -64,7 +58,6 @@ public class TCPServerEndpointConnector extends AbstractEndpointConnector {
 		acceptorChannel.close().sync();
 		acceptorChannel = null;
 	}
-
 
 	private class ChannelCollector extends ChannelDuplexHandler {
 		public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -85,23 +78,23 @@ public class TCPServerEndpointConnector extends AbstractEndpointConnector {
 
 	@Override
 	protected SslContext createSslCtx() {
-		try{
-			if(getEndpointEntity().isUseSSL()){
-				 SelfSignedCertificate ssc = new SelfSignedCertificate();
-					return SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
-			}else{
+		try {
+			if (getEndpointEntity().isUseSSL()) {
+				SelfSignedCertificate ssc = new SelfSignedCertificate();
+				return SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
+			} else {
 				return null;
 			}
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected void initSslCtx(Channel ch, EndpointEntity entity) {
 		ChannelPipeline pipeline = ch.pipeline();
-		if(entity.isUseSSL()){
-			if(entity instanceof ServerEndpoint){
+		if (entity.isUseSSL()) {
+			if (entity instanceof ServerEndpoint) {
 				pipeline.addLast(getSslCtx().newHandler(ch.alloc()));
 			}
 		}
@@ -110,7 +103,7 @@ public class TCPServerEndpointConnector extends AbstractEndpointConnector {
 	@Override
 	protected void doBindHandler(ChannelPipeline pipe, EndpointEntity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

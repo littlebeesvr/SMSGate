@@ -19,7 +19,7 @@ public class SgipSubmitLongMessageHandler extends AbstractLongMessageHandler<Sgi
 
 	@Override
 	protected BaseMessage response(SgipSubmitRequestMessage msg) {
-		//短信片断未接收完全，直接给网关回复resp，等待其它片断
+		// 短信片断未接收完全，直接给网关回复resp，等待其它片断
 		SgipSubmitResponseMessage responseMessage = new SgipSubmitResponseMessage(msg.getHeader());
 		return responseMessage;
 	}
@@ -31,13 +31,13 @@ public class SgipSubmitLongMessageHandler extends AbstractLongMessageHandler<Sgi
 
 	@Override
 	protected String generateFrameKey(SgipSubmitRequestMessage msg) {
-		return StringUtils.join(msg.getUsernumber(), "|")+msg.getSpnumber();
+		return StringUtils.join(msg.getUsernumber(), "|") + msg.getSpnumber();
 	}
 
 	@Override
 	protected void resetMessageContent(SgipSubmitRequestMessage t, SmsMessage content) {
 		t.setMsgContent(content);
-		
+
 	}
 
 }

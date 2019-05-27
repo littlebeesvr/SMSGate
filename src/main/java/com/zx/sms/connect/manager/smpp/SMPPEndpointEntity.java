@@ -2,19 +2,18 @@ package com.zx.sms.connect.manager.smpp;
 
 import com.zx.sms.codec.smpp.Address;
 import com.zx.sms.connect.manager.EndpointEntity;
-import com.zx.sms.connect.manager.EndpointEntity.ChannelType;
 
 public abstract class SMPPEndpointEntity extends EndpointEntity {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -441048745116970563L;
 	private String systemId;
-    private String password;
-    private String systemType;
-    private byte interfaceVersion;  // interface version requested by us or them
-    private Address addressRange;
-    
+	private String password;
+	private String systemType;
+	private byte interfaceVersion; // interface version requested by us or them
+	private Address addressRange;
+
 	public String getSystemId() {
 		return systemId;
 	}

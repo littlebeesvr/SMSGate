@@ -1,14 +1,13 @@
 /**
- * <p>This package is a Java/Object/Memory representation of a WBXML document.
- * The whole package contains the different elements that can be part a WBXML
- * (element, attributes, PI,...) and the final WbXMLDocument is the main 
- * object that represents a final WBXML document. There are two special classes:
- * WbXMLParser (class that reads a input stream and constructs the memory
- * representation of the WBXML document) and WbXmlEncoder (class that writes
- * a WbXmlDocument from the memory representation to an output stream).</p>
+ * <p>
+ * This package is a Java/Object/Memory representation of a WBXML document. The whole package contains the different elements that can be part a WBXML (element, attributes, PI,...)
+ * and the final WbXMLDocument is the main object that represents a final WBXML document. There are two special classes: WbXMLParser (class that reads a input stream and constructs
+ * the memory representation of the WBXML document) and WbXmlEncoder (class that writes a WbXmlDocument from the memory representation to an output stream).
+ * </p>
  * 
- * <p>The WBXML format specification defines a WBXML document like this 
- * (chapter <em>5.3. BNF for Document Structure</em>):</p>
+ * <p>
+ * The WBXML format specification defines a WBXML document like this (chapter <em>5.3. BNF for Document Structure</em>):
+ * </p>
  * 
  * <pre>
  * start       = version publicid charset strtbl body
@@ -45,18 +44,16 @@
  * zero        = u_int8      // containing the value zero (0).
  * </pre>
  * 
- * <p>The different classes in this package represents a part of the previous
- * specification (usually a class is thought to be as simple as possible). In 
- * summary this package is a way of passing from a WBXML stream to a more
- * easy to manage memory representation and vice-versa. The stream package
- * always convert first to this internal representation (both, reader and
- * writer). It is fair to say that the idea is copied from the 
- * <a href="https://libwbxml.opensync.org/">libwbxml</a> C library. It is
- * obvious that managing an intermediate structure is not the best in terms
- * of performance but the WBXML specification is so complicated that it seems
- * the most reasonable way.</p>
+ * <p>
+ * The different classes in this package represents a part of the previous specification (usually a class is thought to be as simple as possible). In summary this package is a way
+ * of passing from a WBXML stream to a more easy to manage memory representation and vice-versa. The stream package always convert first to this internal representation (both,
+ * reader and writer). It is fair to say that the idea is copied from the <a href="https://libwbxml.opensync.org/">libwbxml</a> C library. It is obvious that managing an
+ * intermediate structure is not the best in terms of performance but the WBXML specification is so complicated that it seems the most reasonable way.
+ * </p>
  * 
- * <p>Just as an example the following SI XML document is presented:</p>
+ * <p>
+ * Just as an example the following SI XML document is presented:
+ * </p>
  * 
  * <pre>
  * &lt;?xml version="1.0"?&gt;
@@ -70,7 +67,9 @@
  * &lt;/si&gt;
  * </pre>
  * 
- * <p>It is expressed in this intermediate form as follows:</p>
+ * <p>
+ * It is expressed in this intermediate form as follows:
+ * </p>
  * 
  * <pre>
  * new WbXmlDocument(

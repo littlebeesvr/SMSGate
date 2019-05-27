@@ -1,7 +1,5 @@
 package com.zx.sms.codec.smgp.msg;
 
-
-
 public class SMGPExitRespMessage extends SMGPBaseMessage {
 
 	/**
@@ -19,8 +17,7 @@ public class SMGPExitRespMessage extends SMGPBaseMessage {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SMGPExitRespMessage:[sequenceNumber=").append(
-				sequenceString()).append(",");
+		buffer.append("SMGPExitRespMessage:[sequenceNumber=").append(sequenceString()).append(",");
 		buffer.append("]");
 		return buffer.toString();
 	}

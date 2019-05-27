@@ -29,40 +29,40 @@ import com.zx.sms.codec.smpp.SmppConstants;
  */
 public class PduUtil {
 
-    /**
-     * Calculates size of a "C-String" by returning the length of the String
-     * plus 1 (for the NULL byte).  If the parameter is null, will return 1.
-     * @param value
-     * @return
-     */
-    static public int calculateByteSizeOfNullTerminatedString(String value) {
-        if (value == null) {
-            return 1;
-        }
-        return value.length() + 1;
-    }
+	/**
+	 * Calculates size of a "C-String" by returning the length of the String plus 1 (for the NULL byte). If the parameter is null, will return 1.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	static public int calculateByteSizeOfNullTerminatedString(String value) {
+		if (value == null) {
+			return 1;
+		}
+		return value.length() + 1;
+	}
 
-    /**
-     * Calculates the byte size of an Address.  Safe to call with nulls as a
-     * parameter since this will then just return the size of an empty address.
-     * @param value
-     * @return
-     */
-    static public int calculateByteSizeOfAddress(Address value) {
-        if (value == null) {
-            return SmppConstants.EMPTY_ADDRESS.calculateByteSize();
-        } else {
-            return value.calculateByteSize();
-        }
-    }
+	/**
+	 * Calculates the byte size of an Address. Safe to call with nulls as a parameter since this will then just return the size of an empty address.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	static public int calculateByteSizeOfAddress(Address value) {
+		if (value == null) {
+			return SmppConstants.EMPTY_ADDRESS.calculateByteSize();
+		} else {
+			return value.calculateByteSize();
+		}
+	}
 
-    static public boolean isRequestCommandId(int commandId) {
-        // if the 31st bit is not set, this is a request
-        return ((commandId & SmppConstants.PDU_CMD_ID_RESP_MASK) == 0);
-    }
+	static public boolean isRequestCommandId(int commandId) {
+		// if the 31st bit is not set, this is a request
+		return ((commandId & SmppConstants.PDU_CMD_ID_RESP_MASK) == 0);
+	}
 
-    static public boolean isResponseCommandId(int commandId) {
-        // if the 31st bit is not set, this is a request
-        return ((commandId & SmppConstants.PDU_CMD_ID_RESP_MASK) == SmppConstants.PDU_CMD_ID_RESP_MASK);
-    }
+	static public boolean isResponseCommandId(int commandId) {
+		// if the 31st bit is not set, this is a request
+		return ((commandId & SmppConstants.PDU_CMD_ID_RESP_MASK) == SmppConstants.PDU_CMD_ID_RESP_MASK);
+	}
 }
